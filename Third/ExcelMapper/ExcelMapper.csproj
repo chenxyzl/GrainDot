@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>ExcelDataReader.Mapping</PackageId>
+    <PackageVersion>2.2.0</PackageVersion>
+    <Authors>Hugh Bellamy</Authors>
+    <Title>Excel Mapping Helper</Title>
+    <Description>An extension of ExcelDataReader that supports fluent mapping of rows to C# objects.</Description>
+    <PackageProjectUrl>https://github.com/hughbe/excel-mapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hughbe/excel-mapper</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright 2018 (c) Hugh Bellamy. All rights reserved.</Copyright>
+    <PackageTags>excel mapping mapper</PackageTags>
+    <PackageReleaseNotes>Add license and upgrade ExcelDataReader.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+
+</Project>

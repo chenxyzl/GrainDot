@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Proto2CS": {
+      "commandName": "Project",
+      "commandLineArgs": "-n I.PB -p ./Outer -p ./Inner -o ../Server/Model/Module/Message --server --outerfile ./outer.csv --innerfile ./inner.csv --innerclass InnerOpcode --outerclass OuterOpcode --nsopcode I ",
+      "workingDirectory": "P:\\repos\\infinity\\infinity_s\\Proto"
+    }
+  }
+}

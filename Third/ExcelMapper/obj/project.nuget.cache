@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "0J6WKIcZ8IIDudQyv0w4eHkHZ+sexjkYWh9Hr/m64Zpn43jJ/mRTpYwHY0r4Y6P59IFPghQwQ0swykLcDJU5RQ==",
+  "success": true,
+  "projectFilePath": "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\czlin\\.nuget\\packages\\exceldatareader\\3.6.0\\exceldatareader.3.6.0.nupkg.sha512",
+    "C:\\Users\\czlin\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

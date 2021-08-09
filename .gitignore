@@ -1,0 +1,8 @@
+**/.suo
+**/obj/Debug/
+**/obj/Release/
+**/bin/Debug/
+**/bin/Release/
+Tools/etcd/etcd.exe
+Tools/etcd/etcdctl.exe
+Tools/etcd/default.etcd/
