@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Collections;
 
-namespace I
+namespace Proto
 {
 
     public static class Program

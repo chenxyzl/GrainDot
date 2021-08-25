@@ -3,19 +3,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boot", "Boot\Boot.csproj", "{A7B1D118-32FE-4339-A45B-5F885730AE75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Boot", "Boot\Boot.csproj", "{A7B1D118-32FE-4339-A45B-5F885730AE75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base", "Base\Base.csproj", "{94B4F292-E5EB-49B9-B14A-68855EE221C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base", "Base\Base.csproj", "{94B4F292-E5EB-49B9-B14A-68855EE221C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F233BE44-E84B-4623-9C85-E65D9363265D} = {F233BE44-E84B-4623-9C85-E65D9363265D}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{0DED869E-6F7B-4666-A2A6-8163CFBD708A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{0DED869E-6F7B-4666-A2A6-8163CFBD708A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Model", "Home.Model\Home.Model.csproj", "{B160AB37-0727-46C1-B03A-68426D15C9A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Home.Model", "Home.Model\Home.Model.csproj", "{B160AB37-0727-46C1-B03A-68426D15C9A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Home.Hotfix", "Home.Hotfix\Home.Hotfix.csproj", "{CF52D0EB-B559-4DB3-935F-C50D8D3730A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Home.Hotfix", "Home.Hotfix\Home.Hotfix.csproj", "{CF52D0EB-B559-4DB3-935F-C50D8D3730A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Model", "World.Model\World.Model.csproj", "{D1561EFC-3542-4FDB-9207-99E794D10183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "World.Model", "World.Model\World.Model.csproj", "{D1561EFC-3542-4FDB-9207-99E794D10183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World.Hotfix", "World.Hotfix\World.Hotfix.csproj", "{2C943E35-C003-4895-B5E7-59D1C5D87173}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "World.Hotfix", "World.Hotfix\World.Hotfix.csproj", "{2C943E35-C003-4895-B5E7-59D1C5D87173}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{82D4835E-4AE6-4A5A-9A32-1A7C3694BBD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Proto2CS", "Tools\Proto2CS\Proto2CS.csproj", "{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Third", "Third", "{9B541C37-28B0-4BDA-A131-529AB8904408}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelMapper", "Third\ExcelMapper\ExcelMapper.csproj", "{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login.Model", "Login.Model\Login.Model.csproj", "{3A8747B7-55D8-43FE-9DDB-9C1CB645A835}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login.Hotfix", "Login.Hotfix\Login.Hotfix.csproj", "{6D7D852B-4442-4EAD-8755-08C0C587CC30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PB", "PB\PB.csproj", "{F233BE44-E84B-4623-9C85-E65D9363265D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +68,33 @@ Global
 		{2C943E35-C003-4895-B5E7-59D1C5D87173}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C943E35-C003-4895-B5E7-59D1C5D87173}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C943E35-C003-4895-B5E7-59D1C5D87173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8747B7-55D8-43FE-9DDB-9C1CB645A835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8747B7-55D8-43FE-9DDB-9C1CB645A835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A8747B7-55D8-43FE-9DDB-9C1CB645A835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8747B7-55D8-43FE-9DDB-9C1CB645A835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7D852B-4442-4EAD-8755-08C0C587CC30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7D852B-4442-4EAD-8755-08C0C587CC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7D852B-4442-4EAD-8755-08C0C587CC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7D852B-4442-4EAD-8755-08C0C587CC30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F233BE44-E84B-4623-9C85-E65D9363265D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F233BE44-E84B-4623-9C85-E65D9363265D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F233BE44-E84B-4623-9C85-E65D9363265D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F233BE44-E84B-4623-9C85-E65D9363265D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A8731E1-C6B9-4E16-98E2-DD6D940F10E2} = {82D4835E-4AE6-4A5A-9A32-1A7C3694BBD7}
+		{34E18BFE-EC8C-4514-A5D7-EF3E9E84F0F1} = {9B541C37-28B0-4BDA-A131-529AB8904408}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2B524436-83E5-4A76-9770-3F71CF063265}

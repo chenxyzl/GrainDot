@@ -1,0 +1,75 @@
+
+syntax = "proto3";
+package I.PB;
+
+enum ItemType {
+  currency = 0;
+  equip = 1;
+  artifact = 2;
+  hero = 3;
+  syntheticMaterials = 10;
+  expMaterials = 11;
+  heroFragments = 12;
+  gift = 20;
+  worldInnerMaterials = 90;
+}
+
+enum CurrencyType {
+  placeholder = 0;
+  exp = 1;
+  gold = 2;
+  diamond = 3;
+  heroExp = 4;
+  equipExp = 5;
+  artifactExp = 6;
+  careerExp = 7;
+}
+
+//服务器列表
+message ServerInfo {
+  int32 timeZone = 1;                              //时区
+  int64 timeStamp = 2 [ jstype = JS_STRING ];      //当前时间戳
+  int32 serverID = 3;                              //服务器id
+  string serverName = 4;                           //服务器名字
+  int64 openServerTime = 5 [ jstype = JS_STRING ]; //开服时间
+}
+
+message Hero {
+  int32 id = 1;
+  int32 lv = 2;
+  int32 exp = 3;       //当前经验
+  int32 qualityLv = 4; //品质
+  int32 starLv = 5;    //星级
+  int32 btLv = 6;      //突破等级
+  uint64 equipId = 7;  //装备的武器
+}
+
+message Item {
+  int32 id = 1;
+  int64 count = 2;
+}
+
+message BtCard {
+  uint64 id = 1; //唯一id
+  int32 tid = 2;
+  int64 lv = 3;
+  int32 exp = 4; //当前经验
+}
+
+message Equip {
+  uint64 id = 1; //唯一id
+  int32 tid = 2; //模板id
+  int32 lv = 3;
+  int32 exp = 4; //当前经验
+  int32 starLv = 5;
+}
+
+//稀有度
+enum Rarity {
+  White = 0;
+  Green = 1;
+  Blue = 2;
+  Purple = 3;
+  Orange = 4;
+  Red = 5;
+}

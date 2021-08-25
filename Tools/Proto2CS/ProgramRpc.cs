@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace I
+namespace Proto
 {
 
     public static class InnerProto2CSn

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "wjWYG9IZmowKsHkdKKpS+WMvV322LFYUSMVHLlABwOkwrux8OABpi+fujcQH7CmOzAnKFr0M00mCAd1psDwt9w==",
+  "success": true,
+  "projectFilePath": "C:\\space\\IW.AN\\PB\\PB.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\czlin\\.nuget\\packages\\protobuf-net\\3.0.101\\protobuf-net.3.0.101.nupkg.sha512",
+    "C:\\Users\\czlin\\.nuget\\packages\\protobuf-net.core\\3.0.101\\protobuf-net.core.3.0.101.nupkg.sha512"
+  ],
+  "logs": []
+}

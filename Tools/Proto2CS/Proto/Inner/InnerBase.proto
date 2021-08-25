@@ -1,0 +1,12 @@
+﻿
+syntax = "proto3";
+package I.PB;
+import "Code.proto";
+import "Common.proto";
+
+message RpcMessage {
+  uint32 opcode = 1;  // opcode
+  bytes content = 2;  //消息内容
+  uint64 actorId = 3; //消息错误码 -- 请求消息才有
+  Code code = 4;      //消息错误码 -- 返回消息才有
+}

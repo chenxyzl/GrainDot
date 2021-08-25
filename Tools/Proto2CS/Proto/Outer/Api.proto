@@ -1,0 +1,18 @@
+syntax = "proto3";
+package I.PB;
+import "Common.proto";
+import "Code.proto";
+
+message C2R_Login {
+  int32 mobileType = 1;
+  string deviceId = 2;
+  string account = 3;  // 帐号
+  string password = 4; // 密码
+}
+
+message R2C_Login {
+  string address = 1;
+  int64 key = 2;
+  uint64 gateId = 3;
+  repeated ServerInfo ServerList = 4;
+}

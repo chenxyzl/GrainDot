@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Home.Hotfix
+namespace Login.Model
 {
-    class Program
+    class Login
     {
         static void Main(string[] args)
         {

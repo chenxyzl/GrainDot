@@ -6,7 +6,7 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 
-namespace I
+namespace Proto
 {
     public static class InnerProto2CS
     {
