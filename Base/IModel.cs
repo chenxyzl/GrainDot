@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    interface IModel
+    public interface IModel
     {
     }
 }
