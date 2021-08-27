@@ -9,6 +9,7 @@ namespace Base
 {
     public abstract class BaseActor : Akka.Actor.UntypedActor
     {
+        private ICancelable? _cancel;
         public BaseActor(GameServer root) { Root = root; }
         //所属场景
         private GameServer Root;
@@ -27,7 +28,42 @@ namespace Base
         }
         protected override void OnReceive(object message)
         {
-            throw new NotImplementedException();
+            switch (message)
+            {
+                case TickT tik:
+                    {
+                        Tick();
+                        break;
+                    }
+            }
+        }
+
+        protected override void PostStop()
+        {
+            base.PostStop();
+
+            _cancel?.Cancel();
+            _cancel = null;
+        }
+
+
+        void EnterUpState()
+        {
+            if (_cancel == null)
+            {
+                _cancel = Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero, TimeSpan.FromMilliseconds(1), Self, new TickT(), Self);
+            }
+        }
+
+        class TickT { }
+        void Tick()
+        {
+
+        }
+
+        public void ElegantStop()
+        {
+            Context.Parent.Tell(PoisonPill.Instance, Self);
         }
     }
 }

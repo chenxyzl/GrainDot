@@ -51,6 +51,10 @@
               "target": "Package",
               "version": "[1.4.24, )"
             },
+            "Akka.Cluster": {
+              "target": "Package",
+              "version": "[1.4.24, )"
+            },
             "NLog": {
               "target": "Package",
               "version": "[4.7.10, )"
