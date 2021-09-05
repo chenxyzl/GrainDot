@@ -44,16 +44,16 @@ namespace Home.Model
         {
         }
 
-        override fun handleMsg(msg: Any)
-        {
-            when(msg) {
-                is PlayerMessage -> dispatchInitInternalMessage(msg)
-                is ProtoPlayerEnvelope -> dispatchInitCSMessage(msg)
-                is ReceiveTimeout -> passivateIfOffline()
-                Handoff->enterTerminatedState()
-            }
-            this@PlayerActor.context.dispatcher()
-        }
+        //override fun handleMsg(msg: Any)
+        //{
+        //    when(msg) {
+        //        is PlayerMessage -> dispatchInitInternalMessage(msg)
+        //        is ProtoPlayerEnvelope -> dispatchInitCSMessage(msg)
+        //        is ReceiveTimeout -> passivateIfOffline()
+        //        Handoff->enterTerminatedState()
+        //    }
+        //    this@PlayerActor.context.dispatcher()
+        //}
 
     }
 }

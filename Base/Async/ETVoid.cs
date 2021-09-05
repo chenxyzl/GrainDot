@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace ET
+namespace Base.ET
 {
-    [AsyncMethodBuilder(typeof (AsyncETVoidMethodBuilder))]
-    public struct ETVoid: ICriticalNotifyCompletion
+#pragma warning disable CS0436 // 类型与导入类型冲突
+    [AsyncMethodBuilder(typeof(AsyncETVoidMethodBuilder))]
+#pragma warning restore CS0436 // 类型与导入类型冲突
+    public struct ETVoid : ICriticalNotifyCompletion
     {
         [DebuggerHidden]
         public void Coroutine()

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security;
 
-namespace ET
+namespace Base.ET
 {
     public struct AsyncETTaskCompletedMethodBuilder
     {
@@ -23,11 +23,7 @@ namespace ET
         [DebuggerHidden]
         public void SetException(Exception e)
         {
-#if NOT_UNITY
-            Log.Error(e);
-#else
-            UnityEngine.Debug.LogError(e);
-#endif
+            GlobalLog.Error(e);
         }
 
         // 4. SetResult

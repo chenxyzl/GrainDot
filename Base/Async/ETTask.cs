@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
-namespace ET
+namespace Base.ET
 {
-    [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
-    public class ETTask: ICriticalNotifyCompletion
+#pragma warning disable CS0436 // 类型与导入类型冲突
+    [AsyncMethodBuilder(typeof(ETAsyncTaskMethodBuilder))]
+#pragma warning restore CS0436 // 类型与导入类型冲突
+    public class ETTask : ICriticalNotifyCompletion
     {
         public static ETTaskCompleted CompletedTask
         {
@@ -30,10 +32,10 @@ namespace ET
             {
                 return new ETTask();
             }
-            
+
             if (queue.Count == 0)
             {
-                return new ETTask() {fromPool = true};    
+                return new ETTask() { fromPool = true };
             }
             return queue.Dequeue();
         }
@@ -44,7 +46,7 @@ namespace ET
             {
                 return;
             }
-            
+
             this.state = AwaiterStatus.Pending;
             this.callback = null;
             queue.Enqueue(this);
@@ -62,7 +64,7 @@ namespace ET
         private ETTask()
         {
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         private async ETVoid InnerCoroutine()
@@ -84,7 +86,7 @@ namespace ET
             return this;
         }
 
-        
+
         public bool IsCompleted
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -168,11 +170,13 @@ namespace ET
         }
     }
 
-    [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
-    public class ETTask<T>: ICriticalNotifyCompletion
+#pragma warning disable CS0436 // 类型与导入类型冲突
+    [AsyncMethodBuilder(typeof(ETAsyncTaskMethodBuilder<>))]
+#pragma warning restore CS0436 // 类型与导入类型冲突
+    public class ETTask<T> : ICriticalNotifyCompletion
     {
         private static readonly Queue<ETTask<T>> queue = new Queue<ETTask<T>>();
-        
+
         /// <summary>
         /// 请不要随便使用ETTask的对象池，除非你完全搞懂了ETTask!!!
         /// 假如开启了池,await之后不能再操作ETTask，否则可能操作到再次从池中分配出来的ETTask，产生灾难性的后果
@@ -184,14 +188,14 @@ namespace ET
             {
                 return new ETTask<T>();
             }
-            
+
             if (queue.Count == 0)
             {
-                return new ETTask<T>() { fromPool = true };    
+                return new ETTask<T>() { fromPool = true };
             }
             return queue.Dequeue();
         }
-        
+
         private void Recycle()
         {
             if (!this.fromPool)
@@ -269,7 +273,7 @@ namespace ET
             {
                 return state != AwaiterStatus.Pending;
             }
-        } 
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]

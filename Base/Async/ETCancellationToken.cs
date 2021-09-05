@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ET
+namespace Base.ET
 {
     public class ETCancellationToken
     {
@@ -37,20 +37,9 @@ namespace ET
         {
             HashSet<Action> runActions = this.actions;
             this.actions = null;
-            try
+            foreach (Action action in runActions)
             {
-                foreach (Action action in runActions)
-                {
-                    action.Invoke();
-                }
-            }
-            catch (Exception e)
-            {
-#if NOT_UNITY
-                Log.Error(e);
-#else
-                UnityEngine.Debug.LogError(e);
-#endif
+                action.Invoke();
             }
         }
     }

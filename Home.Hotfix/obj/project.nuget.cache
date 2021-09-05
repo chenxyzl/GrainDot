@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3S3evOBcb0OR0raMMpfBA7Scix8tgu8/5A35Ww9bCXIBNGUlzgWySTkp4egEOhYW07WQWgfYVptapITM4sze4w==",
+  "dgSpecHash": "IU3ecVYx9bP1W5vpRoAuCw096AqdHD89ui5fmjqVB64vJ8/mOLSfRmXFtW70P7np8ZY0iHkBbwzw0n+Ct8+LCA==",
   "success": true,
   "projectFilePath": "C:\\space\\IW.AN\\Home.Hotfix\\Home.Hotfix.csproj",
   "expectedPackageFiles": [
@@ -23,6 +23,7 @@
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
+    "C:\\Users\\czlin\\.nuget\\packages\\microsoft.io.recyclablememorystream\\2.1.3\\microsoft.io.recyclablememorystream.2.1.3.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",

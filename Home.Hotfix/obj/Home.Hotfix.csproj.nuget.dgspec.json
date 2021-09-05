@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[1.4.24, )"
             },
+            "Microsoft.IO.RecyclableMemoryStream": {
+              "target": "Package",
+              "version": "[2.1.3, )"
+            },
             "NLog": {
               "target": "Package",
               "version": "[4.7.10, )"
