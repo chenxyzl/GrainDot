@@ -14,28 +14,30 @@ namespace Base
         //所属场景
         private GameServer Root;
         //所有model
-        private Dictionary<Type, IModel> components = new Dictionary<Type, IModel>();
+        protected Dictionary<Type, IComponent> components = new Dictionary<Type, IComponent>();
         //获取model
-        public virtual K GetComponent<K>() where K : IModel
+        public K GetComponent<K>() where K : IComponent
         {
-            IModel component;
+            IComponent component;
             if (!this.components.TryGetValue(typeof(K), out component))
             {
-                return default;
+                Helper.H.Abort(PB.Code.Error, $"component:{typeof(K).Name} not found"); ;
             }
 
             return (K)component;
         }
-        protected override void OnReceive(object message)
+
+        public void AddComponent<K>(K k) where K : IComponent
         {
-            switch (message)
+            IComponent component;
+            Type t = typeof(K);
+            if (this.components.TryGetValue(t, out component))
             {
-                case TickT tik:
-                    {
-                        Tick();
-                        break;
-                    }
+                Helper.H.Abort(PB.Code.Error, $"component:{t.Name} repeated");
             }
+            var arg = new object[] { this };
+            K obj = Activator.CreateInstance(t, arg) as K;
+            this.components.Add(typeof(K), obj);
         }
 
         protected override void PostStop()
@@ -55,11 +57,7 @@ namespace Base
             }
         }
 
-        class TickT { }
-        void Tick()
-        {
-
-        }
+        public class TickT { }
 
         public void ElegantStop()
         {

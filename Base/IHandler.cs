@@ -9,5 +9,13 @@ namespace Base
     public interface IHandler
     {
         void test(object c);
+
+        void test2(object c);
+
+
+        public int a(int i)
+        {
+            return i + 1;
+        }
     }
 }
