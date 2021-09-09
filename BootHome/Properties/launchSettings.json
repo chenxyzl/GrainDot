@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BootHome": {
+      "commandName": "Project",
+      "commandLineArgs": "Home"
+    }
+  }
+}

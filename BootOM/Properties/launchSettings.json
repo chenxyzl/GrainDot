@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BootOM": {
+      "commandName": "Project",
+      "commandLineArgs": "OM"
+    }
+  }
+}

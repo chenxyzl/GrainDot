@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BootLogin": {
+      "commandName": "Project",
+      "commandLineArgs": "Login"
+    }
+  }
+}

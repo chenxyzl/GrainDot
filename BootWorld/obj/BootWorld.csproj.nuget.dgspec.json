@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\space\\IW.AN\\OM.Model\\OM.Model.csproj": {}
+    "C:\\space\\IW.AN\\BootWorld\\BootWorld.csproj": {}
   },
   "projects": {
     "C:\\space\\IW.AN\\Base\\Base.csproj": {
@@ -99,14 +99,14 @@
         }
       }
     },
-    "C:\\space\\IW.AN\\Common\\Common.csproj": {
+    "C:\\space\\IW.AN\\BootWorld\\BootWorld.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\space\\IW.AN\\Common\\Common.csproj",
-        "projectName": "Common",
-        "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj",
+        "projectUniqueName": "C:\\space\\IW.AN\\BootWorld\\BootWorld.csproj",
+        "projectName": "BootWorld",
+        "projectPath": "C:\\space\\IW.AN\\BootWorld\\BootWorld.csproj",
         "packagesPath": "C:\\Users\\czlin\\.nuget\\packages\\",
-        "outputPath": "C:\\space\\IW.AN\\Common\\obj\\",
+        "outputPath": "C:\\space\\IW.AN\\BootWorld\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\czlin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -122,7 +122,23 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\space\\IW.AN\\Base\\Base.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Base\\Base.csproj"
+              },
+              "C:\\space\\IW.AN\\Common\\Common.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj"
+              },
+              "C:\\space\\IW.AN\\PB\\PB.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\PB\\PB.csproj"
+              },
+              "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj"
+              },
+              "C:\\space\\IW.AN\\World.Model\\World.Model.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\World.Model\\World.Model.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -153,14 +169,14 @@
         }
       }
     },
-    "C:\\space\\IW.AN\\OM.Model\\OM.Model.csproj": {
+    "C:\\space\\IW.AN\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\space\\IW.AN\\OM.Model\\OM.Model.csproj",
-        "projectName": "OM.Model",
-        "projectPath": "C:\\space\\IW.AN\\OM.Model\\OM.Model.csproj",
+        "projectUniqueName": "C:\\space\\IW.AN\\Common\\Common.csproj",
+        "projectName": "Common",
+        "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj",
         "packagesPath": "C:\\Users\\czlin\\.nuget\\packages\\",
-        "outputPath": "C:\\space\\IW.AN\\OM.Model\\obj\\",
+        "outputPath": "C:\\space\\IW.AN\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\czlin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -176,20 +192,7 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {
-              "C:\\space\\IW.AN\\Base\\Base.csproj": {
-                "projectPath": "C:\\space\\IW.AN\\Base\\Base.csproj"
-              },
-              "C:\\space\\IW.AN\\Common\\Common.csproj": {
-                "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj"
-              },
-              "C:\\space\\IW.AN\\PB\\PB.csproj": {
-                "projectPath": "C:\\space\\IW.AN\\PB\\PB.csproj"
-              },
-              "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj": {
-                "projectPath": "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -325,6 +328,70 @@
               "version": "[4.7.0, )"
             }
           },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\space\\IW.AN\\World.Model\\World.Model.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\space\\IW.AN\\World.Model\\World.Model.csproj",
+        "projectName": "World.Model",
+        "projectPath": "C:\\space\\IW.AN\\World.Model\\World.Model.csproj",
+        "packagesPath": "C:\\Users\\czlin\\.nuget\\packages\\",
+        "outputPath": "C:\\space\\IW.AN\\World.Model\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\czlin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\space\\IW.AN\\Base\\Base.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Base\\Base.csproj"
+              },
+              "C:\\space\\IW.AN\\Common\\Common.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj"
+              },
+              "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj": {
+                "projectPath": "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "imports": [
             "net461",
             "net462",

@@ -29,8 +29,9 @@ namespace Base
         public ActorSystem system { get; private set; }
         //角色类型
         public RoleDef role { get; private set; }
-        public GameServer(RoleDef role)
+        public GameServer(RoleDef r)
         {
+            role = r;
             logger = new NLogAdapter(role.ToString());
         }
         public void test()

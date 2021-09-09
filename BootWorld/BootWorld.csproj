@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <ApplicationIcon />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,7 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\PB\PB.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
+    <ProjectReference Include="..\World.Model\World.Model.csproj" />
   </ItemGroup>
 
 </Project>

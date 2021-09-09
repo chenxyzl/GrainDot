@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Login.Model
+namespace OM.Model
 {
-    public class Login : GameServer
+    public class OM : GameServer
     {
-        public Login() : base(Common.RoleDef.Login) { }
+        public OM() : base(Common.RoleDef.OM) { }
     }
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Home.Model": {
+      "commandName": "Project",
+      "commandLineArgs": "Home"
+    }
+  }
+}

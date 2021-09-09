@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mPz8SvKVNiQphXu57PprnQELP/e1IgTItHNbp3KwtbUV+J/zNgqSygQgL2jiwEHCcItt2URYCFL+D9TugLOkvg==",
+  "dgSpecHash": "ITLvIj0Fp3SvHSyMSxfFiOdDVIiUdLWdqhQIwCQIUoQso4pGUQso74zF1adsZkSrl6dLlidrIUAtR3zKkAqLrA==",
   "success": true,
-  "projectFilePath": "C:\\space\\IW.AN\\OM.Model\\OM.Model.csproj",
+  "projectFilePath": "C:\\space\\IW.AN\\BootHome\\BootHome.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\czlin\\.nuget\\packages\\akka\\1.4.24\\akka.1.4.24.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\akka.cluster\\1.4.24\\akka.cluster.1.4.24.nupkg.sha512",

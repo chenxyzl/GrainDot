@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BootWorld": {
+      "commandName": "Project",
+      "commandLineArgs": "World"
+    }
+  }
+}

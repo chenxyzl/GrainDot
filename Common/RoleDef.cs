@@ -8,7 +8,7 @@ namespace Common
 {
     public enum RoleDef
     {
-        All, //一键启动节点
+        NULL, //一键启动节点
         OM, //集群管理后台
         Login, //登录节点
         Home, //玩家节点

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OM.Model": {
+      "commandName": "Project",
+      "commandLineArgs": "OM"
+    }
+  }
+}
