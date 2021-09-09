@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Boot
 {
-    class Program
+    class Test
     {
         static readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
         static async Task Main(string[] args)
@@ -42,8 +42,8 @@ namespace Boot
                     {
                         return;
                     }
-                    var asm = Base.Helper.DllHelper.GetHotfixAssembly();
                     types.Clear();
+                    var asm = Base.Helper.DllHelper.GetHotfixAssembly();
                     foreach (var x in asm)
                     {
                         foreach (var type in x.GetTypes())

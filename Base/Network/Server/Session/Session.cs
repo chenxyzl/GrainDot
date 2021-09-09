@@ -1,5 +1,10 @@
+using Akka.Actor;
 using Base.Network.Server.Interfaces;
 using Base.Network.Shared.Interfaces;
+using DotNetty.Common.Utilities;
+using System;
+using System.Collections.Generic;
+using Base.Alg;
 
 namespace Base.Network.Server
 {
@@ -9,6 +14,9 @@ namespace Base.Network.Server
     public abstract class Session : IClient
     {
         #region private members
+        protected AttributeKey<IActorRef> actorKey = AttributeKey<IActorRef>.ValueOf("actor");
+
+        protected AttrMap attr = new AttrMap();
 
         /// <summary>
         /// The callback of message received handler implementation.

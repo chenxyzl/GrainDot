@@ -8,8 +8,10 @@ namespace Common
 {
     public enum RoleDef
     {
-        Login,
-        Home,
-        World
+        All, //一键启动节点
+        OM, //集群管理后台
+        Login, //登录节点
+        Home, //玩家节点
+        World //世界节点
     }
 }

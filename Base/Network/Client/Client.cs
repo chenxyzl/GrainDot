@@ -112,7 +112,7 @@ namespace Base.Network.Client
                 {
                     if (_clientPacketHandlers.ContainsKey((byte)(IConvertible)packet))
                         _clientPacketHandlers.Remove((byte)(IConvertible)packet);
-                    
+
                     _clientPacketHandlers.Add((byte)(IConvertible)packet, clientPacketHandler);
                 }
             }
@@ -130,7 +130,7 @@ namespace Base.Network.Client
         /// <param name="listenerType">The listener type to creation of listener, the default value is NetworkListenerType.TCP.</param>
         /// <param name="maxMessageBuffer">The max length of message buffer, the default value is 4096.</param>
         /// <returns>The boolean value of client connection.</returns>
-        public bool Connect(string ip, ushort port = 7171, NetworkListenerType listenerType = NetworkListenerType.TCP, ushort maxMessageBuffer = 4096)
+        public bool Connect(string ip, ushort port = 7171, NetworkListenerType listenerType = NetworkListenerType.TCP, ushort maxMessageBuffer = ushort.MaxValue)
         {
             try
             {

@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[1.4.24, )"
             },
+            "DotNetty.Common": {
+              "target": "Package",
+              "version": "[0.7.0, )"
+            },
             "Microsoft.IO.RecyclableMemoryStream": {
               "target": "Package",
               "version": "[2.1.3, )"

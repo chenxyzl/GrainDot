@@ -37,7 +37,7 @@ namespace Base
             }
             var arg = new object[] { this };
             K obj = Activator.CreateInstance(t, arg) as K;
-            this.components.Add(typeof(K), obj);
+            this.components.Add(t, obj);
         }
 
         protected override void PostStop()
