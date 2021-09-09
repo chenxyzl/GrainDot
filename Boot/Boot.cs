@@ -17,8 +17,14 @@ namespace Boot
 
         }
 
-        static void Main(string[] args)
+        static Task Quit()
         {
+
+        }
+
+        static async Task Main(string[] args)
+        {
+            AppDomain.CurrentDomain.ProcessExit += Quit
             //读取要启动的类型
             if (args.Length != 1)
             {
@@ -35,12 +41,11 @@ namespace Boot
                 GlobalLog.Error($"服务器:{role}的实现类型未找到");
                 return;
             }
-            //tick
-            while (true)
-            {
-                Thread.Sleep(0);
-                Game.Tick();
-            }
+            await Game.Start();
+            //开启tick的无限循环
+            Game.TickLoop();
+            //结束游戏
+            await Game.Stop();
         }
     }
 }
