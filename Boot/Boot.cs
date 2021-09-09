@@ -25,37 +25,22 @@ namespace Boot
                 GlobalLog.Error("参数长度唯一，且表示角色类型");
                 return;
             }
+            //读取参数
             RoleDef role = EnumHelper.FromString<RoleDef>(args[0]);
-            //程序集合初始化
-            Game.Reload();
-            //获取服务器类型
-            foreach (var x in Game.GetServers())
-            {
-                if (x.Name == RoleDef.All.ToString())
-                {
-                    Game.gameServer = Activator.CreateInstance(x) as GameServer;
-                    break;
-                }
-            }
+            //准备
+            Game.Ready();
+            //检查状态
             if (Game.gameServer == null)
             {
                 GlobalLog.Error($"服务器:{role}的实现类型未找到");
                 return;
             }
+            //tick
             while (true)
             {
                 Thread.Sleep(0);
+                Game.Tick();
             }
-        }
-
-        Task FastBoot()
-        {
-            return Task.CompletedTask;
-        }
-
-        Task NormalBoot()
-        {
-            return Task.CompletedTask;
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Base
 
         public Task CreateActorSystem()
         {
-            system = ActorSystem.Create(actorSystemName, systemConfig);
+            //system = ActorSystem.Create(actorSystemName, systemConfig);
             return Task.CompletedTask;
         }
 
