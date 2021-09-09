@@ -74,12 +74,12 @@ namespace Base.Helper
 
             if (++value > ushort.MaxValue - 1)
             {
-                H.Abort(PB.Code.Error, $"id is not enough! value: {value}");
+                A.Abort(PB.Code.Error, $"id is not enough! value: {value}");
             }
 
             if (time > int.MaxValue)
             {
-                H.Abort(PB.Code.Error, $"time > int.MaxValue value: {time}");
+                A.Abort(PB.Code.Error, $"time > int.MaxValue value: {time}");
             }
 
             IdStruct idStruct = new IdStruct(Node, (uint)time, (ushort)value);

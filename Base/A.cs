@@ -1,8 +1,8 @@
 ﻿using PB;
 
-namespace Base.Helper
+namespace Base
 {
-    public static class H
+    public static class A
     {
         public static void Ensure(bool a, Code code, string des = null)
         {

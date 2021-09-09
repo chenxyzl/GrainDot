@@ -24,7 +24,7 @@ namespace Base
             AttrManager.Instance.Reload();
         }
         //准备
-        static public void Ready()
+        static public void Ready(RoleDef role)
         {
             GlobalLog.Warning("---dll加载中---");
             //程序集合初始化
@@ -32,11 +32,17 @@ namespace Base
             //获取服务器类型
             foreach (var x in AttrManager.Instance.GetServers())
             {
-                if (x.Name == RoleDef.All.ToString())
+                if (x.Name == role.ToString())
                 {
                     gameServer = Activator.CreateInstance(x) as GameServer;
                     break;
                 }
+            }
+            //检查状态
+            if (gameServer == null)
+            {
+                A.Abort(PB.Code.Error, $"服务器:{role}的实现类型未找到");
+                return;
             }
             GlobalLog.Warning("---dll加载完成---");
         }
@@ -50,7 +56,7 @@ namespace Base
             GlobalLog.Warning("---启动完成,请勿退出---");
             return Task.CompletedTask;
         }
-        static public void TickLoop()
+        static public void Loop()
         {
             while (!quitFlag)
             {

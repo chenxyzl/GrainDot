@@ -104,33 +104,5 @@ namespace Base
             var server = new Server(port: port);
             server.Start(NetworkListenerType.UDP);
         }
-
-        public void LoadDll()
-        {
-            types.Clear();
-            var asm = Base.Helper.DllHelper.GetHotfixAssembly();
-            foreach (var x in asm)
-            {
-                foreach (var type in x.GetTypes())
-                {
-                    if (type.IsAbstract)
-                    {
-                        continue;
-                    }
-
-                    object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
-                    if (objects.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    foreach (BaseAttribute baseAttribute in objects)
-                    {
-                        types.Add(baseAttribute.AttributeType, type);
-                    }
-                }
-            }
-        }
-
     }
 }

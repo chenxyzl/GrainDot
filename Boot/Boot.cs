@@ -12,38 +12,22 @@ namespace Boot
 {
     class Boot
     {
-        static void LoadDll()
-        {
-
-        }
-
-        static Task Quit()
-        {
-
-        }
-
         static async Task Main(string[] args)
         {
-            AppDomain.CurrentDomain.ProcessExit += Quit
             //读取要启动的类型
             if (args.Length != 1)
             {
-                GlobalLog.Error("参数长度唯一，且表示角色类型");
+                A.Abort(PB.Code.Error, "参数长度唯一，且表示角色类型");
                 return;
             }
             //读取参数
             RoleDef role = EnumHelper.FromString<RoleDef>(args[0]);
             //准备
-            Game.Ready();
-            //检查状态
-            if (Game.gameServer == null)
-            {
-                GlobalLog.Error($"服务器:{role}的实现类型未找到");
-                return;
-            }
+            Game.Ready(role);
+            //开始游戏
             await Game.Start();
-            //开启tick的无限循环
-            Game.TickLoop();
+            //开启无限循环
+            Game.Loop();
             //结束游戏
             await Game.Stop();
         }

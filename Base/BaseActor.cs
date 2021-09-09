@@ -21,7 +21,7 @@ namespace Base
             IComponent component;
             if (!this.components.TryGetValue(typeof(K), out component))
             {
-                Helper.H.Abort(PB.Code.Error, $"component:{typeof(K).Name} not found"); ;
+                A.Abort(PB.Code.Error, $"component:{typeof(K).Name} not found"); ;
             }
 
             return (K)component;
@@ -33,7 +33,7 @@ namespace Base
             Type t = typeof(K);
             if (this.components.TryGetValue(t, out component))
             {
-                Helper.H.Abort(PB.Code.Error, $"component:{t.Name} repeated");
+                A.Abort(PB.Code.Error, $"component:{t.Name} repeated");
             }
             var arg = new object[] { this };
             K obj = Activator.CreateInstance(t, arg) as K;
