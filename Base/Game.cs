@@ -50,6 +50,9 @@ namespace Base
         {
             GlobalLog.Warning($"---{gameServer.role}启动中,请勿强关---");
             //开始
+            gameServer.BeforCreate();
+            gameServer.CreateActorSystem();
+            gameServer.AfterCreate();
             //开始完成
             GlobalLog.Warning($"---{gameServer.role}启动完成---");
             WatchQuit();

@@ -24,9 +24,9 @@ namespace Base
         //服务器列表
         readonly List<Server> serverList = new List<Server>();
         //配置
-        private Config systemConfig;
+        protected Config systemConfig;
         //根系统
-        public ActorSystem system { get; private set; }
+        public ActorSystem system { get; protected set; }
         //角色类型
         public RoleDef role { get; private set; }
         public GameServer(RoleDef r)
@@ -34,42 +34,27 @@ namespace Base
             role = r;
             logger = new NLogAdapter(role.ToString());
         }
-        public void test()
-        {
-            logger.Warning("xxxxx");
-        }
 
-        //启动
-        public async Task Boot()
+        private void LoadConfig()
         {
-            await BeforCreate();
-            await AfterCreate();
-        }
-
-        private void ConfigCluster()
-        {
-            var config = File.ReadAllText("app.conf");
+            var config = File.ReadAllText($"../../Config/{role}.conf");
             systemConfig = ConfigurationFactory.ParseString(config);
         }
 
-        //
-        public void LoadConfig()
-        {
 
-        }
-
-        public Task BeforCreate()
+        virtual public Task BeforCreate()
         {
+            LoadConfig();
             return Task.CompletedTask;
         }
 
-        public Task CreateActorSystem()
+        virtual public Task CreateActorSystem()
         {
-            //system = ActorSystem.Create(actorSystemName, systemConfig);
+            system = ActorSystem.Create(GlobalParam.SystemName, systemConfig);
             return Task.CompletedTask;
         }
 
-        public Task AfterCreate()
+        virtual public Task AfterCreate()
         {
             return Task.CompletedTask;
         }
@@ -80,12 +65,6 @@ namespace Base
             {
                 x.Stop();
             }
-            return Task.CompletedTask;
-        }
-
-
-        public Task StartGame()
-        {
             return Task.CompletedTask;
         }
 
