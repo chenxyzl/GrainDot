@@ -1,14 +1,14 @@
+using Base.Network.Client.Listeners;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using static Base.Network.Server.Session;
 
 namespace Base.Network.Server
 {
     /// <summary>
     /// This class is responsible for managing the tcp network tcp listener.
     /// </summary>
-    public class TcpNetworkListener : NetworkListener, IDisposable
+    public class TcpNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor, new()
     {
         #region constructors
 
@@ -53,7 +53,7 @@ namespace Base.Network.Server
             try
             {
                 var clientId = GetNewClientIdentifier();
-                var client = new TcpSession(clientId, _listener.EndAccept(asyncResult), _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
+                var client = new TcpSession<T>(clientId, _listener.EndAccept(asyncResult), _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
                 _clientConnectedHandler(client);
             }
             catch(Exception ex)

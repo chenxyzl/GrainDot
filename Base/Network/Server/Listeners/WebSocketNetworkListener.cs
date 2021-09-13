@@ -3,14 +3,13 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using static Base.Network.Server.Session;
 
 namespace Base.Network.Server
 {
     /// <summary>
     /// This class is responsible for managing the tcp network tcp listener.
     /// </summary>
-    public class WebSocketNetworkListener : NetworkListener, IDisposable
+    public class WebSocketNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor, new()
     {
         #region private members
 
@@ -80,7 +79,7 @@ namespace Base.Network.Server
                 {
                     var webSocket = (await listenerContext.AcceptWebSocketAsync(null)).WebSocket;
                     var clientId = GetNewClientIdentifier();
-                    var client = new WSSession(clientId, listenerContext.Request.RemoteEndPoint.ToString(), _listenerType, webSocket, listenerContext, _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
+                    var client = new WSSession<T>(clientId, listenerContext.Request.RemoteEndPoint.ToString(), _listenerType, webSocket, listenerContext, _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
                     _clientConnectedHandler(client);
                 }
                 else

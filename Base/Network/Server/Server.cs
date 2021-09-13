@@ -6,13 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Base.Network.Shared;
 using Base.Network.Shared.Interfaces;
+using Akka.Actor;
 
 namespace Base.Network.Server
 {
     /// <summary>
     /// This class is responsible for management of server.
     /// </summary>
-    public class Server
+    public class Server<T> where T : BaseActor, new()
     {
         #region private members 	
 
@@ -53,7 +54,7 @@ namespace Base.Network.Server
         /// <summary>
         /// The callback of message received handler implementation.
         /// </summary>
-        public Session.MessageReceivedHandler OnMessageReceivedHandler { get; set; }
+        public MessageReceivedHandler OnMessageReceivedHandler { get; set; }
 
         /// <summary>
         /// The callback of client connnected handler implementation.
@@ -63,7 +64,7 @@ namespace Base.Network.Server
         /// <summary>
         /// The callback of client disconnected handler implementation.
         /// </summary>
-        public Session.ClientDisconnectedHandler OnClientDisconnectedHandler { get; set; }
+        public ClientDisconnectedHandler OnClientDisconnectedHandler { get; set; }
 
         /// <summary>
         /// The callback of started server handler implementation.
@@ -159,7 +160,7 @@ namespace Base.Network.Server
                 else
                 {
                     //Implements Dispose
-                    //client.Dispose();
+                    client.Disconnect();
 
                     Console.WriteLine($"Max client connections {_maxClientConnections}.");
                 }
@@ -188,23 +189,23 @@ namespace Base.Network.Server
                 Console.WriteLine($"Error: {ex.Message}.");
             }
         }
-        
+
         /// <summary>
         /// Method responsible for start the async network listener.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token for the task execution.</param>
         /// <param name="listenerType">The listener type to creation of listener, the default value is NetworkListenerType.TCP.</param>
-        private async Task StartListenerAsync(CancellationToken cancellationToken, NetworkListenerType listenerType = NetworkListenerType.TCP)
+        private async Task StartListenerAsync<T>(CancellationToken cancellationToken, NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor, new()
         {
             try
             {
                 if (listenerType == NetworkListenerType.TCP)
-                    _networkListener = new TcpNetworkListener(_port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
+                    _networkListener = new TcpNetworkListener<T>(_port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
                 else if (listenerType == NetworkListenerType.UDP)
-                    _networkListener = new UdpNetworkListener(_port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
+                    _networkListener = new UdpNetworkListener<T>(_port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
                 else if (listenerType == NetworkListenerType.WSBinary || listenerType == NetworkListenerType.WSText)
-                    _networkListener = new WebSocketNetworkListener(listenerType, _port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
-                
+                    _networkListener = new WebSocketNetworkListener<T>(listenerType, _port, OnClientConnected, OnMessageReceived, OnClientDisconnected, _maxMessageBuffer);
+
                 OnServerStartedHandler?.Invoke();
 
                 while (!cancellationToken.IsCancellationRequested)
@@ -268,7 +269,7 @@ namespace Base.Network.Server
                 {
                     if (_serverPacketHandlers.ContainsKey((byte)(IConvertible)packet))
                         _serverPacketHandlers.Remove((byte)(IConvertible)packet);
-                    
+
                     _serverPacketHandlers.Add((byte)(IConvertible)packet, serverPacketHandler);
                 }
             }
@@ -282,13 +283,13 @@ namespace Base.Network.Server
         /// Method responsible for start the server.
         /// </summary>
         /// <param name="listenerType">The listener type to creation of listener.</param>
-        public void Start(NetworkListenerType listenerType = NetworkListenerType.TCP)
+        public void Start<T>(NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor, new()
         {
             try
             {
                 var cancellationTokenSource = new CancellationTokenSource();
 
-                var listeningTask = StartListenerAsync(cancellationTokenSource.Token, listenerType);
+                var listeningTask = StartListenerAsync<T>(cancellationTokenSource.Token, listenerType);
 
                 listeningTask.Wait(cancellationTokenSource.Token);
             }
@@ -312,7 +313,7 @@ namespace Base.Network.Server
                 Console.WriteLine($"Error: {ex.Message}.");
             }
         }
-        
+
         /// <summary>
         /// Method responsible for send message to specific connected client.
         /// </summary>

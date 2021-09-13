@@ -21,8 +21,6 @@ namespace Base
     {
         //日志
         public readonly ILog logger;
-        //服务器列表
-        readonly List<Server> serverList = new List<Server>();
         //配置
         protected Config systemConfig;
         //根系统
@@ -61,28 +59,24 @@ namespace Base
 
         public Task BeforeStop()
         {
-            foreach (var x in serverList)
-            {
-                x.Stop();
-            }
             return Task.CompletedTask;
         }
 
-        public void StartTcpServer(ushort port)
+        public void StartTcpServer<T>(ushort port) where T : BaseActor, new()
         {
-            var server = new Server(port: port);
-            server.Start(NetworkListenerType.TCP);
+            var server = new Server<T>(port: port);
+            server.Start<T>(NetworkListenerType.TCP);
         }
-        public void StartWsServer(ushort port)
+        public void StartWsServer<T>(ushort port) where T : BaseActor, new()
         {
-            var server = new Server(port: port);
-            server.Start(NetworkListenerType.WSBinary);
+            var server = new Server<T>(port: port);
+            server.Start<T>(NetworkListenerType.WSBinary);
 
         }
-        public void StartUdpServer(ushort port)
+        public void StartUdpServer<T>(ushort port) where T : BaseActor, new()
         {
-            var server = new Server(port: port);
-            server.Start(NetworkListenerType.UDP);
+            var server = new Server<T>(port: port);
+            server.Start<T>(NetworkListenerType.UDP);
         }
     }
 }

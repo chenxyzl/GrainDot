@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    public abstract class BaseActor : Akka.Actor.UntypedActor
+    public abstract class BaseActor : UntypedActor
     {
         private ICancelable? _cancel;
-        public BaseActor(GameServer root) { Root = root; }
-        //所属场景
-        private GameServer Root;
+        public BaseActor() {}
         //所有model
         protected Dictionary<Type, IComponent> components = new Dictionary<Type, IComponent>();
         //获取model
@@ -62,6 +60,11 @@ namespace Base
         public void ElegantStop()
         {
             Context.Parent.Tell(PoisonPill.Instance, Self);
+        }
+
+        public IActorContext GetContext()
+        {
+            return Context;
         }
     }
 }

@@ -42,12 +42,12 @@ namespace Base.Network.Client
         /// <summary>
         /// The callback of message received handler implementation.
         /// </summary>
-        public NetworkListener.MessageReceivedHandler MessageReceivedHandler { get; set; }
+        public MessageReceivedHandler MessageReceivedHandler { get; set; }
 
         /// <summary>
         /// The callback of client disconnected handler implementation.
         /// </summary>
-        public NetworkListener.DisconnectedHandler DisconnectedHandler { get; set; }
+        public DisconnectedHandler DisconnectedHandler { get; set; }
 
         #endregion
 

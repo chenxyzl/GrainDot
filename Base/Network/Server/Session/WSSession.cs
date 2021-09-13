@@ -11,7 +11,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the websocket client connection.
     /// </summary>
-    public class WSSession : Session
+    public class WSSession<T> : Session<T> where T : BaseActor, new()
     {
         #region private members
 
@@ -69,7 +69,7 @@ namespace Base.Network.Server
                 _webSocket = ws;
                 _listenerContext = listenerContext;
                 _listenerType = listenerType;
-               
+
                 _buff = new ArraySegment<byte>(new byte[maxMessageBuffer]);
 
                 _messageReceivedHandler = messageReceivedHandler;
@@ -162,7 +162,7 @@ namespace Base.Network.Server
                             _messageReceivedHandler(this, reader);
                         }
                     }
-                    else if (ret.MessageType == WebSocketMessageType.Close) 
+                    else if (ret.MessageType == WebSocketMessageType.Close)
                         break;
                 }
                 catch (Exception ex)
@@ -170,7 +170,7 @@ namespace Base.Network.Server
                     if (_webSocket.State != WebSocketState.Open)
                     {
                         _clientDisconnectedHandler(this);
-                       Console.WriteLine($"Client '{IpAddress}' Disconnected.");
+                        Console.WriteLine($"Client '{IpAddress}' Disconnected.");
                     }
                     else
                         Console.WriteLine($"Error: {ex.Message}.");

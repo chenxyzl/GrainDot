@@ -1,8 +1,8 @@
-﻿using Base.Network.Server.Interfaces;
+﻿using Base.Network.Client.Listeners;
+using Base.Network.Server.Interfaces;
 using System;
 using System.Net.Sockets;
 using System.Threading;
-using static Base.Network.Server.Session;
 
 namespace Base.Network.Server
 {
@@ -55,8 +55,8 @@ namespace Base.Network.Server
         /// <summary> 	
         /// The handler from callback of client connection. 	
         /// </summary> 	
-        /// <param name="socketClient">The socket client from connected client.</param>
-        public delegate void ClientConnectedHandler(Session socketClient);
+        /// <param name="client">The socket client from connected client.</param>
+        public delegate void ClientConnectedHandler(IClient client);
 
         #endregion
 

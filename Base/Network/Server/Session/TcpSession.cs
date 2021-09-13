@@ -9,7 +9,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the tcp client connection.
     /// </summary>
-    public class TcpSession : Session
+    public class TcpSession<T> : Session<T> where T : BaseActor, new()
     {
         #region private members
 

@@ -1,6 +1,7 @@
 ﻿using Akka.Actor;
 using Base;
 using Base.Helper;
+using Base.Network.Server.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,10 @@ namespace Home.Model
         }
 
         IActorState? state;
-        public PlayerActor(GameServer root) : base(root) { }
-        public static Props Props(GameServer root)
+        IClient client;
+        public PlayerActor(IClient c) : base()
         {
-            return Akka.Actor.Props.Create(() => new PlayerActor(root));
+            client = c;
         }
 
         protected override void PreStart()

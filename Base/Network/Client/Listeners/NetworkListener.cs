@@ -7,6 +7,21 @@ using System.Net.Sockets;
 
 namespace Base.Network.Client.Listeners
 {
+    #region delegates 
+
+    /// <summary>
+    /// The delegate of message received handler from server connection.
+    /// </summary>
+    /// <param name="reader">The buffer reader of received message.</param>
+    public delegate void MessageReceivedHandler(IBufferReader reader);
+
+    /// <summary>
+    /// The delegate of client disconnected handler connection.
+    /// </summary>
+    public delegate void DisconnectedHandler();
+
+    #endregion
+
     /// <summary>
     /// This class is responsible for representation of abstract network listener.
     /// </summary>
@@ -55,21 +70,6 @@ namespace Base.Network.Client.Listeners
 
         /// <inheritdoc/>
 		public abstract bool IsConnected { get; }
-
-        #endregion
-
-        #region delegates 
-
-        /// <summary>
-        /// The delegate of message received handler from server connection.
-        /// </summary>
-        /// <param name="reader">The buffer reader of received message.</param>
-        public delegate void MessageReceivedHandler(IBufferReader reader);
-
-        /// <summary>
-        /// The delegate of client disconnected handler connection.
-        /// </summary>
-        public delegate void DisconnectedHandler();
 
         #endregion
 
