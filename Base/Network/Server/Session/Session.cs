@@ -29,7 +29,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the client connection.
     /// </summary>
-    public abstract class Session<T> : IClient where T : BaseActor, new()
+    public abstract class Session<T> : IClient where T : BaseActor
     {
         #region private members
         /// <summary>

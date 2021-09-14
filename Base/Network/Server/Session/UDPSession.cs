@@ -9,7 +9,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the udp client connection.
     /// </summary>
-    public class UDPSession<T> : Session<T> where T : BaseActor, new()
+    public class UDPSession<T> : Session<T> where T : BaseActor
     {
         #region properties
 

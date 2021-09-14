@@ -11,7 +11,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the websocket client connection.
     /// </summary>
-    public class WSSession<T> : Session<T> where T : BaseActor, new()
+    public class WSSession<T> : Session<T> where T : BaseActor
     {
         #region private members
 

@@ -9,7 +9,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for managing the tcp network tcp listener.
     /// </summary>
-    public class WebSocketNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor, new()
+    public class WebSocketNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor
     {
         #region private members
 

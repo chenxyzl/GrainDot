@@ -13,7 +13,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for management of server.
     /// </summary>
-    public class Server<T> where T : BaseActor, new()
+    public class Server<T> where T : BaseActor
     {
         #region private members 	
 
@@ -195,7 +195,7 @@ namespace Base.Network.Server
         /// </summary>
         /// <param name="cancellationToken">The cancellation token for the task execution.</param>
         /// <param name="listenerType">The listener type to creation of listener, the default value is NetworkListenerType.TCP.</param>
-        private async Task StartListenerAsync<T>(CancellationToken cancellationToken, NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor, new()
+        private async Task StartListenerAsync<T>(CancellationToken cancellationToken, NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor
         {
             try
             {
@@ -283,7 +283,7 @@ namespace Base.Network.Server
         /// Method responsible for start the server.
         /// </summary>
         /// <param name="listenerType">The listener type to creation of listener.</param>
-        public void Start<T>(NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor, new()
+        public void Start<T>(NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor
         {
             try
             {

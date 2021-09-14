@@ -8,7 +8,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for managing the tcp network tcp listener.
     /// </summary>
-    public class TcpNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor, new()
+    public class TcpNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor
     {
         #region constructors
 

@@ -10,7 +10,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for managing the udp network udp listener.
     /// </summary>
-    public class UdpNetworkListener<T> : NetworkListener where T : BaseActor, new()
+    public class UdpNetworkListener<T> : NetworkListener where T : BaseActor
     {
         #region properties
 
