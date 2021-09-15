@@ -68,10 +68,5 @@ namespace Base.Network.Server
         {
 
         }
-
-        public void CheckLoginState()
-        {
-
-        }
     }
 }

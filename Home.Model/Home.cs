@@ -1,4 +1,6 @@
 ﻿using Base;
+using Base.Network.Server.Interfaces;
+using Base.Network.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,11 @@ namespace Home.Model
         public override Task AfterCreate()
         {
             base.AfterCreate();
-            StartTcpServer<PlayerActor>(7700);
+            var server = StartTcpServer<PlayerActor>(7700);
+            server.OnMessageReceivedHandler = (IClient client, IBufferReader reader) =>
+            {
+                Console.WriteLine($"Received data from client {client.Id}, data length {reader.Length} data:");
+            };
             return Task.CompletedTask;
         }
     }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rmsQCtpxgpeTbG5+oWVBQF0KyJnuF8d77R+HmuUjwbfFQedcMp887OHZzPB2v8h80cF+/z0u0t7zf3EFmBOWww==",
+  "dgSpecHash": "+SMFumG0sL0aXu8Sc1JmvaLDodOIEe/2/mVgFheEnDVJoUkY9cgm941+AUkW4h4fYFBFO4r96eWb6ywnmFnByQ==",
   "success": true,
   "projectFilePath": "C:\\space\\IW.AN\\Base\\Base.csproj",
   "expectedPackageFiles": [
@@ -13,7 +13,9 @@
     "C:\\Users\\czlin\\.nuget\\packages\\dotnetty.common\\0.6.0\\dotnetty.common.0.6.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\dotnetty.handlers\\0.6.0\\dotnetty.handlers.0.6.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\dotnetty.transport\\0.6.0\\dotnetty.transport.0.6.0.nupkg.sha512",
+    "C:\\Users\\czlin\\.nuget\\packages\\exceldatareader\\3.6.0\\exceldatareader.3.6.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\google.protobuf\\3.17.3\\google.protobuf.3.17.3.nupkg.sha512",
+    "C:\\Users\\czlin\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.0\\microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",
     "C:\\Users\\czlin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",

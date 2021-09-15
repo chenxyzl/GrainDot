@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    class AttrManager
+    class AttrManager : Single<AttrManager>
     {
-        #region 单例
-        private AttrManager() { }
-        private static readonly AttrManager singleInstance = new AttrManager();
-        public static AttrManager Instance { get { return singleInstance; } }
-        #endregion
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
         //加载程序集合
         public void Reload()

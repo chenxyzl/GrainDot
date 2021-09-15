@@ -34,6 +34,12 @@ namespace Base
         static public void Reload()
         {
             AttrManager.Instance.Reload();
+            //var x = gameServer.system.ActorSelection("x");
+            //if(x == null)
+            //{
+            //    return;
+            //}
+            //x.Tell("xx");
         }
         //准备
         static public void Ready(RoleDef role, Type gsType)

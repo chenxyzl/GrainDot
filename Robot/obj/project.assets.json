@@ -6761,7 +6761,8 @@
     "net5.0": [
       "Base >= 1.0.0",
       "Common >= 1.0.0",
-      "ExcelDataReader.Mapping >= 2.2.0"
+      "ExcelDataReader.Mapping >= 2.2.0",
+      "PB >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6770,11 +6771,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\space\\IW.AN\\Home.Model\\Home.Model.csproj",
-      "projectName": "Home.Model",
-      "projectPath": "C:\\space\\IW.AN\\Home.Model\\Home.Model.csproj",
+      "projectUniqueName": "C:\\space\\IW.AN\\Robot\\Robot.csproj",
+      "projectName": "Robot",
+      "projectPath": "C:\\space\\IW.AN\\Robot\\Robot.csproj",
       "packagesPath": "C:\\Users\\czlin\\.nuget\\packages\\",
-      "outputPath": "C:\\space\\IW.AN\\Home.Model\\obj\\",
+      "outputPath": "C:\\space\\IW.AN\\Robot\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\czlin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6796,6 +6797,9 @@
             },
             "C:\\space\\IW.AN\\Common\\Common.csproj": {
               "projectPath": "C:\\space\\IW.AN\\Common\\Common.csproj"
+            },
+            "C:\\space\\IW.AN\\PB\\PB.csproj": {
+              "projectPath": "C:\\space\\IW.AN\\PB\\PB.csproj"
             },
             "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj": {
               "projectPath": "C:\\space\\IW.AN\\Third\\ExcelMapper\\ExcelMapper.csproj"

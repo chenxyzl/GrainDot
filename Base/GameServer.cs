@@ -62,21 +62,24 @@ namespace Base
             return Task.CompletedTask;
         }
 
-        public void StartTcpServer<T>(ushort port) where T : BaseActor
+        public Server<T> StartTcpServer<T>(ushort port) where T : BaseActor
         {
             var server = new Server<T>(port: port);
             server.Start<T>(NetworkListenerType.TCP);
+            return server;
         }
-        public void StartWsServer<T>(ushort port) where T : BaseActor
+        public Server<T> StartWsServer<T>(ushort port) where T : BaseActor
         {
             var server = new Server<T>(port: port);
             server.Start<T>(NetworkListenerType.WSBinary);
+            return server;
 
         }
-        public void StartUdpServer<T>(ushort port) where T : BaseActor
+        public Server<T> StartUdpServer<T>(ushort port) where T : BaseActor
         {
             var server = new Server<T>(port: port);
             server.Start<T>(NetworkListenerType.UDP);
+            return server;
         }
     }
 }
