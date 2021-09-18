@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Base.Service
+namespace Home.Hotfix.Service
 {
-    class SocketService
+    class LoginService
     {
     }
 }

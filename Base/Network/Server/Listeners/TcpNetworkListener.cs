@@ -8,7 +8,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for managing the tcp network tcp listener.
     /// </summary>
-    public class TcpNetworkListener<T> : NetworkListener, IDisposable where T : BaseActor
+    public class TcpNetworkListener<A> : NetworkListener, IDisposable where A : BaseActor
     {
         #region constructors
 
@@ -53,7 +53,7 @@ namespace Base.Network.Server
             try
             {
                 var clientId = GetNewClientIdentifier();
-                var client = new TcpSession<T>(clientId, _listener.EndAccept(asyncResult), _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
+                var client = new TcpSession<A>(clientId, _listener.EndAccept(asyncResult), _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
                 _clientConnectedHandler(client);
             }
             catch(Exception ex)

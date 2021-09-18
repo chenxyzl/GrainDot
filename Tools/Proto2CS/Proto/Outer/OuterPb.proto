@@ -2,7 +2,7 @@
 syntax = "proto3";
 import "Code.proto";
 import "Common.proto";
-package I.PB;
+package Message;
 
 message C_PushTest { // IMessage
   string v = 1;

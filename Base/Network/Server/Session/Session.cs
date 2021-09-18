@@ -5,6 +5,8 @@ using DotNetty.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using Base.Alg;
+using Base.Network.Share;
+using System.IO;
 
 namespace Base.Network.Server
 {
@@ -26,24 +28,18 @@ namespace Base.Network.Server
 
     #endregion
 
+
+    enum ReadState
+    {
+        WillReadLengh = 0, // 读取长度
+        WillReadContent = 1, //读取内容
+    }
+
     /// <summary>
     /// This class is responsible for represents the client connection.
     /// </summary>
     public abstract class Session<T> : IClient where T : BaseActor
     {
-        #region private members
-        /// <summary>
-        /// The callback of message received handler implementation.
-        /// </summary>
-        protected MessageReceivedHandler _messageReceivedHandler;
-
-        /// <summary>
-        /// The callback of client disconnected handler implementation.
-        /// </summary>
-        protected ClientDisconnectedHandler _clientDisconnectedHandler;
-
-        #endregion
-
         #region properties
 
         /// <inheritdoc/>
@@ -58,15 +54,17 @@ namespace Base.Network.Server
         /// <inheritdoc/>
 		public T Actor { get; }
 
+        /// 
+        protected Packet Packet;
+
         #endregion
 
         /// <inheritdoc/>
-        public abstract void SendMessage(IBufferWriter writer);
+        public abstract void SendMessage(byte[] writer);
+        public abstract void OnRecive(byte[] reader);
 
         /// <inheritdoc/>
-        public virtual void Disconnect()
-        {
-
-        }
+        public virtual void OnConnected() { }
+        public virtual void Disconnect() { }
     }
 }

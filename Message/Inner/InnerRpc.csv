@@ -1,0 +1,7 @@
+sn,rpc类型,参数类型,返回值类型,函数名,描述
+1000,RR,H2L_PlayerOnline,L2H_PlayerOnline,PlayerOnline,玩家上线
+1002,RR,H2L_PlayerOffline,L2H_PlayerOffline,PlayerOffline,玩家下线
+1004,RR,L2H_PlayerKickOut,H2L_PlayerKickOut,PlayerKickOut,玩家踢下线
+1006,RR,L2A_PlayerOnline,,PlayerOnline,玩家上线广播
+1008,RR,L2A_PlayerOffline,,PlayerOffline,玩家下线广播
+11000,RR,R2G_GetLoginKey,G2R_GetLoginKey,GetLoginKey,获取gate登录key

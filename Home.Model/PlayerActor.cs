@@ -26,9 +26,14 @@ namespace Home.Model
 
         IActorState? state;
         IClient client;
-        public PlayerActor(IClient c) : base()
+        public ulong PlayerId;
+        public ILog _log;
+        public override ILog Logger { get { if (_log == null) { _log = new NLogAdapter($"player:{PlayerId}"); } return _log; } }
+
+        public PlayerActor(IClient c, ulong playerId) : base()
         {
             client = c;
+            PlayerId = playerId;
         }
 
         protected override void PreStart()

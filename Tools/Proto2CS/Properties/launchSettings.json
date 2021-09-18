@@ -2,8 +2,8 @@
   "profiles": {
     "Proto2CS": {
       "commandName": "Project",
-      "commandLineArgs": "-n I.PB -p ./Outer -p ./Inner -o ../Server/Model/Module/Message --server --outerfile ./outer.csv --innerfile ./inner.csv --innerclass InnerOpcode --outerclass OuterOpcode --nsopcode I ",
-      "workingDirectory": "P:\\repos\\infinity\\infinity_s\\Proto"
+      "commandLineArgs": "-n Message -p ../Proto -p ../Inner -o .. --server --outerfile ../Proto/OuterRpc.csv --innerfile ../Inner/InnerRpc.csv --innerclass InnerOpcode --outerclass OuterOpcode --nsopcode Message",
+      "workingDirectory": "C:\\space\\IW.AN\\Message\\Gen"
     }
   }
 }

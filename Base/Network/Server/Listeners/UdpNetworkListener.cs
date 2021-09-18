@@ -10,7 +10,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for managing the udp network udp listener.
     /// </summary>
-    public class UdpNetworkListener<T> : NetworkListener where T : BaseActor
+    public class UdpNetworkListener<A> : NetworkListener where A : BaseActor
     {
         #region properties
 
@@ -26,7 +26,7 @@ namespace Base.Network.Server
         /// <summary>
         /// The udpClients list.
         /// </summary>
-        private Dictionary<EndPoint, UDPSession<T>> _udpClients;
+        private Dictionary<EndPoint, UDPSession<A>> _udpClients;
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace Base.Network.Server
         {
             try
             {
-                _udpClients = new Dictionary<EndPoint, UDPSession<T>>();
+                _udpClients = new Dictionary<EndPoint, UDPSession<A>>();
                 _listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 _listener.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), port));
 
@@ -98,7 +98,7 @@ namespace Base.Network.Server
             Monitor.Enter(udpClientsObj);
 
             bool hasClientConnection = false;
-            UDPSession<T> udpClient = null;
+            UDPSession<A> udpClient = null;
 
             try
             {
@@ -116,7 +116,7 @@ namespace Base.Network.Server
             else if (array.Length == 9)
             {
                 var clientId = GetNewClientIdentifier();
-                var client = new UDPSession<T>(clientId, this, endPoint, _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
+                var client = new UDPSession<A>(clientId, this, endPoint, _messageReceivedHandler, _clientDisconnectedHandler, _maxMessageBuffer);
                 
                 _udpClients.Add(endPoint, client);
 

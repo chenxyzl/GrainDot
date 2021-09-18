@@ -9,7 +9,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the udp client connection.
     /// </summary>
-    public class UDPSession<T> : Session<T> where T : BaseActor
+    public class UDPSession<A> : Session<A> where A : BaseActor
     {
         #region properties
 
@@ -26,7 +26,7 @@ namespace Base.Network.Server
         /// <summary>
         /// The  udp network listener instance;
         /// </summary>
-        private UdpNetworkListener<T> _udpListener;
+        private UdpNetworkListener<A> _udpListener;
 
         /// <summary>
         /// The sremote end point;
@@ -45,7 +45,7 @@ namespace Base.Network.Server
         /// <param name="messageReceivedHandler">The callback of message received handler implementation.</param>
         /// <param name="clientDisconnectedHandler">The callback of client disconnected handler implementation.</param>
         /// <param name="maxMessageBuffer">The max length of message buffer.</param>
-        public UDPSession(ushort id, UdpNetworkListener<T> socketClient, EndPoint remoteEndPoint, MessageReceivedHandler messageReceivedHandler, ClientDisconnectedHandler clientDisconnectedHandler, ushort maxMessageBuffer)
+        public UDPSession(ushort id, UdpNetworkListener<A> socketClient, EndPoint remoteEndPoint, MessageReceivedHandler messageReceivedHandler, ClientDisconnectedHandler clientDisconnectedHandler, ushort maxMessageBuffer)
         {
             try
             {

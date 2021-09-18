@@ -1,6 +1,6 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace PB
+namespace Message
 {
 	[ProtoContract]
 	public enum Code

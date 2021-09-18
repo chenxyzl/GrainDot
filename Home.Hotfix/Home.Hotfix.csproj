@@ -12,11 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Handler\" />
+    <ProjectReference Include="..\Message\Message.csproj" />
   </ItemGroup>
 
 </Project>

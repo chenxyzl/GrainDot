@@ -10,6 +10,7 @@ namespace Base
     class AttrManager : Single<AttrManager>
     {
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+        private Uno
         //加载程序集合
         public void Reload()
         {

@@ -9,7 +9,7 @@ namespace Base.Network.Server
     /// <summary>
     /// This class is responsible for represents the tcp client connection.
     /// </summary>
-    public class TcpSession<T> : Session<T> where T : BaseActor
+    public class TcpSession<A> : Session<A> where A : BaseActor
     {
         #region private members
 
@@ -50,14 +50,11 @@ namespace Base.Network.Server
         /// <param name="messageReceivedHandler">The callback of message received handler implementation.</param>
         /// <param name="clientDisconnectedHandler">The callback of client disconnected handler implementation.</param>
         /// <param name="maxMessageBuffer">The max length of message buffer.</param>
-        public TcpSession(ushort id, Socket socketClient, MessageReceivedHandler messageReceivedHandler, ClientDisconnectedHandler clientDisconnectedHandler, ushort maxMessageBuffer)
+        public TcpSession(ushort id, Socket socketClient, ushort maxMessageBuffer)
         {
             try
             {
                 _socketClient = socketClient;
-                _messageReceivedHandler = messageReceivedHandler;
-                _clientDisconnectedHandler = clientDisconnectedHandler;
-
                 _socketClient.ReceiveBufferSize = maxMessageBuffer;
                 _socketClient.SendBufferSize = maxMessageBuffer;
                 _buffer = new byte[maxMessageBuffer];
@@ -79,13 +76,14 @@ namespace Base.Network.Server
         #region public methods implementation
 
         /// <inheritdoc/>
-        public override void SendMessage(IBufferWriter writer)
+        public override void SendMessage(byte[] writer)
         {
             try
             {
                 if (IsConnected)
                 {
-                    _stream.Write(writer.BufferData, 0, writer.Length);
+
+                    _stream.Write(writer);
                     _stream.Flush();
                 }
             }
@@ -101,7 +99,6 @@ namespace Base.Network.Server
             try
             {
                 _socketClient.Close();
-                _clientDisconnectedHandler(this);
             }
             catch (Exception ex)
             {
@@ -132,8 +129,32 @@ namespace Base.Network.Server
                         Buffer.BlockCopy(_buffer, 0, numArray, 0, endRead);
 
                         _stream.BeginRead(_buffer, 0, _socketClient.ReceiveBufferSize, ReceiveDataCallback, null);
-                        
+
                         var buffer = BufferReader.Create(numArray, 0, numArray.Length);
+
+                        var begin = 0;
+                        //构造新Packet
+                        if (Packet == null)
+                        {
+                            var len = BitConverter.ToInt32(numArray, 0);
+                            Packet = new Share.Packet(len);
+                            begin = 4;
+                        }
+
+                        var needLengh = Packet.Size - Packet.CurrentLengh();
+                        var left = numArray.Length - begin;
+                        var canRead = needLengh > left ? left : needLengh;
+                        Packet.WriteBuff(numArray, 0, canRead);
+                        if (left >= needLengh)
+                        {
+                            OnRecive(Packet.GetCompleteStream());
+                            Packet = null;
+                        }
+
+                        else
+                        {
+                            
+                        }
 
                         _messageReceivedHandler(this, buffer);
 
@@ -149,7 +170,7 @@ namespace Base.Network.Server
                 _socketClient.Dispose();
                 _clientDisconnectedHandler(this);
             }
-            
+
             Console.WriteLine($"Client '{IpAddress}' Disconnected.");
         }
 

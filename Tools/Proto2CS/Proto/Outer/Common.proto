@@ -1,6 +1,6 @@
 
 syntax = "proto3";
-package I.PB;
+package Message;
 
 enum ItemType {
   currency = 0;

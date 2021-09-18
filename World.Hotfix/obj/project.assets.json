@@ -1952,6 +1952,7 @@
           "Akka.Cluster": "1.4.24",
           "Common": "1.0.0",
           "ExcelDataReader.Mapping": "2.2.0",
+          "Message": "1.0.0",
           "Microsoft.IO.RecyclableMemoryStream": "2.1.3",
           "NLog": "4.7.10",
           "NLog.Config": "4.7.10",
@@ -1988,6 +1989,19 @@
         },
         "runtime": {
           "bin/placeholder/ExcelDataReader.Mapping.dll": {}
+        }
+      },
+      "Message/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "protobuf-net": "3.0.101"
+        },
+        "compile": {
+          "bin/placeholder/Message.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Message.dll": {}
         }
       },
       "PB/1.0.0": {
@@ -6765,6 +6779,11 @@
       "type": "project",
       "path": "../Third/ExcelMapper/ExcelMapper.csproj",
       "msbuildProject": "../Third/ExcelMapper/ExcelMapper.csproj"
+    },
+    "Message/1.0.0": {
+      "type": "project",
+      "path": "../Message/Message.csproj",
+      "msbuildProject": "../Message/Message.csproj"
     },
     "PB/1.0.0": {
       "type": "project",

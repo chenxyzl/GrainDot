@@ -283,13 +283,13 @@ namespace Base.Network.Server
         /// Method responsible for start the server.
         /// </summary>
         /// <param name="listenerType">The listener type to creation of listener.</param>
-        public void Start<T>(NetworkListenerType listenerType = NetworkListenerType.TCP) where T : BaseActor
+        public void Start<A>(NetworkListenerType listenerType = NetworkListenerType.TCP) where A : BaseActor
         {
             try
             {
                 var cancellationTokenSource = new CancellationTokenSource();
 
-                var listeningTask = StartListenerAsync<T>(cancellationTokenSource.Token, listenerType);
+                var listeningTask = StartListenerAsync<A>(cancellationTokenSource.Token, listenerType);
 
                 listeningTask.Wait(cancellationTokenSource.Token);
             }

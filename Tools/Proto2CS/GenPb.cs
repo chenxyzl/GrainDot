@@ -307,7 +307,7 @@ namespace Proto
             }
             else
             {
-                sb.Append("\n");
+                sb.Append(": IMessage\n");
             }
         }
         private static bool PraseMessageBody(string protoName, string newline, StringBuilder sb)

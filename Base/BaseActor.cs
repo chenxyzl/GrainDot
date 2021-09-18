@@ -10,7 +10,8 @@ namespace Base
     public abstract class BaseActor : UntypedActor
     {
         private ICancelable? _cancel;
-        public BaseActor() {}
+        public abstract ILog Logger { get; }
+        public BaseActor() { }
         //所有model
         protected Dictionary<Type, IComponent> components = new Dictionary<Type, IComponent>();
         //获取model
