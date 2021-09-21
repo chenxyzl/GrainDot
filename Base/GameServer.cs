@@ -1,12 +1,14 @@
 ﻿using Akka.Actor;
 using Akka.Configuration;
 using Base.Alg;
+using Base.Network;
 using Base.Network.Server;
 using Base.Network.Server.Interfaces;
 using Base.Network.Shared;
 using Base.Network.Shared.Interfaces;
 using Common;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -62,23 +64,32 @@ namespace Base
             return Task.CompletedTask;
         }
 
-        public Server<A> StartTcpServer<A>(ushort port) where A : BaseActor
+        public async Task<ITcpSocketServer> StartTcpServer<T>(ushort port) where T : TcpSocketConnection, new()
         {
-            var server = new Server<A>(port: port);
-            server.Start<A>(NetworkListenerType.TCP);
+            var server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(6001)
+                .SetLengthFieldEncoder(2)
+                .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
+                .OnException(ex =>
+                {
+                    Console.WriteLine($"服务端异常:{ex.Message}");
+                })
+                .OnServerStarted(server =>
+                {
+                    Console.WriteLine($"服务启动");
+                }).BuildAsync(); ;
             return server;
         }
-        public Server<A> StartWsServer<A>(ushort port) where A : BaseActor
+        public async Task<IWebSocketServer> StartWsServer<T>(ushort port) where T : WebSocketConnection, new()
         {
-            var server = new Server<A>(port: port);
-            server.Start<A>(NetworkListenerType.WSBinary);
-            return server;
-
-        }
-        public Server<A> StartUdpServer<A>(ushort port) where A : BaseActor
-        {
-            var server = new Server<A>(port: port);
-            server.Start<A>(NetworkListenerType.UDP);
+            var server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(6001)
+                .OnException(ex =>
+                {
+                    Console.WriteLine($"服务端异常:{ex.Message}");
+                })
+                .OnServerStarted(server =>
+                {
+                    Console.WriteLine($"服务启动");
+                }).BuildAsync(); ;
             return server;
         }
     }

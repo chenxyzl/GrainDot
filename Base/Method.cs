@@ -16,7 +16,7 @@ public static class ExtensionMethods
     }
 
     //获取方法的扩展方法  包括继承
-    static IEnumerable<MethodInfo> GetExtensionHandler(Assembly assembly, Type extendedType)
+    public static IEnumerable<MethodInfo> GetExtensionHandler(this Assembly assembly, Type extendedType)
     {
         var query = from type in assembly.GetTypes()
                     where !type.IsGenericType && !type.IsNested

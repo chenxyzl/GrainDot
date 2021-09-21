@@ -16,10 +16,6 @@ namespace Home.Model
         {
             base.AfterCreate();
             var server = StartTcpServer<PlayerActor>(7700);
-            server.OnMessageReceivedHandler = (IClient client, IBufferReader reader) =>
-            {
-                Console.WriteLine($"Received data from client {client.Id}, data length {reader.Length} data:");
-            };
             return Task.CompletedTask;
         }
     }

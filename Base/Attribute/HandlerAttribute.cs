@@ -11,9 +11,11 @@ namespace Base
     public class HandlerMethodAttribute : Attribute
     {
         //public RoleDef role { get; private set; }
+        public readonly uint RpcId;
         public HandlerMethodAttribute(uint rpcId)
         {
             A.Ensure(!GlobalParam.RpcIdRange.In(rpcId), Message.Code.Error, $"rpc id{rpcId} range error");
+            RpcId = rpcId;
         }
     }
 }
