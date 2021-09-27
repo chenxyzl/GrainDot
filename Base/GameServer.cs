@@ -117,20 +117,6 @@ namespace Base
             await system.Terminate();
             await Stop();
         }
-
-        public async Task<IWebSocketServer> StartWsServer<T>(ushort port) where T : WebSocketConnection
-        {
-            var server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(6001)
-                .OnException(ex =>
-                {
-                    Console.WriteLine($"服务端异常:{ex.Message}");
-                })
-                .OnServerStarted(server =>
-                {
-                    Console.WriteLine($"服务启动");
-                }).BuildAsync(); ;
-            return server;
-        }
         public IActorRef GetChild(string path)
         {
             var a = system.ActorSelection(path);

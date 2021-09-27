@@ -37,4 +37,33 @@ namespace Home.Model
             Base.Game.GameServer.GetChild("xx");
         }
     }
+
+    class WsPlayerChannel : WebSocketConnection
+    {
+        IActorRef actor;
+        public WsPlayerChannel(IWebSocketServer server, IChannel channel, TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> serverEvent) : base(server, channel, serverEvent) { }
+        public override void OnClose()
+        {
+            //通知actor下线
+        }
+
+        public override void OnConnected() { }
+
+        public override void OnRecieve(byte[] bytes)
+        {
+            //第一个消息一定是bind actor
+            if (actor == null)
+            {
+                BindPlayerActor();
+                return;
+            }
+            //解析其他消息 tell给actor
+            throw new NotImplementedException();
+        }
+
+        public void BindPlayerActor()
+        {
+            Base.Game.GameServer.GetChild("xx");
+        }
+    }
 }

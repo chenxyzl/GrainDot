@@ -1,4 +1,5 @@
 ﻿using Base;
+using Base.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,30 @@ namespace Home.Model
 {
     public class WsComponent : IGlobalComponent
     {
+        IWebSocketServer _server;
         public WsComponent(GameServer n) : base(n) { }
-        public override Task Load()
-        {
-            throw new NotImplementedException();
-        }
 
         public override Task PreStop()
         {
             throw new NotImplementedException();
         }
 
-        public override Task Start(bool crossDay)
+        public override async Task AfterLoad()
         {
-            throw new NotImplementedException();
+            await StartWsServer<WsPlayerChannel>(15001);
         }
 
-        public override Task Stop()
+        public async Task StartWsServer<T>(ushort port) where T : WebSocketConnection
         {
-            throw new NotImplementedException();
+            _server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(6001)
+                .OnException(ex =>
+                {
+                    Console.WriteLine($"服务端异常:{ex.Message}");
+                })
+                .OnServerStarted(server =>
+                {
+                    Console.WriteLine($"服务启动");
+                }).BuildAsync();
         }
     }
 }

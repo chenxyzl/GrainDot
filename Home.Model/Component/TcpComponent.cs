@@ -17,9 +17,9 @@ namespace Home.Model
             return Task.CompletedTask;
         }
 
-        public override async Task Start(bool crossDay)
+        public override async Task AfterLoad()
         {
-            _server = await StartTcpServer<PlayerChannel>(1000);
+            await StartTcpServer<PlayerChannel>(15000);
         }
 
         public override Task PreStop()
@@ -28,9 +28,9 @@ namespace Home.Model
             return Task.CompletedTask;
         }
 
-        private async Task<ITcpSocketServer> StartTcpServer<T>(ushort port) where T : TcpSocketConnection
+        private async Task StartTcpServer<T>(ushort port) where T : TcpSocketConnection
         {
-            var server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(6001)
+            _server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(6001)
                 .SetLengthFieldEncoder(2)
                 .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
                 .OnException(ex =>
@@ -40,8 +40,7 @@ namespace Home.Model
                 .OnServerStarted(server =>
                 {
                     Console.WriteLine($"服务启动");
-                }).BuildAsync(); ;
-            return server;
+                }).BuildAsync();
         }
     }
 }
