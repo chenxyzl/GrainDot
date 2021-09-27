@@ -8,7 +8,7 @@ namespace Base.Network
 {
     class WebSocketServerBuilder<T> :
         BaseGenericServerBuilder<IWebSocketServerBuilder, IWebSocketServer, IWebSocketConnection, byte[]>,
-        IWebSocketServerBuilder where T : WebSocketConnection, new()
+        IWebSocketServerBuilder where T : WebSocketConnection
     {
         public WebSocketServerBuilder(int port, string path)
             : base(port)

@@ -2,10 +2,6 @@
 using Akka.Configuration;
 using Base.Alg;
 using Base.Network;
-using Base.Network.Server;
-using Base.Network.Server.Interfaces;
-using Base.Network.Shared;
-using Base.Network.Shared.Interfaces;
 using Common;
 using System;
 using System.Collections.Concurrent;
@@ -22,9 +18,9 @@ namespace Base
     public abstract class GameServer
     {
         //日志
-        public readonly ILog logger;
+        public readonly ILog Logger;
         //配置
-        protected Config systemConfig;
+        protected Config _systemConfig;
         //根系统
         public ActorSystem system { get; protected set; }
         //角色类型
@@ -32,54 +28,97 @@ namespace Base
         public GameServer(RoleDef r)
         {
             role = r;
-            logger = new NLogAdapter(role.ToString());
+            Logger = new NLogAdapter(role.ToString());
         }
+        #region 全局组件
+        //所有model
+        public Dictionary<Type, IGlobalComponent> _components = new Dictionary<Type, IGlobalComponent>();
+        public List<IGlobalComponent> _componentsList = new List<IGlobalComponent>();
+        //获取model
+        public K GetComponent<K>() where K : IGlobalComponent
+        {
+            IGlobalComponent component;
+            if (!this._components.TryGetValue(typeof(K), out component))
+            {
+                A.Abort(Message.Code.Error, $"game component:{typeof(K).Name} not found"); ;
+            }
+
+            return (K)component;
+        }
+
+        protected void AddComponent<K>() where K : IGlobalComponent
+        {
+            IGlobalComponent component;
+            Type t = typeof(K);
+            if (this._components.TryGetValue(t, out component))
+            {
+                A.Abort(Message.Code.Error, $"game component:{t.Name} repeated");
+            }
+            var arg = new object[] { this };
+            K obj = Activator.CreateInstance(t, arg) as K;
+            _components.Add(t, obj);
+            _componentsList.Add(obj);
+        }
+        #endregion
 
         private void LoadConfig()
         {
             var config = File.ReadAllText($"../../Config/{role}.conf");
-            systemConfig = ConfigurationFactory.ParseString(config);
+            _systemConfig = ConfigurationFactory.ParseString(config);
         }
 
-
-        virtual public Task BeforCreate()
+        virtual protected async Task BeforCreate()
         {
+            RegisterGlobalComponent();
             LoadConfig();
-            return Task.CompletedTask;
+            //全局触发load
+            foreach (var x in _componentsList)
+            {
+                await x.Load();
+            }
         }
 
-        virtual public Task CreateActorSystem()
+        virtual protected async Task AfterCreate()
         {
-            system = ActorSystem.Create(GlobalParam.SystemName, systemConfig);
-            return Task.CompletedTask;
+            //全局触发AfterLoad
+            foreach (var x in _componentsList)
+            {
+                await x.AfterLoad();
+            }
         }
 
-        virtual public Task AfterCreate()
+        protected async Task PreStop()
         {
-            return Task.CompletedTask;
+            //全局触发PreStop
+            foreach (var x in _componentsList)
+            {
+                await x.PreStop();
+            }
         }
 
-        public Task BeforeStop()
+        protected async Task Stop()
         {
-            return Task.CompletedTask;
+            //全局触发PreStop
+            foreach (var x in _componentsList)
+            {
+                await x.Stop();
+            }
+        }
+        virtual public async Task StartSystem()
+        {
+            await BeforCreate();
+            system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+            await AfterCreate();
         }
 
-        public async Task<ITcpSocketServer> StartTcpServer<T>(ushort port) where T : TcpSocketConnection, new()
+        virtual public async Task StopSystem()
         {
-            var server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(6001)
-                .SetLengthFieldEncoder(2)
-                .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
-                .OnException(ex =>
-                {
-                    Console.WriteLine($"服务端异常:{ex.Message}");
-                })
-                .OnServerStarted(server =>
-                {
-                    Console.WriteLine($"服务启动");
-                }).BuildAsync(); ;
-            return server;
+            await PreStop();
+            await system.Terminate();
+            await Stop();
         }
-        public async Task<IWebSocketServer> StartWsServer<T>(ushort port) where T : WebSocketConnection, new()
+
+        public async Task<IWebSocketServer> StartWsServer<T>(ushort port) where T : WebSocketConnection
         {
             var server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(6001)
                 .OnException(ex =>
@@ -92,5 +131,19 @@ namespace Base
                 }).BuildAsync(); ;
             return server;
         }
+        public IActorRef GetChild(string path)
+        {
+            var a = system.ActorSelection(path);
+            if (a == null)
+            {
+                A.Abort(Message.Code.Error, $"local system get child path:{path} not found");
+            }
+            return a.Anchor;
+        }
+
+        /// <summary>
+        /// 注册全局组件
+        /// </summary>
+        public abstract void RegisterGlobalComponent();
     }
 }

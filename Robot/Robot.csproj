@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base\Base.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\PB\PB.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@ namespace Base.Network
 {
     class TcpSocketServerBuilder<T> :
         BaseGenericServerBuilder<ITcpSocketServerBuilder, ITcpSocketServer, ITcpSocketConnection, byte[]>,
-        ITcpSocketServerBuilder where T : TcpSocketConnection, new()
+        ITcpSocketServerBuilder where T : TcpSocketConnection
     {
         public TcpSocketServerBuilder(int port)
             : base(port)

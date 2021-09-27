@@ -21,7 +21,7 @@
         /// </summary>
         /// <param name="port">监听端口</param>
         /// <returns></returns>
-        public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(int port) where T : TcpSocketConnection, new()
+        public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(int port) where T : TcpSocketConnection
         {
             return new TcpSocketServerBuilder<T>(port);
         }
@@ -32,7 +32,7 @@
         /// <param name="port">监听端口</param>
         /// <param name="path">路径,默认为"/"</param>
         /// <returns></returns>
-        public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(int port, string path = "/") where T : WebSocketConnection, new()
+        public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(int port, string path = "/") where T : WebSocketConnection
         {
             return new WebSocketServerBuilder<T>(port, path);
         }
@@ -48,5 +48,6 @@
         {
             return new WebSocketClientBuilder(ip, port, path);
         }
+
     }
 }

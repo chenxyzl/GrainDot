@@ -46,7 +46,7 @@ namespace Base
                 var ms = x.GetExtensionHandler(typeof(BaseActor)).ToList();
                 foreach (var m in ms)
                 {
-                    var attr = m.GetCustomAttribute<HandlerMethodAttribute>();
+                    var attr = m.GetCustomAttribute<RpcMethodAttribute>();
                     //必须是HandlerMethodAttribute
                     A.Ensure(attr != null, Message.Code.Error, $"{m.Name}:HandlerMethodAttribute must not null");
                     //必须有2个参数 且第一个为this BaseActor self, 第二个为IRequest

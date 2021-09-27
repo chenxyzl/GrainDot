@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace Base
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class HandlerMethodAttribute : Attribute
+    public class RpcMethodAttribute : Attribute
     {
         //public RoleDef role { get; private set; }
         public readonly uint RpcId;
-        public HandlerMethodAttribute(uint rpcId)
+        public RpcMethodAttribute(uint rpcId)
         {
             A.Ensure(!GlobalParam.RpcIdRange.In(rpcId), Message.Code.Error, $"rpc id{rpcId} range error");
             RpcId = rpcId;

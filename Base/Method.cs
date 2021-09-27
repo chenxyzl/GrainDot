@@ -24,7 +24,7 @@ public static class ExtensionMethods
                         | BindingFlags.Public | BindingFlags.NonPublic)
                     where method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false)
                     where method.GetParameters()[0].ParameterType.IsAssignableFrom(extendedType)
-                    where method.GetCustomAttributes(typeof(HandlerMethodAttribute), true).Length > 0
+                    where method.GetCustomAttributes(typeof(RpcMethodAttribute), true).Length > 0
                     select method;
         return query;
     }

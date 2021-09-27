@@ -12,33 +12,34 @@ namespace Base
         private ICancelable? _cancel;
         public abstract ILog Logger { get; }
         public BaseActor() { }
+        #region 全局组件
         //所有model
-        protected Dictionary<Type, IComponent> components = new Dictionary<Type, IComponent>();
+        public Dictionary<Type, IActorComponent> _components = new Dictionary<Type, IActorComponent>();
         //获取model
-        public K GetComponent<K>() where K : IComponent
+        public K GetComponent<K>() where K : IActorComponent
         {
-            IComponent component;
-            if (!this.components.TryGetValue(typeof(K), out component))
+            IActorComponent component;
+            if (!this._components.TryGetValue(typeof(K), out component))
             {
-                A.Abort(PB.Code.Error, $"component:{typeof(K).Name} not found"); ;
+                A.Abort(Message.Code.Error, $"actor component:{typeof(K).Name} not found"); ;
             }
 
             return (K)component;
         }
 
-        public void AddComponent<K>(K k) where K : IComponent
+        public void AddComponent<K>() where K : IActorComponent
         {
-            IComponent component;
+            IActorComponent component;
             Type t = typeof(K);
-            if (this.components.TryGetValue(t, out component))
+            if (this._components.TryGetValue(t, out component))
             {
-                A.Abort(PB.Code.Error, $"component:{t.Name} repeated");
+                A.Abort(Message.Code.Error, $"actor component:{t.Name} repeated");
             }
             var arg = new object[] { this };
             K obj = Activator.CreateInstance(t, arg) as K;
-            this.components.Add(t, obj);
+            this._components.Add(t, obj);
         }
-
+        #endregion
         protected override void PostStop()
         {
             base.PostStop();

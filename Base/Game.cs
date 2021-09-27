@@ -12,20 +12,21 @@ namespace Base
 {
     public static class Game
     {
+        static public ServerState ServerState = ServerState.Unknow;
         //当前的角色服务器
-        static public GameServer gameServer;
+        static public GameServer GameServer;
         //退出标记
-        static bool quitFlag = false;
+        static bool _quitFlag = false;
         //退出标记监听
         static void WatchQuit()
         {
             Console.CancelKeyPress += (sender, e) =>
             {
-                if (quitFlag)
+                if (_quitFlag)
                 {
                     return;
                 }
-                quitFlag = true;
+                _quitFlag = true;
                 e.Cancel = true;
             };
         }
@@ -34,12 +35,6 @@ namespace Base
         static public void Reload()
         {
             AttrManager.Instance.Reload();
-            //var x = gameServer.system.ActorSelection("x");
-            //if(x == null)
-            //{
-            //    return;
-            //}
-            //x.Tell("xx");
         }
         //准备
         static public void Ready(RoleDef role, Type gsType)
@@ -48,39 +43,34 @@ namespace Base
             //程序集合初始化
             Reload();
             //创建服务器启动类
-            gameServer = Activator.CreateInstance(gsType) as GameServer;
+            GameServer = Activator.CreateInstance(gsType) as GameServer;
             GlobalLog.Warning($"---{role}加载完成---");
         }
         //开始游戏
-        static public Task Start()
+        static public async Task Start()
         {
-            GlobalLog.Warning($"---{gameServer.role}启动中,请勿强关---");
+            GlobalLog.Warning($"---{GameServer.role}启动中,请勿强关---");
             //开始
-            gameServer.BeforCreate();
-            gameServer.CreateActorSystem();
-            gameServer.AfterCreate();
+            await GameServer.StartSystem();
             //开始完成
-            GlobalLog.Warning($"---{gameServer.role}启动完成---");
+            GlobalLog.Warning($"---{GameServer.role}启动完成---");
             WatchQuit();
-            return Task.CompletedTask;
         }
         static public void Loop()
         {
-            GlobalLog.Warning($"---{gameServer.role}开启loop---");
-            while (!quitFlag)
+            GlobalLog.Warning($"---{GameServer.role}开启loop---");
+            while (!_quitFlag)
             {
                 Thread.Sleep(1);
             }
-            GlobalLog.Warning($"---{gameServer.role}退出loop---");
+            GlobalLog.Warning($"---{GameServer.role}退出loop---");
         }
         //结束游戏
-        static public Task Stop()
+        static public async Task Stop()
         {
-            GlobalLog.Warning($"---{gameServer.role}停止中,请勿强关---");
-            //结束
-            //结束完成
-            GlobalLog.Warning($"---{gameServer.role}停止完成---");
-            return Task.CompletedTask;
+            GlobalLog.Warning($"---{GameServer.role}停止中,请勿强关---");
+            await GameServer.StopSystem();
+            GlobalLog.Warning($"---{GameServer.role}停止完成---");
         }
 
         static public async Task Boot(RoleDef role, Type gsType)

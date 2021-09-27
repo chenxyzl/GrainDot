@@ -65,6 +65,14 @@
               "target": "Package",
               "version": "[0.7.0, )"
             },
+            "Microsoft.AspNetCore.Hosting": {
+              "target": "Package",
+              "version": "[2.2.7, )"
+            },
+            "Microsoft.AspNetCore.Server.Kestrel": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.IO.RecyclableMemoryStream": {
               "target": "Package",
               "version": "[2.1.3, )"

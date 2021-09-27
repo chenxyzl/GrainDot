@@ -13,11 +13,11 @@ namespace Base.Helper
         public static Assembly[] GetHotfixAssembly()
         {
             Assembly[] assembly = {
-            Assembly.Load(File.ReadAllBytes("./OM.Hotfix.dll"), File.ReadAllBytes("./OM.Hotfix.pdb")),
-            Assembly.Load(File.ReadAllBytes("./World.Hotfix.dll"), File.ReadAllBytes("./World.Hotfix.pdb")),
-            Assembly.Load(File.ReadAllBytes("./Login.Hotfix.dll"), File.ReadAllBytes("./Login.Hotfix.pdb")),
-            Assembly.Load(File.ReadAllBytes("./Home.Hotfix.dll"), File.ReadAllBytes("./Home.Hotfix.pdb")),
-            typeof(Game).Assembly,
+                typeof(Game).Assembly,
+                Assembly.Load(File.ReadAllBytes("./OM.Hotfix.dll"), File.ReadAllBytes("./OM.Hotfix.pdb")),
+                Assembly.Load(File.ReadAllBytes("./World.Hotfix.dll"), File.ReadAllBytes("./World.Hotfix.pdb")),
+                Assembly.Load(File.ReadAllBytes("./Login.Hotfix.dll"), File.ReadAllBytes("./Login.Hotfix.pdb")),
+                Assembly.Load(File.ReadAllBytes("./Home.Hotfix.dll"), File.ReadAllBytes("./Home.Hotfix.pdb")),
             };
 
             return assembly;
