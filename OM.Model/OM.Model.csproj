@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon />
   </PropertyGroup>
 
@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Base\Base.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\PB\PB.csproj" />
+    <ProjectReference Include="..\Message\Message.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
+    "net6.0": {
       "Microsoft.Extensions.CommandLineUtils/1.1.1": {
         "type": "package",
         "dependencies": {
@@ -145,19 +145,19 @@
           "protobuf-net.Core": "3.0.73"
         },
         "compile": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {}
+          "lib/net5.0/protobuf-net.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {}
+          "lib/net5.0/protobuf-net.dll": {}
         }
       },
       "protobuf-net.Core/3.0.73": {
         "type": "package",
         "compile": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {}
+          "lib/net5.0/protobuf-net.Core.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {}
+          "lib/net5.0/protobuf-net.Core.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -4683,7 +4683,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
+    "net6.0": [
       "Microsoft.Extensions.CommandLineUtils >= 1.1.1",
       "Microsoft.Extensions.Configuration.CommandLine >= 5.0.0",
       "protobuf-net >= 3.0.73"
@@ -4706,15 +4706,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "netcoreapp3.1"
+        "net6.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "projectReferences": {}
         }
       },
@@ -4725,8 +4725,8 @@
       }
     },
     "frameworks": {
-      "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
+      "net6.0": {
+        "targetAlias": "net6.0",
         "dependencies": {
           "Microsoft.Extensions.CommandLineUtils": {
             "target": "Package",
@@ -4756,7 +4756,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

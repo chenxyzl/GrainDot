@@ -1,11 +1,11 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v3.1",
+    "name": ".NETCoreApp,Version=v6.0",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
+    ".NETCoreApp,Version=v6.0": {
       "Proto2CS/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.CommandLineUtils": "1.1.1",
@@ -132,7 +132,7 @@
           "protobuf-net.Core": "3.0.73"
         },
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {
+          "lib/net5.0/protobuf-net.dll": {
             "assemblyVersion": "3.0.0.0",
             "fileVersion": "3.0.73.29921"
           }
@@ -140,7 +140,7 @@
       },
       "protobuf-net.Core/3.0.73": {
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {
+          "lib/net5.0/protobuf-net.Core.dll": {
             "assemblyVersion": "3.0.0.0",
             "fileVersion": "3.0.73.29921"
           }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,7 +13,6 @@
     <ProjectReference Include="..\Base\Base.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\OM.Model\OM.Model.csproj" />
-    <ProjectReference Include="..\PB\PB.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
   </ItemGroup>
 
