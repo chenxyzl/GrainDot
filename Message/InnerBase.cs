@@ -12,9 +12,6 @@ namespace Message
 		public byte[] Content { get; set; }
 
 		[ProtoMember(3)]
-		public ulong ActorId { get; set; }
-
-		[ProtoMember(4)]
 		public Code Code { get; set; }
 
 	}

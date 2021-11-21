@@ -1,6 +1,9 @@
 ﻿using Akka.Actor;
+using Base;
 using Base.Network;
+using Base.Serializer;
 using DotNetty.Transport.Channels;
+using Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,14 @@ using System.Threading.Tasks;
 
 namespace Home.Model
 {
-    class PlayerChannel : TcpSocketConnection
+    public class PlayerChannel : TcpSocketConnection
     {
         IActorRef actor;
-        public PlayerChannel(ITcpSocketServer server, IChannel channel, TcpSocketServerEvent<ITcpSocketServer, ITcpSocketConnection, byte[]> serverEvent) : base(server, channel, serverEvent) { }
+        ILog logger;
+        public PlayerChannel(ITcpSocketServer server, IChannel channel, TcpSocketServerEvent<ITcpSocketServer, ITcpSocketConnection, byte[]> serverEvent) : base(server, channel, serverEvent)
+        {
+            logger = new NLogAdapter(this.ConnectionId);
+        }
         public override void OnClose()
         {
             //通知actor下线
@@ -22,19 +29,50 @@ namespace Home.Model
 
         public override void OnRecieve(byte[] bytes)
         {
-            //第一个消息一定是bind actor
-            if (actor == null)
+            RpcMessage message;
+            try
             {
-                BindPlayerActor();
+                message = SerializerHelper.FromBinary<RpcMessage>(bytes);
+            }
+            catch (Exception e) //避免协议破解
+            {
+                logger.Warning(e.Message);
+                Close();
                 return;
             }
-            //解析其他消息 tell给actor
-            throw new NotImplementedException();
+
+            try
+            {
+                if (actor == null)
+                {
+                    _ = BindPlayerActor(message);
+                }
+                else
+                {
+                    TellSelf(message);
+                }
+            }
+            catch (CodeException e) //可预料的返回客户端错误码
+            {
+                logger.Warning(e.Message);
+                _ = Send(new RpcMessage { Code = e.Code }.ToBinary());
+            }
+            catch (Exception e) //不可预料的断开客户端链接
+            {
+                logger.Warning(e.Message);b`
+                Close();
+            }
+
         }
 
-        public void BindPlayerActor()
+        public async Task BindPlayerActor(RpcMessage message)
         {
-            Base.Game.GameServer.GetChild("xx");
+            await Base.Game.GameServer.GetChild("xx").Ask<int>(1, TimeSpan.FromSeconds(10));
+        }
+
+        public void TellSelf(RpcMessage message)
+        {
+            actor.Tell(message);
         }
     }
 
@@ -51,6 +89,7 @@ namespace Home.Model
 
         public override void OnRecieve(byte[] bytes)
         {
+
             //第一个消息一定是bind actor
             if (actor == null)
             {
@@ -65,5 +104,10 @@ namespace Home.Model
         {
             Base.Game.GameServer.GetChild("xx");
         }
+    }
+
+    static class PlayerChannelService
+    {
+
     }
 }

@@ -34,4 +34,5 @@ namespace Akka.Serialization.Protobuf
 
         public override int Identifier => 127;
     }
+
 }

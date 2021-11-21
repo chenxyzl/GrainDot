@@ -15,5 +15,24 @@ namespace Home.Model
             AddComponent<TcpComponent>();
             AddComponent<WsComponent>();
         }
+        public void AddPlayer(PlayerActor player, string playerId)
+        {
+
+        }
+
+        public void RemovePlayer(string playerid)
+        {
+
+        }
+
+        public void AddChannel(PlayerChannel channel,  string playerId)
+        {
+
+        }
+
+        public void RemoveChannel(string playerid)
+        {
+
+        }
     }
 }

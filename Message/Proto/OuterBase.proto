@@ -26,17 +26,3 @@ message ApiResult {
   string msg = 2;    // 有错误情况, 可选的错误消息
   bytes content = 3; //消息内容
 }
-
-message C2G_Ping // IRequest
-{}
-message G2C_Pong // IResponse
-{}
-
-message C2M_Reload // IRequest
-{
-  string account = 1;
-  string password = 2;
-}
-
-message M2C_Reload // IResponse
-{}

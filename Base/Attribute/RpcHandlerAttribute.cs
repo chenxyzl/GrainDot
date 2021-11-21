@@ -7,15 +7,40 @@ using System.Threading.Tasks;
 
 namespace Base
 {
+    public enum RpcType
+    {
+        Inner = 1, //内部rpc
+        Outer = 2, //外部rpc
+    }
+
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class RpcMethodAttribute : Attribute
     {
         //public RoleDef role { get; private set; }
         public readonly uint RpcId;
-        public RpcMethodAttribute(uint rpcId)
+        public readonly RpcType RpcType;
+        public RpcMethodAttribute(uint rpcId, RpcType rpcType)
         {
-            A.Ensure(!GlobalParam.RpcIdRange.In(rpcId), Message.Code.Error, $"rpc id{rpcId} range error");
+            switch (rpcType)
+            {
+                case RpcType.Inner:
+                    {
+                        A.Ensure(!GlobalParam.InnerRpcIdRange.In(rpcId), Message.Code.Error, $"inner rpc id{rpcId} range error");
+                        break;
+                    }
+                case RpcType.Outer:
+                    {
+                        A.Ensure(!GlobalParam.OuterRpcIdRange.In(rpcId), Message.Code.Error, $"outer rpc id{rpcId} range error");
+                        break;
+                    }
+                default:
+                    {
+                        A.Abort(Message.Code.Error, $"rpcType:{rpcType} not found");
+                        break;
+                    }
+            }
             RpcId = rpcId;
+            RpcType = rpcType;
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Home.Model
 
         void Tick(long now)
         {
-            foreach (var a in this.components.Values)
+            foreach (var a in this._components.Values)
             {
                 a.Tick(now);
             }

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package Message;
+import "Common.proto";
+import "Code.proto";
+
+//消息范围10000~19999
+enum  OuterRpcId {
+    Ping = 10000; //心跳
+    CPushTest = 10001; // 客户端通知--无需回复
+    SPushTest = 10002; // 服务器推送--无需回复
+    Login = 10003; //登录 LoginRequest LoginRespone
+}
