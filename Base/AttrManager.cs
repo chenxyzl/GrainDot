@@ -1,4 +1,6 @@
-﻿using Base.Alg;
+﻿
+using Base.Alg;
+using Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,24 @@ using System.Threading.Tasks;
 
 namespace Base
 {
+
+    //请求应答类rpc
+    public delegate Task<RSQ> RpcHandler<REQ, RSQ>(REQ a) where REQ : IRequest where RSQ : IResponse;
+    //通知类rpc
+    public delegate Task RnHandler<MSG>(MSG a) where MSG : IMessage;
+
+    public class TA : IRequest
+    {
+
+    }
+    public class TB : IResponse
+    {
+
+    }
+
     class AttrManager : Single<AttrManager>
     {
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
-        private Dictionary<uint, MethodInfo> handlers = new Dictionary<uint, MethodInfo>();
         //加载程序集合
         public void Reload()
         {
@@ -40,33 +56,6 @@ namespace Base
             }
             //新旧覆盖 ~~
             types = t;
-            var t1 = new Dictionary<uint, MethodInfo>();
-            foreach (var x in asm)
-            {
-                var ms = x.GetExtensionHandler(typeof(BaseActor)).ToList();
-                foreach (var m in ms)
-                {
-                    var attr = m.GetCustomAttribute<RpcMethodAttribute>();
-                    //必须是HandlerMethodAttribute
-                    A.Ensure(attr != null, Message.Code.Error, $"{m.Name}:HandlerMethodAttribute must not null");
-                    //必须有2个参数 且第一个为this BaseActor self, 第二个为IRequest
-                    A.Ensure(m.GetParameters().Length == 2, Message.Code.Error, $"Method:{m.Name} param lengh lengh must == 2 and first is this");
-                    A.Ensure(m.GetParameters()[1].ParameterType.IsAssignableFrom(typeof(Message.IRequest)), Message.Code.Error, $"Method:{m.Name} param[1] must inhert from Message.IRequest");
-                    //返回值必须是Task或者Task<IRequest>
-                    A.Ensure(m.ReturnType.IsGenericType, Message.Code.Error, $"Method:{m.Name} return type must Task or Task<IRespone>");
-                    //返回值必须是Task或者Task<IRequest>
-                    var r = m.ReturnType.GenericTypeArguments;
-                    A.Ensure(r.Length == 0 || (r.Length == 1 && r[0].IsAssignableFrom(typeof(Message.IResponse))), Message.Code.Error, $"Method:{m.Name} return type must Task or Task<IRespone>");
-
-                    var rpcId = attr.RpcId;
-                    if (t1.ContainsKey(rpcId))
-                    {
-                        A.Abort(Message.Code.Error, $"rpcId:{rpcId} repeated");
-                    }
-                    t1[rpcId] = m;
-                }
-            }
-            handlers = t1;
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {
@@ -76,6 +65,51 @@ namespace Base
         public HashSet<Type> GetServers()
         {
             return GetTypes<ServerAttribute>();
+        }
+    }
+
+
+    class HandlerManager<REQ, RSQ, MSG> : Single<HandlerManager<REQ, RSQ, MSG>> where REQ : IRequest where RSQ : IResponse where MSG : IMessage
+    {
+        private Dictionary<uint, RpcHandler<REQ, RSQ>> rpcHandlers = new Dictionary<uint, RpcHandler<REQ, RSQ>>();
+        private Dictionary<uint, RnHandler<MSG>> rnHandlers = new Dictionary<uint, RnHandler<MSG>>();
+        //加载程序集合
+        public void Reload()
+        {
+            var t = new UnOrderMultiMapSet<Type, Type>();
+            var asm = Helper.DllHelper.GetHotfixAssembly();
+            var t1 = new Dictionary<uint, MethodInfo>();
+            var newRpcs = new Dictionary<uint, RpcHandler<REQ, RSQ>>();
+            var newRns = new Dictionary<uint, RnHandler<MSG>>();
+
+            foreach (var x in asm)
+            {
+                foreach (var type in x.GetTypes())
+                {
+                    if (!type.IsAssignableFrom(typeof(IHandler)))
+                    {
+                        continue;
+                    }
+                    var ins = Activator.CreateInstance(type) as IHandler;
+                    if (ins == null)
+                    {
+                        A.Abort(Code.Error, "handler create ins is null");
+                    }
+                    var rpcs = ins.GetRpcHandler<REQ, RSQ>();
+                    foreach (var k in rpcs)
+                    {
+                        newRpcs[k.Key] = k.Value;
+                    }
+
+                    var rns = ins.GetRnHandler<MSG>();
+                    foreach (var k in rns)
+                    {
+                        newRns[k.Key] = k.Value;
+                    }
+                }
+            }
+            rpcHandlers = newRpcs;
+            rnHandlers = newRns;
         }
     }
 }

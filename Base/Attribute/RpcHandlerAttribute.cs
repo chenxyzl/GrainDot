@@ -14,12 +14,12 @@ namespace Base
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class RpcMethodAttribute : Attribute
+    public class RpcHandlerAttribute : Attribute
     {
         //public RoleDef role { get; private set; }
         public readonly uint RpcId;
         public readonly RpcType RpcType;
-        public RpcMethodAttribute(uint rpcId, RpcType rpcType)
+        public RpcHandlerAttribute(uint rpcId, RpcType rpcType)
         {
             switch (rpcType)
             {

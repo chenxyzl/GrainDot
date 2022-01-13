@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Base.Network
 {
-    class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSocketConnection, byte[]>, IWebSocketServer where T : WebSocketConnection, new()
+    class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSocketConnection, byte[]>, IWebSocketServer where T : WebSocketConnection
     {
         public WebSocketServer(int port, string path, TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> eventHandle)
             : base(port, eventHandle)

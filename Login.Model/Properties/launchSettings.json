@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Login.Model": {
-      "commandName": "Project",
-      "commandLineArgs": "Login"
-    }
-  }
-}

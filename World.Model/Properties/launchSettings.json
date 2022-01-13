@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "World.Model": {
-      "commandName": "Project",
-      "commandLineArgs": "World"
-    }
-  }
-}

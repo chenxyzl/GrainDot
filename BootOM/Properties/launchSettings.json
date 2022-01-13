@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "BootOM": {
-      "commandName": "Project",
-      "commandLineArgs": "OM",
-      "nativeDebugging": false
-    }
-  }
-}

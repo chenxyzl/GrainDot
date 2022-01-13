@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Message
 {
 	[ProtoContract]
-	public partial class C2R_Login: IMessage
+	public partial class C2S_Login: IMessage
 	{
 		[ProtoMember(1)]
 		public int MobileType { get; set; }

@@ -4,7 +4,7 @@ using System;
 
 namespace Base.Network
 {
-    class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSocketConnection, byte[]>, ITcpSocketServer where T : TcpSocketConnection, new()
+    class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSocketConnection, byte[]>, ITcpSocketServer where T : TcpSocketConnection
     {
         public TcpSocketServer(int port, TcpSocketServerEvent<ITcpSocketServer, ITcpSocketConnection, byte[]> eventHandle)
             : base(port, eventHandle)

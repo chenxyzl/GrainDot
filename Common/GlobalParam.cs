@@ -16,10 +16,10 @@ namespace Common
         /// <summary>
         /// 内部rpc消息id的范围
         /// </summary>
-        public static Range InnerRpcIdRange = 1000..9999;
+        public static Range InnerRpcIdRange = 1000..99999;
         /// <summary>
         /// 外部rpc消息id的范围
         /// </summary>
-        public static Range OuterRpcIdRange = 10000..99999;
+        public static Range OuterRpcIdRange = 100000..999999;
     }
 }
