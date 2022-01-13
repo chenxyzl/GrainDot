@@ -1,11 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
+    <ApplicationIcon />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>../Bin/</OutputPath>
+    <BaseIntermediateOutputPath>../obj</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Base\Base.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
   </ItemGroup>

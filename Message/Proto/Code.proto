@@ -4,19 +4,12 @@ package Message;
 
 enum Code {
   Ok = 0;
-  Error = 1;          // 内部未知错误
-  GateSignFailed = 2; // gate校验失败
-  AccountIllegal = 3; // 账号id非法
-  GateNotFound = 4; // gate不存在
-  CareerHasUnlock = 5; //职业已经解锁了
-  CareerNotUnlock = 6; //职业不存在
-  CareerTypeNotExist = 7; //职业不存在
-  CareerConditionsLimit = 8; //转职条件未达成
-  ItemIdNotExist = 9; //道具不存在
-  ItemTypeNotDeal = 10; //道具类型未处理
-  ItemNotCurrency = 11; //道具非资源
-  PlayerOffline = 12; //玩家离线
-  AddCountMustBiggerThan0 = 13;//道具增加的数必须大于0
-  MustSetWorldId = 14; //世界id必须要设置
-  ConfigNotFound = 15; //配置不存在
+  Error = 1;                    //内部未知错误
+  GateSignFailed = 2;           // gate校验失败
+  AccountIllegal = 3;           //账号id非法
+  ItemNodEnough = 4;            //道具数量不足
+  ItemIdNotExist = 5;           //道具不存在
+  ItemTypeNotDeal = 6;          //道具类型未处理
+  AddCountMustBiggerThan0 = 7;  //道具增加的数必须大于0
+  ConfigNotFound = 8;           //配置不存在
 }

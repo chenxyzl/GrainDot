@@ -1,6 +1,6 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace Message
+namespace cc
 {
 	[ProtoContract]
 	public partial class R2G_GetLoginKey: IActorRequest

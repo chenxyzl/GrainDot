@@ -1,0 +1,15 @@
+syntax = "proto3";
+package Message;
+
+message HWPlayerOnlineAsk  // IActorRequest 玩家上线
+{
+  uint64 uid = 1;
+  int64 loginTime = 2;
+}
+message WHPlayerOnlineAns {}  // IActorResponse
+
+message HWPlayerOfflineAsk {  // IActorRequest
+  uint64 uid = 1;
+  int64 offlineTime = 2;
+}
+message WHPlayerOfflineAns {}  // IActorResponse 玩家下线

@@ -5,9 +5,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
+    <BaseOutputPath>../</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>../Bin/</OutputPath>
   </PropertyGroup>
 

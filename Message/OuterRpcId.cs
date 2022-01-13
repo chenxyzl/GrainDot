@@ -1,6 +1,6 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace Message
+namespace cc
 {
 //消息范围10000~19999
 	[ProtoContract]

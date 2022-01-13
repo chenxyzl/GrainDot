@@ -4,9 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon />
     <Nullable>annotations</Nullable>
+    <BaseOutputPath>../Bin</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>../Bin/</OutputPath>
   </PropertyGroup>
 

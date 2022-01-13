@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Proto2CS": {
+      "commandName": "Project",
+      "commandLineArgs": "--server -n=cc -p=../../Message/Inner -p=../../Message/Proto -o=../../Message --innerfile=../../Message/Inner/InnerRpc.csv --outerfile=../../Message/Proto/OuterRpc.csv --outputinner=../../Message/ --outputouter=../../Message/"
+    }
+  }
+}

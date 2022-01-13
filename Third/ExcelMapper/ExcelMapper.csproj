@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <PackageId>ExcelDataReader.Mapping</PackageId>
     <PackageVersion>2.2.0</PackageVersion>
     <Authors>Hugh Bellamy</Authors>
@@ -27,9 +31,11 @@
   <PropertyGroup>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
+    <BaseOutputPath>../../Bin</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>../../Bin/</OutputPath>
   </PropertyGroup>
 

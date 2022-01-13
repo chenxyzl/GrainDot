@@ -56,7 +56,7 @@ namespace Proto
                 CommandOptionType.SingleValue);
 
             server = commandLineApplication.Option(
-                "--server",
+                "-s | --server",
                 "Gen server rpc",
                 CommandOptionType.NoValue);
 

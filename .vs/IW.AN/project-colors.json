@@ -1,0 +1,96 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "94b4f292-e5eb-49b9-b14a-68855ee221c8": {
+      "ProjectGuid": "94b4f292-e5eb-49b9-b14a-68855ee221c8",
+      "DisplayName": "Base",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "杂项文件",
+      "ColorIndex": -1
+    },
+    "cc4ef5c5-ce13-405f-9bc2-20f98f6dd85e": {
+      "ProjectGuid": "cc4ef5c5-ce13-405f-9bc2-20f98f6dd85e",
+      "DisplayName": "BootHome",
+      "ColorIndex": 1
+    },
+    "be5375ef-1156-402e-9f0c-fe6de6770da5": {
+      "ProjectGuid": "be5375ef-1156-402e-9f0c-fe6de6770da5",
+      "DisplayName": "BootLogin",
+      "ColorIndex": 2
+    },
+    "29055346-6613-4bc4-a59d-1d95f0f70964": {
+      "ProjectGuid": "29055346-6613-4bc4-a59d-1d95f0f70964",
+      "DisplayName": "BootOM",
+      "ColorIndex": 3
+    },
+    "16e65b44-d03f-4b9c-bc0e-bcd873d1c08d": {
+      "ProjectGuid": "16e65b44-d03f-4b9c-bc0e-bcd873d1c08d",
+      "DisplayName": "BootWorld",
+      "ColorIndex": 4
+    },
+    "0ded869e-6f7b-4666-a2a6-8163cfbd708a": {
+      "ProjectGuid": "0ded869e-6f7b-4666-a2a6-8163cfbd708a",
+      "DisplayName": "Common",
+      "ColorIndex": 5
+    },
+    "cf52d0eb-b559-4db3-935f-c50d8d3730a1": {
+      "ProjectGuid": "cf52d0eb-b559-4db3-935f-c50d8d3730a1",
+      "DisplayName": "Home.Hotfix",
+      "ColorIndex": 6
+    },
+    "b160ab37-0727-46c1-b03a-68426d15c9a7": {
+      "ProjectGuid": "b160ab37-0727-46c1-b03a-68426d15c9a7",
+      "DisplayName": "Home.Model",
+      "ColorIndex": 7
+    },
+    "3a8747b7-55d8-43fe-9ddb-9c1cb645a835": {
+      "ProjectGuid": "3a8747b7-55d8-43fe-9ddb-9c1cb645a835",
+      "DisplayName": "Login.Model",
+      "ColorIndex": 8
+    },
+    "6d7d852b-4442-4ead-8755-08c0c587cc30": {
+      "ProjectGuid": "6d7d852b-4442-4ead-8755-08c0c587cc30",
+      "DisplayName": "Login.Hotfix",
+      "ColorIndex": 9
+    },
+    "154f2c95-7835-4c51-af20-002bf632f137": {
+      "ProjectGuid": "154f2c95-7835-4c51-af20-002bf632f137",
+      "DisplayName": "Message",
+      "ColorIndex": 10
+    },
+    "9c242c30-c481-4def-807d-6e7092a5f040": {
+      "ProjectGuid": "9c242c30-c481-4def-807d-6e7092a5f040",
+      "DisplayName": "OM.Hotfix",
+      "ColorIndex": 11
+    },
+    "eb9972b2-4451-4709-a02f-a33d35a76a5e": {
+      "ProjectGuid": "eb9972b2-4451-4709-a02f-a33d35a76a5e",
+      "DisplayName": "OM.Model",
+      "ColorIndex": 12
+    },
+    "2c943e35-c003-4895-b5e7-59d1c5d87173": {
+      "ProjectGuid": "2c943e35-c003-4895-b5e7-59d1c5d87173",
+      "DisplayName": "World.Hotfix",
+      "ColorIndex": 13
+    },
+    "d1561efc-3542-4fdb-9207-99e794d10183": {
+      "ProjectGuid": "d1561efc-3542-4fdb-9207-99e794d10183",
+      "DisplayName": "World.Model",
+      "ColorIndex": 14
+    },
+    "34e18bfe-ec8c-4514-a5d7-ef3e9e84f0f1": {
+      "ProjectGuid": "34e18bfe-ec8c-4514-a5d7-ef3e9e84f0f1",
+      "DisplayName": "ExcelMapper",
+      "ColorIndex": 15
+    },
+    "6a8731e1-c6b9-4e16-98e2-dd6d940f10e2": {
+      "ProjectGuid": "6a8731e1-c6b9-4e16-98e2-dd6d940f10e2",
+      "DisplayName": "Proto2CS",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

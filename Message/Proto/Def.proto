@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+package Message;
+
+enum ItemType {
+  placeholder = 0;
+  currency = 1;  //货币
+  item = 2;      //道具
+  hero = 3;      //英雄
+  equip = 4;     //装备
+}
+
+enum CurrencyType {
+  placeholder = 0;
+  gold = 1;
+  diamond = 2;
+}
+
+//稀有度
+enum Rarity {
+  White = 0;
+  Green = 1;
+  Blue = 2;
+  Purple = 3;
+  Orange = 4;
+  Red = 5;
+}

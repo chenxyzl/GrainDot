@@ -1,0 +1,72 @@
+
+syntax = "proto3";
+import "Code.proto";
+import "Common.proto";
+package Message;
+
+message C2SPushTest {}  // IRequest
+message S2CPushTest {   // IResponse 同步服务器时间
+  int64 time = 1;       //服务器时间
+}
+
+message CNotifyTest {}  // IMessage 通知测试
+
+message SPushTest {}  // IMessage 推送测试
+
+message SimpleRole {        //角色简单信息
+  uint64 rid = 1;           //角色id
+  uint32 tid = 2;           //模板id
+  string name = 3;          //名
+  int64 lastLoginTime = 4;  //最近一次登录时间
+  int64 lastOfflineTime = 5;  //最近一次下线时间 (上线大于离线表示在线)
+  uint64 exp = 4;             //经验 --等级靠换算
+}
+
+message C2SLogin  // IRequest 登录游戏服务器
+{
+  int64 key = 1;  // 帐号
+  uint32 sn = 2;  // 流水号如果大于0则表示是短线重连
+}
+message S2CLogin {                   // IResponse
+  repeated SimpleRole roleList = 1;  //角色列表
+}
+
+message Role {              //角色信息
+  uint64 rid = 1;           //角色id
+  uint32 tid = 2;           //模板id
+  string name = 3;          //名
+  int64 lastLoginTime = 4;  //最近一次登录时间
+  int64 lastOfflineTime = 5;  //最近一次下线时间 (上线大于离线表示在线)
+  uint64 exp = 4;             //经验 --等级靠换算
+  map<int32, uint64> currencyBag = 6;  //货币
+  repeated Item itemBag = 7;           //道具背包--角色背包
+  repeated Hero heroBag = 8;           //武将背包
+  repeated Equip equipBag = 9;         //装备背包
+}
+
+message C2SChooseRole {  // IRequest 选择角色
+  uint64 rid = 1;        //角色id
+}
+message S2CChooseRole {  // IResponse
+  Role role = 1;
+}
+
+message SSyncReward {  // IMessage
+  repeated Item adds = 1;
+  repeated Item dels = 2;
+}
+
+message Mail {
+  uint64 uid = 1;              //唯一id
+  uint32 tid = 2;              //模板id
+  string customTitle = 3;      //自定义标题 覆盖默认
+  string customContent = 4;    //自定义内容 覆盖默认
+  repeated string params = 5;  //参数列表
+  int64 recvTime = 6;          //获得时间
+  bool hasRead = 7;            //是否阅读
+  bool hasGet = 8;             //是否领取
+}
+message C2SMails {}  // IRequest 获取邮件列表
+message S2SMails {   // IResponse
+  repeated Mail mails = 1;
+}
