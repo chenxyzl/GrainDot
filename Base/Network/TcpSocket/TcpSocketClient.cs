@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Base.Network
 {
-    class TcpSocketClient : BaseTcpSocketClient<ITcpSocketClient, byte[]>, ITcpSocketClient
+    class TcpSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
     {
-        public TcpSocketClient(string ip, int port, TcpSocketCientEvent<ITcpSocketClient, byte[]> clientEvent)
+        public TcpSocketClient(string ip, int port, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
             : base(ip, port, clientEvent)
         {
         }
@@ -22,7 +22,7 @@ namespace Base.Network
             });
         }
 
-        public async Task Send(byte[] bytes)
+        public async override Task Send(byte[] bytes)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace Base.Network
             }
         }
 
-        public async Task Send(string msgStr)
+        public async override Task Send(string msgStr)
         {
             await Send(Encoding.UTF8.GetBytes(msgStr));
         }

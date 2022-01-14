@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Base.Network
 {
-    class TcpSocketClientBuilder : BaseGenericClientBuilder<ITcpSocketClientBuilder, ITcpSocketClient, byte[]>, ITcpSocketClientBuilder
+    class TcpSocketClientBuilder : BaseGenericClientBuilder<ITcpSocketClientBuilder, ISocketClient, byte[]>, ITcpSocketClientBuilder
     {
         public TcpSocketClientBuilder(string ip, int port)
             : base(ip, port)
@@ -31,7 +31,7 @@ namespace Base.Network
             return this;
         }
 
-        public async override Task<ITcpSocketClient> BuildAsync()
+        public async override Task<ISocketClient> BuildAsync()
         {
             TcpSocketClient tcpClient = new TcpSocketClient(_ip, _port, _event);
 

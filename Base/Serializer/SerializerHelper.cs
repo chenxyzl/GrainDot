@@ -26,10 +26,5 @@ namespace Base.Serializer
                 return ProtoBuf.Serializer.Deserialize(typeof(T), stream) as T;
             }
         }
-
-        public static byte[] ToBinary(this RpcMessage self)
-        {
-            return ToBinary(self);
-        }
     }
 }

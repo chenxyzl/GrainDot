@@ -1,7 +1,5 @@
 ﻿using Message;
-using System;
-
-namespace I
+namespace Base
 {
     public static class ItemHelper
     {
@@ -9,9 +7,9 @@ namespace I
         {
             return (ItemType)(itemId / 100000);
         }
-        public static CurrencyType GetCurrencyType(int itemId)
+        public static CurrencyType ToCurrency(this int itemId)
         {
-            H.Ensure(GetItemType(itemId) == ItemType.Currency, Code.ItemNotCurrency);
+            A.Ensure(GetItemType(itemId) == ItemType.Currency, Code.ItemNotCurrency);
             return (CurrencyType)(itemId);
         }
     }

@@ -12,9 +12,9 @@ using TaskCompletionSource = DotNetty.Common.Concurrency.TaskCompletionSource;
 
 namespace Base.Network
 {
-    class WebSocketClient : BaseTcpSocketClient<IWebSocketClient, byte[]>, IWebSocketClient
+    class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
     {
-        public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<IWebSocketClient, byte[]> clientEvent)
+        public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
             : base(ip, port, clientEvent)
         {
             string uri = $"ws://{ip}:{port}{path}";
@@ -84,7 +84,7 @@ namespace Base.Network
             });
         }
 
-        public async Task Send(byte[] bytes)
+        public async override Task Send(byte[] bytes)
         {
             try
             {
@@ -94,6 +94,23 @@ namespace Base.Network
                 }
                 await _channel.WriteAndFlushAsync(new BinaryWebSocketFrame(Unpooled.WrappedBuffer(bytes)));
                 _clientEvent?.OnSend(this, bytes);
+            }
+            catch (Exception ex)
+            {
+                _clientEvent.OnException?.Invoke(ex);
+            }
+        }
+
+        public async override Task Send(string msgStr)
+        {
+            try
+            {
+                if (!handshaker.IsHandshakeComplete)
+                {
+                    _handshakerSp.WaitOne();
+                }
+                await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
+                //_clientEvent?.OnSend(this, msgStr);
             }
             catch (Exception ex)
             {

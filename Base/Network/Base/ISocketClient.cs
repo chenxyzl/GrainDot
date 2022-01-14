@@ -4,7 +4,7 @@
     /// TcpSocket客户端
     /// </summary>
     /// <seealso cref="Base.Network.IClose" />
-    public interface IBaseTcpSocketClient : IClose
+    public interface ISocketClient : IClose, ISendBytes, ISendString
     {
         /// <summary>
         /// 服务器Ip

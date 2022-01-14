@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Message;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Base.Helper
@@ -74,12 +75,12 @@ namespace Base.Helper
 
             if (++value > ushort.MaxValue - 1)
             {
-                A.Abort(PB.Code.Error, $"id is not enough! value: {value}");
+                A.Abort(Code.Error, $"id is not enough! value: {value}");
             }
 
             if (time > int.MaxValue)
             {
-                A.Abort(PB.Code.Error, $"time > int.MaxValue value: {time}");
+                A.Abort(Code.Error, $"time > int.MaxValue value: {time}");
             }
 
             IdStruct idStruct = new IdStruct(Node, (uint)time, (ushort)value);

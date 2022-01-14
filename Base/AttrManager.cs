@@ -123,10 +123,5 @@ namespace Base
             newCalls.Clear();
             newNotifys.Clear();
         }
-
-        public T Get<T>() where T : ACategory
-        {
-            return (T)configs[typeof(T)];
-        }
     }
 }

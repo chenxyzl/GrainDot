@@ -8,8 +8,17 @@ namespace Base
     [Rpc]
     public interface IHandler
     {
-        //在这里注册
-        Dictionary<uint, RpcHandler<REQ, RSQ>> GetRpcHandler<REQ, RSQ>() where REQ : IRequest where RSQ : IResponse;
-        Dictionary<uint, RnHandler<MSG>> GetRnHandler<MSG>() where MSG : IMessage;
+
+    }
+
+    public interface IInnerHandler
+    {
+        public void InnerHandleRequest(BaseActor actor, InnerRequest message);
+        public void InnerHandleResponse(BaseActor actor, InnerRequest message);
+    }
+
+    public interface IGateHandler
+    {
+        public void IGateHandle(BaseActor actor, Response message);
     }
 }

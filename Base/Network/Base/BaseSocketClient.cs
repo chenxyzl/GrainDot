@@ -1,12 +1,13 @@
 ﻿using DotNetty.Transport.Channels;
 using System;
+using System.Threading.Tasks;
 
 namespace Base.Network
 {
-    abstract class BaseTcpSocketClient<TSocketClient, TData> : IBaseTcpSocketClient, IChannelEvent
-        where TSocketClient : class, IBaseTcpSocketClient
+    abstract class BaseSocketClient<TSocketClient, TData> : ISocketClient, IChannelEvent
+        where TSocketClient : class, ISocketClient
     {
-        public BaseTcpSocketClient(string ip, int port, TcpSocketCientEvent<TSocketClient, TData> clientEvent)
+        public BaseSocketClient(string ip, int port, TcpSocketCientEvent<TSocketClient, TData> clientEvent)
         {
             Ip = ip;
             Port = port;
@@ -57,5 +58,7 @@ namespace Base.Network
         }
 
         public abstract void OnChannelReceive(IChannelHandlerContext ctx, object msg);
+        public abstract Task Send(byte[] bytes);
+        public abstract Task Send(string msgStr);
     }
 }

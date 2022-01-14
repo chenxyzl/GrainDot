@@ -4,7 +4,7 @@
     /// TcpSocket客户端构建者
     /// </summary>
     public interface ITcpSocketClientBuilder :
-        IGenericClientBuilder<ITcpSocketClientBuilder, ITcpSocketClient, byte[]>,
+        IGenericClientBuilder<ITcpSocketClientBuilder, ISocketClient, byte[]>,
         ICoderBuilder<ITcpSocketClientBuilder>
     {
 

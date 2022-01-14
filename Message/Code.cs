@@ -13,15 +13,17 @@ namespace Message
 
 		AccountIllegal = 3,
 
-		ItemNodEnough = 4,
+		ItemNodEnough = 10000,
 
-		ItemIdNotExist = 5,
+		ItemIdNotExist = 10001,
 
-		ItemTypeNotDeal = 6,
+		ItemTypeNotDeal = 10002,
 
-		AddCountMustBiggerThan0 = 7,
+		AddCountMustBiggerThan0 = 10003,
 
-		ConfigNotFound = 8,
+		ConfigNotFound = 10004,
+
+		ItemNotCurrency = 10005,
 
 	}
 

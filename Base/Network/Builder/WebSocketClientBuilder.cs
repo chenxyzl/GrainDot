@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Base.Network
 {
-    class WebSocketClientBuilder : BaseGenericClientBuilder<IWebSocketClientBuilder, IWebSocketClient, byte[]>, IWebSocketClientBuilder
+    class WebSocketClientBuilder : BaseGenericClientBuilder<IWebSocketClientBuilder, ISocketClient, byte[]>, IWebSocketClientBuilder
     {
         public WebSocketClientBuilder(string ip, int port, string path)
             : base(ip, port)
@@ -16,7 +16,7 @@ namespace Base.Network
         }
         private string _path { get; }
 
-        public async override Task<IWebSocketClient> BuildAsync()
+        public async override Task<ISocketClient> BuildAsync()
         {
             WebSocketClient tcpClient = new WebSocketClient(_ip, _port, _path, _event);
 
