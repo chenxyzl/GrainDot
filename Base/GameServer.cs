@@ -20,7 +20,7 @@ namespace Base
         //日志
         public readonly ILog Logger;
         //配置
-        protected Config _systemConfig;
+        protected Akka.Configuration.Config _systemConfig;
         //根系统
         public ActorSystem system { get; protected set; }
         //角色类型

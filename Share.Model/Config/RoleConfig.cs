@@ -16,12 +16,5 @@ namespace Share.Model
     }
 
     [Config("Role")]
-    public partial class RoleConfigCategory : ACategory<int, RoleConfig>
-    {
-        public static RoleConfigCategory Instance;
-        public RoleConfigCategory()
-        {
-            Instance = this;
-        }
-    }
+    public partial class RoleConfigCategory : ACategory<int, RoleConfig> { }
 }

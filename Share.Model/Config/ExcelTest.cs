@@ -31,12 +31,6 @@ namespace Share.Model
     [Config("Example")]
     partial class ExampleConfigCategory : ACategory<int, MapListValue>
     {
-        public static ExampleConfigCategory Instance;
-        public ExampleConfigCategory()
-        {
-            Instance = this;
-        }
-
         public override void BeginInit()
         {
             base.BeginInit();
@@ -47,7 +41,7 @@ namespace Share.Model
             base.EndInit();
 
             //有空了考虑用注解来实现
-            foreach (var v in Instance.dict)
+            foreach (var v in dict)
             {
                 foreach (var v1 in v.Value.MapTest)
                 {

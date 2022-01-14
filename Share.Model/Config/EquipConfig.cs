@@ -27,12 +27,5 @@ namespace Share.Model
     }
 
     [Config("Equip")]
-    public partial class StartEquipConfigCategory : ACategory<int, EquipConfig>
-    {
-        public static StartEquipConfigCategory Instance;
-        public StartEquipConfigCategory()
-        {
-            Instance = this;
-        }
-    }
+    public partial class StartEquipConfigCategory : ACategory<int, EquipConfig> { }
 }

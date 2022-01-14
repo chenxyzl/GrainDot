@@ -20,12 +20,5 @@ namespace Share.Model
     }
 
     [Config("Hero")]
-    public partial class HeroConfigCategory : ACategory<int, HeroConfig>
-    {
-        public static HeroConfigCategory Instance;
-        public HeroConfigCategory()
-        {
-            Instance = this;
-        }
-    }
+    public partial class HeroConfigCategory : ACategory<int, HeroConfig> { }
 }

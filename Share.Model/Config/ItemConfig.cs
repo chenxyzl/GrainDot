@@ -6,7 +6,7 @@ using Message;
 namespace Share.Model
 {
 
-    [SheetName(new string[] { "材料", "道具"})]
+    [SheetName(new string[] { "材料", "道具" })]
     public class ItemConfig : IExcelConfig<int>
     {
         [ExcelColumnName("##ID")]
@@ -48,12 +48,5 @@ namespace Share.Model
     }
 
     [Config("Item")]
-    public partial class AssetsConfigCategory : ACategory<int, AssetsConfig>
-    {
-        public static AssetsConfigCategory Instance;
-        public AssetsConfigCategory()
-        {
-            Instance = this;
-        }
-    }
+    public partial class AssetsConfigCategory : ACategory<int, AssetsConfig> { }
 }

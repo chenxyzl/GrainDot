@@ -22,12 +22,5 @@ namespace Share.Model
     }
 
     [Config("Item")]
-    public partial class CurrencyConfigCategory : ACategory<CurrencyType, CurrencyConfig>
-    {
-        public static CurrencyConfigCategory Instance;
-        public CurrencyConfigCategory()
-        {
-            Instance = this;
-        }
-    }
+    public partial class CurrencyConfigCategory : ACategory<CurrencyType, CurrencyConfig> { }
 }

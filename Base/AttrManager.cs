@@ -11,29 +11,13 @@ using System.Threading.Tasks;
 namespace Base
 {
 
-    //请求应答类rpc
-    public delegate Task<RSQ> RpcHandler<REQ, RSQ>(REQ a) where REQ : IRequest where RSQ : IResponse;
-    //通知类rpc
-    public delegate Task RnHandler<MSG>(MSG a) where MSG : IMessage;
-
     public delegate Task<object> CallDelegate(object msg);
     public delegate Task NotifyDelegate(object msg);
-
-    public class TA : IRequest
-    {
-
-    }
-    public class TB : IResponse
-    {
-
-    }
 
     class AttrManager : Single<AttrManager>
     {
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
-        private Dictionary<uint, CallDelegate> callDelegtes = new Dictionary<uint, CallDelegate>();
-        private Dictionary<uint, NotifyDelegate> notifyDelegtes = new Dictionary<uint, NotifyDelegate>();
-        //加载程序集合
+        //加载程序集
         public void Reload()
         {
             var t = new UnOrderMultiMapSet<Type, Type>();
@@ -63,9 +47,9 @@ namespace Base
             types = t;
 
             //重新加载配置
-            ReloadConfig();
+            Config.Instance.ReloadConfig();
             //重新加载Handler
-            ReloadHanlder();
+            RpcHandler.Instance.ReloadHanlder();
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {
@@ -76,60 +60,73 @@ namespace Base
         {
             return GetTypes<ServerAttribute>();
         }
-
-        public void ReloadConfig()
-        {
-
-        }
-
-        public void ReloadHanlder()
-        {
-
-        }
     }
 
 
-    class HandlerManager<REQ, RSQ, MSG> : Single<HandlerManager<REQ, RSQ, MSG>> where REQ : IRequest where RSQ : IResponse where MSG : IMessage
+    class Config : Single<Config>
     {
-        private Dictionary<uint, RpcHandler<REQ, RSQ>> rpcHandlers = new Dictionary<uint, RpcHandler<REQ, RSQ>>();
-        private Dictionary<uint, RnHandler<MSG>> rnHandlers = new Dictionary<uint, RnHandler<MSG>>();
-        //加载程序集合
-        public void Reload()
+        private Dictionary<Type, ACategory> configs = new Dictionary<Type, ACategory>();
+        public void ReloadConfig()
         {
-            var t = new UnOrderMultiMapSet<Type, Type>();
-            var asm = Helper.DllHelper.GetHotfixAssembly();
-            var t1 = new Dictionary<uint, MethodInfo>();
-            var newRpcs = new Dictionary<uint, RpcHandler<REQ, RSQ>>();
-            var newRns = new Dictionary<uint, RnHandler<MSG>>();
-
-            foreach (var x in asm)
+            Dictionary<Type, ACategory> newDic = new Dictionary<Type, ACategory>();
+            HashSet<Type> types = AttrManager.Instance.GetTypes<ConfigAttribute>();
+            foreach (var type in types)
             {
-                foreach (var type in x.GetTypes())
-                {
-                    if (!type.IsAssignableFrom(typeof(IHandler)))
-                    {
-                        continue;
-                    }
-                    var ins = Activator.CreateInstance(type) as IHandler;
-                    if (ins == null)
-                    {
-                        A.Abort(Code.Error, "handler create ins is null");
-                    }
-                    var rpcs = ins.GetRpcHandler<REQ, RSQ>();
-                    foreach (var k in rpcs)
-                    {
-                        newRpcs[k.Key] = k.Value;
-                    }
+                object obj = Activator.CreateInstance(type);
 
-                    var rns = ins.GetRnHandler<MSG>();
-                    foreach (var k in rns)
-                    {
-                        newRns[k.Key] = k.Value;
-                    }
+                ACategory iCategory = obj as ACategory;
+                if (iCategory == null)
+                {
+                    throw new Exception($"class: {type.Name} not inherit from ACategory");
+                }
+                iCategory.BeginInit();
+                iCategory.EndInit();
+                newDic[iCategory.ConfigType] = iCategory;
+            }
+            (configs, newDic) = (newDic, configs);
+            newDic.Clear();
+        }
+
+        public T Get<T>() where T : ACategory
+        {
+            return (T)configs[typeof(T)];
+        }
+    }
+
+    class RpcHandler : Single<RpcHandler>
+    {
+        private Dictionary<uint, CallDelegate> callDelegtes = new Dictionary<uint, CallDelegate>();
+        private Dictionary<uint, NotifyDelegate> notifyDelegtes = new Dictionary<uint, NotifyDelegate>();
+        public void ReloadHanlder()
+        {
+            Dictionary<uint, CallDelegate> newCalls = new Dictionary<uint, CallDelegate>();
+            Dictionary<uint, NotifyDelegate> newNotifys = new Dictionary<uint, NotifyDelegate>();
+            HashSet<Type> types = AttrManager.Instance.GetTypes<RpcAttribute>();
+            foreach (var type in types)
+            {
+                object obj = Activator.CreateInstance(type);
+
+                IHandler handlers = obj as IHandler;
+                if (handlers == null)
+                {
+                    throw new Exception($"class: {type.Name} not inherit from ACategory");
+                }
+                //所有所有handler方法
+                var methods = type.GetMethods();
+                foreach (var metchod in methods)
+                {
+                    //判断事件类型
                 }
             }
-            rpcHandlers = newRpcs;
-            rnHandlers = newRns;
+            (callDelegtes, newCalls) = (newCalls, callDelegtes);
+            (notifyDelegtes, newNotifys) = (newNotifys, notifyDelegtes);
+            newCalls.Clear();
+            newNotifys.Clear();
+        }
+
+        public T Get<T>() where T : ACategory
+        {
+            return (T)configs[typeof(T)];
         }
     }
 }
