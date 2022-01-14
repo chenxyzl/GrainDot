@@ -4,9 +4,8 @@ namespace
 	{
 		public void Load()
 		{
-			AddRpcInfo(10000, OpType.SS, typeof(cc.HWPlayerOnlineAsk), typeof(cc.WHPlayerOnlineAns));
-			AddRpcInfo(10001, OpType.SS, typeof(cc.HWPlayerOfflineAsk), typeof(cc.WHPlayerOfflineAns));
-			AddRpcInfo(10002, OpType.SS, typeof(cc.HWPlayerKickOutAsk), typeof(cc.WHPlayerKickOutAns));
+			AddRpcInfo(10000, OpType.SS, typeof(Message.HWPlayerOnlineAsk), typeof(Message.WHPlayerOnlineAns));
+			AddRpcInfo(10001, OpType.SS, typeof(Message.HWPlayerOfflineAsk), typeof(Message.WHPlayerOfflineAns));
 		}
 	}
 }

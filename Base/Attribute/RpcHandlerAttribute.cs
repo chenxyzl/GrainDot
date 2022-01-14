@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace Base
 {
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
+    public class RpcAttribute : BaseAttribute
+    {
+        public string Router { get; private set; }
+        public string Tag { get; private set; }
+        public readonly uint HttpId;
+    }
+
     public enum RpcType
     {
         Inner = 1, //内部rpc

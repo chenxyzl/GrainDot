@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
+    [Rpc]
     public interface IHandler
     {
         //在这里注册

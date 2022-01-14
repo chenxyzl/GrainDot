@@ -1,6 +1,6 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace cc
+namespace Message
 {
 	[ProtoContract]
 	public enum Code
@@ -13,29 +13,15 @@ namespace cc
 
 		AccountIllegal = 3,
 
-		GateNotFound = 4,
+		ItemNodEnough = 4,
 
-		CareerHasUnlock = 5,
+		ItemIdNotExist = 5,
 
-		CareerNotUnlock = 6,
+		ItemTypeNotDeal = 6,
 
-		CareerTypeNotExist = 7,
+		AddCountMustBiggerThan0 = 7,
 
-		CareerConditionsLimit = 8,
-
-		ItemIdNotExist = 9,
-
-		ItemTypeNotDeal = 10,
-
-		ItemNotCurrency = 11,
-
-		PlayerOffline = 12,
-
-		AddCountMustBiggerThan0 = 13,
-
-		MustSetWorldId = 14,
-
-		ConfigNotFound = 15,
+		ConfigNotFound = 8,
 
 	}
 

@@ -6,3 +6,5 @@ Tools/etcd/etcdctl.exe
 Tools/etcd/default.etcd/
 Bin/
 **/*.csproj.user
+**/~$*.xlsx
+**/.vs/*

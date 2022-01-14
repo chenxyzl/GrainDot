@@ -7,7 +7,7 @@ namespace Base
 {
     public abstract class IActorComponent
     {
-        public IActorComponent(BaseActor n) { Node = n; }
+        public IActorComponent(BaseActor a) { Node = a; }
         protected BaseActor Node;
         public K GetComponent<K>() where K : IActorComponent
         {

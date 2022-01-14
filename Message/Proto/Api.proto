@@ -13,5 +13,4 @@ message C2ALogin {
 message A2CLogin {
   string address = 1;
   int64 key = 2;
-  repeated ServerInfo ServerList = 2;
 }

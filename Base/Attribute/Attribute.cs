@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 	public class BaseAttribute : Attribute
 	{
 		public Type AttributeType { get; }

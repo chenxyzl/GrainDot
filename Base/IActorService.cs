@@ -9,7 +9,7 @@ namespace Base
 {
     public abstract class IActorService : IActorComponent
     {
-        public IActorService(BaseActor n) : base(n) { }
+        public IActorService(BaseActor a) : base(a) { }
         ////启动 加载db数据 ~只能处理序列化相关不要有业务逻辑
         //public abstract Task Load();
         ////开始 第一个tick开始前  @param:crossDay 是否跨天

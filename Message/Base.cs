@@ -1,10 +1,10 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace cc
+namespace Message
 {
 // tcp
 	[ProtoContract]
-	public partial class FPRequest: IMessage
+	public partial class Request: IMessage
 	{
 		[ProtoMember(1)]
 		public uint Opcode { get; set; }
@@ -22,7 +22,7 @@ namespace cc
 
 // tcp
 	[ProtoContract]
-	public partial class FPResponse: IMessage
+	public partial class Response: IMessage
 	{
 		[ProtoMember(1)]
 		public uint Opcode { get; set; }

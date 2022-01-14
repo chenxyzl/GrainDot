@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Base
 {
+
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
     public class ServerAttribute : BaseAttribute
     {
         //public RoleDef role { get; private set; }

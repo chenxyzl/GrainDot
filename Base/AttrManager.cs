@@ -16,6 +16,9 @@ namespace Base
     //通知类rpc
     public delegate Task RnHandler<MSG>(MSG a) where MSG : IMessage;
 
+    public delegate Task<object> CallDelegate(object msg);
+    public delegate Task NotifyDelegate(object msg);
+
     public class TA : IRequest
     {
 
@@ -28,6 +31,8 @@ namespace Base
     class AttrManager : Single<AttrManager>
     {
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+        private Dictionary<uint, CallDelegate> callDelegtes = new Dictionary<uint, CallDelegate>();
+        private Dictionary<uint, NotifyDelegate> notifyDelegtes = new Dictionary<uint, NotifyDelegate>();
         //加载程序集合
         public void Reload()
         {
@@ -56,6 +61,11 @@ namespace Base
             }
             //新旧覆盖 ~~
             types = t;
+
+            //重新加载配置
+            ReloadConfig();
+            //重新加载Handler
+            ReloadHanlder();
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {
@@ -65,6 +75,16 @@ namespace Base
         public HashSet<Type> GetServers()
         {
             return GetTypes<ServerAttribute>();
+        }
+
+        public void ReloadConfig()
+        {
+
+        }
+
+        public void ReloadHanlder()
+        {
+
         }
     }
 

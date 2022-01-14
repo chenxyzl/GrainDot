@@ -18,12 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Akka" Version="1.4.24" />
-    <PackageReference Include="Akka.Cluster" Version="1.4.24" />
+    <PackageReference Include="Akka" Version="1.4.31" />
+    <PackageReference Include="Akka.Cluster" Version="1.4.31" />
     <PackageReference Include="DotNetty.Codecs.Http" Version="0.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.10" />
     <PackageReference Include="NLog.Config" Version="4.7.10" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.3" />
@@ -34,10 +35,6 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Message\Message.csproj" />
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Component\Actor\" />
   </ItemGroup>
 
 </Project>

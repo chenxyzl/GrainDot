@@ -1,9 +1,9 @@
 using ProtoBuf;
 using System.Collections.Generic;
-namespace cc
+namespace Message
 {
 	[ProtoContract]
-	public partial class C2A_Login: IMessage
+	public partial class C2ALogin: IMessage
 	{
 		[ProtoMember(1)]
 		public int MobileType { get; set; }
@@ -20,19 +20,13 @@ namespace cc
 	}
 
 	[ProtoContract]
-	public partial class A2C_Login: IMessage
+	public partial class A2CLogin: IMessage
 	{
 		[ProtoMember(1)]
 		public string Address { get; set; }
 
 		[ProtoMember(2)]
 		public long Key { get; set; }
-
-		[ProtoMember(3)]
-		public ulong GateId { get; set; }
-
-		[ProtoMember(4)]
-		public List<ServerInfo> ServerList = new List<ServerInfo>();
 
 	}
 

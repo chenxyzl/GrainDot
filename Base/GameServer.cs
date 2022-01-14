@@ -63,7 +63,7 @@ namespace Base
 
         private void LoadConfig()
         {
-            var config = File.ReadAllText($"../../Config/{role}.conf");
+            var config = File.ReadAllText($"../Conf/{role}.conf");
             _systemConfig = ConfigurationFactory.ParseString(config);
         }
 

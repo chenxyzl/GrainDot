@@ -11,7 +11,7 @@ namespace Base
         public NLogAdapter(string p)
         {
 #if DEBUG
-            LogManager.Configuration = new XmlLoggingConfiguration("../../Config/Nlog.config");
+            LogManager.Configuration = new XmlLoggingConfiguration("../Conf/Nlog.config");
 #else
             LogManager.Configuration = new XmlLoggingConfiguration("Nlog.config");
 #endif
