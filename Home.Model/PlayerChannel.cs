@@ -1,5 +1,6 @@
 ﻿using Akka.Actor;
 using Base;
+using Base.Helper;
 using Base.Network;
 using Base.Serializer;
 using DotNetty.Transport.Channels;
@@ -23,21 +24,33 @@ namespace Home.Model
         public override void OnClose()
         {
             //通知actor下线
+            actor = null;
         }
 
         public override void OnConnected() { }
 
-        public override void OnRecieve(byte[] bytes)
+        public override async void OnRecieve(byte[] bytes)
         {
-            RpcMessage message;
+            Request message;
             try
             {
-                message = SerializerHelper.FromBinary<RpcMessage>(bytes);
+                message = SerializerHelper.FromBinary<Request>(bytes);
             }
             catch (Exception e) //避免协议破解
             {
                 logger.Warning(e.Message);
                 Close();
+                return;
+            }
+
+            Response ret = new Response { Opcode = message.Opcode, Sn = message.Sn };
+
+            //如果是ping直接回复pong
+            if (message.Opcode == 200000)
+            {
+                ret.Code = Code.Ok;
+                ret.Content = new S2CPong { Time = TimeHelper.Now() }.ToBinary();
+                await Send(ret.ToBinary());
                 return;
             }
 
@@ -55,23 +68,40 @@ namespace Home.Model
             catch (CodeException e) //可预料的返回客户端错误码
             {
                 logger.Warning(e.Message);
-                _ = Send(new RpcMessage { Code = e.Code }.ToBinary());
+                if (e.Serious)
+                {
+                    Close();
+                }
+                else
+                {
+                    ret.Code = e.Code;
+                    _ = Send(ret.ToBinary());
+                }
+
             }
             catch (Exception e) //不可预料的断开客户端链接
             {
-                logger.Warning(e.Message);b`
+                logger.Warning(e.Message);
                 Close();
             }
 
         }
 
-        public async Task BindPlayerActor(RpcMessage message)
+        public void BindPlayerActor(Request message)
         {
-            await Base.Game.GameServer.GetChild("xx").Ask<int>(1, TimeSpan.FromSeconds(10));
+            //第一条消息必须是登录
+            A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
+            A.Ensure(actor == null, Code.Error, "player has bind", true);
+            actor = Game.GameServer.GetChild("xx");
+            A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
+            //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)
+            //var a = await Game.GameServer.GetChild("xx").Ask<S2CLogin>(1, TimeSpan.FromSeconds(3));
+            actor.Tell(message);
         }
 
-        public void TellSelf(RpcMessage message)
+        public void TellSelf(Request message)
         {
+            A.RequireNotNull(actor, Code.Error, "must bind first", true);
             actor.Tell(message);
         }
     }

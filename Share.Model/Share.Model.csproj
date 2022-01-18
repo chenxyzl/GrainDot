@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Component\" />
+  </ItemGroup>
+
 </Project>

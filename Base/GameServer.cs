@@ -1,16 +1,12 @@
 ﻿using Akka.Actor;
 using Akka.Configuration;
-using Base.Alg;
-using Base.Network;
 using Common;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+using Akka.Cluster;
+using Akka.Cluster.Sharding;
 using System.Threading.Tasks;
+using Akka.Cluster.Tools.Client;
 
 namespace Base
 {
@@ -104,10 +100,18 @@ namespace Base
                 await x.Stop();
             }
         }
-        virtual public async Task StartSystem()
+        virtual public async Task StartSystem(string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             await BeforCreate();
             system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+            var sharding = ClusterSharding.Get(system);
+            var shardRegion = await sharding.StartAsync(
+                typeName,
+                p,
+                ClusterShardingSettings.Create(system),
+                extractor
+                );
+            ClusterClientReceptionist.Get(system).RegisterService(shardRegion);
             await AfterCreate();
         }
 
@@ -131,5 +135,11 @@ namespace Base
         /// 注册全局组件
         /// </summary>
         public abstract void RegisterGlobalComponent();
+
+        public void StartWorldShardProxy()
+        {
+            ClusterSharding.Get(system)
+            .StartProxy(GameWorldShard.world.name, Optional.of(role.name), WorldMessageExtractor())
+        }
     }
 }

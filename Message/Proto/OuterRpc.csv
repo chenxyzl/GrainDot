@@ -3,6 +3,5 @@
 200001,C,CNotifyTest,,NotifyTest,通知测试
 200002,S,,SPushTest,PushTest,推送测试
 200003,CS,C2SLogin,S2CLogin,Login,登陆游戏的第一条消息
-200004,CS,C2SChooseRole,S2CChooseRole,ChooseRole,选择服务器
 200004,S,,SSyncReward,SyncReward,同步奖励(发奖/扣道具)
 200005,CS,C2SMails,S2SMails,GetMails,获取邮件

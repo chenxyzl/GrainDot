@@ -19,7 +19,12 @@ namespace Base.Serializer
             }
         }
 
-        public static T FromBinary<T>(byte[] bytes) where T : class
+        public static byte[] ToBinary<T>(this T obj) where T : class, IMessage
+        {
+            return ToBinary(obj);
+        }
+
+        public static T FromBinary<T>(byte[] bytes) where T : class, IMessage
         {
             using (var stream = new MemoryStream(bytes))
             {

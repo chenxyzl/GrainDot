@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Base.Helper;
+using Message;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -59,7 +61,7 @@ namespace Base.Network.Http
                 {
                     case "/api/login":
                         var data = Convert.FromBase64String(base64);
-                        var request = ProtobufHelper.FromBytes<C2R_Login>(data);
+                        var request = ProtobufHelper.FromBytes<C2ALogin>(data);
                         var result = await Login(request);
                         Console.WriteLine(request);
 

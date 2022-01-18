@@ -14,7 +14,7 @@ namespace BootHome
     {
         static async Task Main(string[] args)
         {
-            await Game.Boot(RoleDef.Home, typeof(Home.Model.Home));
+            await Game.Boot("PlayerActor", RoleDef.Home, typeof(Home.Model.Home));
         }
     }
 }

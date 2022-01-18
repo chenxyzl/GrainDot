@@ -2,48 +2,42 @@
 using Base;
 using Base.Helper;
 using Base.Network;
-using System;
+using Base.Serializer;
+using Message;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Home.Model
 {
     public class PlayerActor : BaseActor
     {
-        enum State
-        {
-            /** 新连接-未授权 */
-            CONNECTED,
-
-            /** 在线 */
-            ONLINE,
-
-            /** 下线后在缓存的 */
-            OFFLINE
-        }
-
-        IActorState? state;
-        ISocketClient client;
+        IBaseSocketConnection session;
         public ulong PlayerId;
         public ILog _log;
         public override ILog Logger { get { if (_log == null) { _log = new NLogAdapter($"player:{PlayerId}"); } return _log; } }
+        public readonly SortedDictionary<ulong, SenderMessage> InnerRequestCallback = new SortedDictionary<ulong, SenderMessage>();
+        public readonly SortedDictionary<ulong, SenderMessage> OuterRequestCallback = new SortedDictionary<ulong, SenderMessage>();
+        public IActorRef worldShardProxy;
 
-        public PlayerActor(ISocketClient c, ulong playerId) : base()
+        public PlayerActor(IBaseSocketConnection c, ulong playerId) : base()
         {
-            client = c;
+            session = c;
             PlayerId = playerId;
+            PlayerAttrManager.Instance.Hotfix.AddComponent(this);
         }
 
-        protected override void PreStart()
+        protected override async void PreStart()
         {
             base.PreStart();
-            state = new InitState(this);
+            await PlayerAttrManager.Instance.Hotfix.Load(this);
+            await PlayerAttrManager.Instance.Hotfix.Start(this, false);
         }
 
-        protected override void PostStop()
+
+        protected override async void PostStop()
         {
+            await PlayerAttrManager.Instance.Hotfix.PreStop(this);
+            await PlayerAttrManager.Instance.Hotfix.Stop(this);
             base.PostStop();
         }
 
@@ -55,7 +49,6 @@ namespace Home.Model
                     {
                         var now = TimeHelper.Now();
                         Tick(now);
-                        state?.Tick(now);
                         break;
                     }
                 case ReceiveTimeout m:
@@ -63,89 +56,32 @@ namespace Home.Model
                         ElegantStop();
                         break;
                     }
+
+                case Request request:
+                    {
+                        //todo 如果sn为0 清空所有缓存消息
+                        //todo 如果sn已存在直接回传sn
+                        //todo 如果sn不存在且不等于lastSn+1 触发断线
+                        //
+                        RpcManager.Instance.OuterHandlerDispatcher.Dispatcher(this, request);
+                        break;
+                    }
+                case InnerRequest request:
+                    {
+                        RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
+                        break;
+                    }
             }
-
-            switch (state)
-            {
-
-            }
         }
 
-        void Tick(long now)
+        async void Tick(long now)
         {
-            foreach (var a in this._components.Values)
-            {
-                a.Tick(now);
-            }
+            await PlayerAttrManager.Instance.Hotfix.Tick(this, now);
         }
-    }
 
-
-    class InitState : IActorState
-    {
-        PlayerActor playerActor;
-        public InitState(PlayerActor a)
+        public async Task Send(Response message)
         {
-            playerActor = a;
+            await session.Send(message.ToBinary());
         }
-
-        public void HandleMsg(object message)
-        {
-            switch (message)
-            {
-                //应该只处理登录消息
-            }
-
-        }
-
-        public void Tick(long now)
-        {
-        }
-
-        //override fun handleMsg(msg: Any)
-        //{
-        //    when(msg) {
-        //        is PlayerMessage -> dispatchInitInternalMessage(msg)
-        //        is ProtoPlayerEnvelope -> dispatchInitCSMessage(msg)
-        //        is ReceiveTimeout -> passivateIfOffline()
-        //        Handoff->enterTerminatedState()
-        //    }
-        //    this@PlayerActor.context.dispatcher()
-        //}
-
-    }
-
-    class OnlineState : IActorState
-    {
-        PlayerActor playerActor;
-        public OnlineState(PlayerActor a)
-        {
-            playerActor = a;
-        }
-
-        public void HandleMsg(object message)
-        {
-            switch (message)
-            {
-                //应该只处理在线业务消息
-            }
-
-        }
-
-        public void Tick(long now)
-        {
-        }
-
-        //override fun handleMsg(msg: Any)
-        //{
-        //    when(msg) {
-        //        is PlayerMessage -> dispatchInitInternalMessage(msg)
-        //        is ProtoPlayerEnvelope -> dispatchInitCSMessage(msg)
-        //        is ReceiveTimeout -> passivateIfOffline()
-        //        Handoff->enterTerminatedState()
-        //    }
-        //    this@PlayerActor.context.dispatcher()
-        //}
-
     }
 }

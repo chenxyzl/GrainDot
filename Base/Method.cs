@@ -28,13 +28,13 @@ public static class ExtensionMethods
         return query;
     }
 
-    public static IEnumerable<MethodInfo> GetRpcMethods(this Assembly assembly)
-    {
-        var query = from type in assembly.GetTypes()
-                    where type.IsAssignableFrom(typeof(IHandler))
-                    from method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                    where method.GetCustomAttributes(typeof(RpcHandlerAttribute), true).Length > 0
-                    select method;
-        return query;
-    }
+    //public static IEnumerable<MethodInfo> GetRpcMethods(this Assembly assembly)
+    //{
+    //    var query = from type in assembly.GetTypes()
+    //                where type.IsAssignableFrom(typeof(IHandler))
+    //                from method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+    //                where method.GetCustomAttributes(typeof(RpcHandlerAttribute), true).Length > 0
+    //                select method;
+    //    return query;
+    //}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Message
 {
 	[ProtoContract]
-	public partial class HWPlayerOnlineAsk: IActorRequest
+	public partial class HWPlayerOnlineAsk: IRequest
 	{
 		[ProtoMember(1)]
 		public ulong Uid { get; set; }
@@ -14,12 +14,12 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class WHPlayerOnlineAns: IActorResponse
+	public partial class WHPlayerOnlineAns: IResponse
 	{
 	}
 
 	[ProtoContract]
-	public partial class HWPlayerOfflineAsk: IActorRequest
+	public partial class HWPlayerOfflineAsk: IRequest
 	{
 		[ProtoMember(1)]
 		public ulong Uid { get; set; }
@@ -30,7 +30,7 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class WHPlayerOfflineAns: IActorResponse
+	public partial class WHPlayerOfflineAns: IResponse
 	{
 	}
 

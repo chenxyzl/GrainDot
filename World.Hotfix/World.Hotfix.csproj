@@ -14,11 +14,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handler\**" />
+    <EmbeddedResource Remove="Handler\**" />
+    <None Remove="Handler\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\World.Model\World.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\" />
     <Folder Include="Service\" />
   </ItemGroup>
 

@@ -34,9 +34,6 @@ namespace Message
 		public byte[] Content { get; set; }
 
 		[ProtoMember(4)]
-		public string Sign { get; set; }
-
-		[ProtoMember(5)]
 		public Code Code { get; set; }
 
 	}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace World.Model
 {
-    class WorldActor
+    public class WorldActor
     {
     }
 }

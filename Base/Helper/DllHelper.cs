@@ -14,6 +14,7 @@ namespace Base.Helper
         {
             Assembly[] assembly = {
                 typeof(Game).Assembly,
+                Assembly.Load(File.ReadAllBytes("./Share.Hotfix.dll"), File.ReadAllBytes("./Share.Hotfix.pdb")),
                 Assembly.Load(File.ReadAllBytes("./OM.Hotfix.dll"), File.ReadAllBytes("./OM.Hotfix.pdb")),
                 Assembly.Load(File.ReadAllBytes("./World.Hotfix.dll"), File.ReadAllBytes("./World.Hotfix.pdb")),
                 Assembly.Load(File.ReadAllBytes("./Login.Hotfix.dll"), File.ReadAllBytes("./Login.Hotfix.pdb")),

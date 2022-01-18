@@ -15,6 +15,11 @@ namespace Base
         #region 全局组件
         //所有model
         public Dictionary<Type, IActorComponent> _components = new Dictionary<Type, IActorComponent>();
+        //获取所有组件
+        public Dictionary<Type, IActorComponent> GetAllComponent()
+        {
+            return _components;
+        }
         //获取model
         public K GetComponent<K>() where K : IActorComponent
         {

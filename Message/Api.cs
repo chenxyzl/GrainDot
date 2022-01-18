@@ -2,6 +2,31 @@ using ProtoBuf;
 using System.Collections.Generic;
 namespace Message
 {
+//角色简单信息
+	[ProtoContract]
+	public partial class SimpleRole: IMessage
+	{
+		[ProtoMember(1)]
+		public ulong Uid { get; set; }
+
+		[ProtoMember(2)]
+		public uint Tid { get; set; }
+
+		[ProtoMember(3)]
+		public string Name { get; set; }
+
+		[ProtoMember(4)]
+		public long LastLoginTime { get; set; }
+
+		[ProtoMember(5)]
+		public long LastOfflineTime { get; set; }
+
+		[ProtoMember(4)]
+		public ulong Exp { get; set; }
+
+	}
+
+//登录选角色界面
 	[ProtoContract]
 	public partial class C2ALogin: IMessage
 	{
@@ -12,10 +37,7 @@ namespace Message
 		public string DeviceId { get; set; }
 
 		[ProtoMember(3)]
-		public string Account { get; set; }
-
-		[ProtoMember(4)]
-		public string Password { get; set; }
+		public string Token { get; set; }
 
 	}
 
@@ -23,10 +45,30 @@ namespace Message
 	public partial class A2CLogin: IMessage
 	{
 		[ProtoMember(1)]
-		public string Address { get; set; }
+		public List<SimpleRole> Rols = new List<SimpleRole>();
+
+	}
+
+//角色登录验证
+	[ProtoContract]
+	public partial class A2CRoleLogin: IMessage
+	{
+		[ProtoMember(1)]
+		public ulong Uid { get; set; }
 
 		[ProtoMember(2)]
-		public long Key { get; set; }
+		public string Token { get; set; }
+
+	}
+
+	[ProtoContract]
+	public partial class C2ARoleLogin: IMessage
+	{
+		[ProtoMember(1)]
+		public string Addr { get; set; }
+
+		[ProtoMember(2)]
+		public string Key { get; set; }
 
 	}
 

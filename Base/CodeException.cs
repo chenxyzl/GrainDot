@@ -7,9 +7,11 @@ namespace Base
     public class CodeException : Exception
     {
         public Code Code;
-        public CodeException(Code code, string msg) : base($"CodeException:: code:{code.ToString()}, msg:{msg}")
+        public bool Serious; //是否是严重错误，严重的会断开客户端连接
+        public CodeException(Code code, string msg, bool serious = false) : base($"CodeException:: code:{code.ToString()}, msg:{msg}, serious:{serious}")
         {
             this.Code = code;
+            this.Serious = serious;
         }
     }
 }

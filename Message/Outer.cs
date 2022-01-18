@@ -3,12 +3,12 @@ using System.Collections.Generic;
 namespace Message
 {
 	[ProtoContract]
-	public partial class C2SPushTest: IRequest
+	public partial class C2SPing: IRequest
 	{
 	}
 
 	[ProtoContract]
-	public partial class S2CPushTest: IResponse
+	public partial class S2CPong: IResponse
 	{
 		[ProtoMember(1)]
 		public long Time { get; set; }
@@ -16,7 +16,7 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class CNotifyTest: IMessage
+	public partial class CNotifyTest: IRequest
 	{
 	}
 
@@ -25,37 +25,12 @@ namespace Message
 	{
 	}
 
-	[ProtoContract]
-	public partial class SimpleRole: IMessage
-	{
-		[ProtoMember(1)]
-		public ulong Rid { get; set; }
-
-		[ProtoMember(2)]
-		public uint Tid { get; set; }
-
-		[ProtoMember(3)]
-		public string Name { get; set; }
-
-		[ProtoMember(4)]
-		public long LastLoginTime { get; set; }
-
-		[ProtoMember(5)]
-		public long LastOfflineTime { get; set; }
-
-		[ProtoMember(4)]
-		public ulong Exp { get; set; }
-
-	}
-
+//游戏服务器的登录 第一条消息 从这里开始
 	[ProtoContract]
 	public partial class C2SLogin: IRequest
 	{
 		[ProtoMember(1)]
-		public long Key { get; set; }
-
-		[ProtoMember(2)]
-		public uint Sn { get; set; }
+		public string Key { get; set; }
 
 	}
 
@@ -63,7 +38,7 @@ namespace Message
 	public partial class S2CLogin: IResponse
 	{
 		[ProtoMember(1)]
-		public List<SimpleRole> RoleList = new List<SimpleRole>();
+		public Role Role { get; set; }
 
 	}
 
@@ -71,7 +46,7 @@ namespace Message
 	public partial class Role: IMessage
 	{
 		[ProtoMember(1)]
-		public ulong Rid { get; set; }
+		public ulong Uid { get; set; }
 
 		[ProtoMember(2)]
 		public uint Tid { get; set; }
@@ -99,22 +74,6 @@ namespace Message
 
 		[ProtoMember(9)]
 		public List<Equip> EquipBag = new List<Equip>();
-
-	}
-
-	[ProtoContract]
-	public partial class C2SChooseRole: IRequest
-	{
-		[ProtoMember(1)]
-		public ulong Rid { get; set; }
-
-	}
-
-	[ProtoContract]
-	public partial class S2CChooseRole: IResponse
-	{
-		[ProtoMember(1)]
-		public Role Role { get; set; }
 
 	}
 

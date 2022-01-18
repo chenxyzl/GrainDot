@@ -3,14 +3,33 @@ package Message;
 import "Common.proto";
 import "Code.proto";
 
+//角色简单信息
+message SimpleRole {        //IMessage 角色简单信息
+  uint64 uid = 1;           //角色id
+  uint32 tid = 2;           //模板id
+  string name = 3;          //名
+  int64 lastLoginTime = 4;  //最近一次登录时间
+  int64 lastOfflineTime = 5;  //最近一次下线时间 (上线大于离线表示在线)
+  uint64 exp = 4;             //经验 --等级靠换算
+}
+
+//登录选角色界面
 message C2ALogin {
   int32 mobileType = 1;
   string deviceId = 2;
-  string account = 3;   // 帐号
-  string password = 4;  // 密码
+  string token = 3;   //sdk返回的token
+}
+message A2CLogin {
+	repeated SimpleRole rols = 1; //角色列表
 }
 
-message A2CLogin {
-  string address = 1;
-  int64 key = 2;
+//角色登录验证
+message A2CRoleLogin {
+	uint64 uid = 1; //登录的角色id
+	string token = 2; //sdk返回的token
+}
+
+message C2ARoleLogin {
+	string addr = 1; //tcp的地址
+	string key = 2; //后台登录这个角色需要用的key
 }

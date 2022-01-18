@@ -1,4 +1,6 @@
-﻿using Base.Alg;
+﻿using Akka.Actor;
+using Akka.Cluster.Sharding;
+using Base.Alg;
 using Base.Helper;
 using Common;
 using System;
@@ -47,11 +49,11 @@ namespace Base
             GlobalLog.Warning($"---{role}加载完成---");
         }
         //开始游戏
-        static public async Task Start()
+        static public async Task Start(string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             GlobalLog.Warning($"---{GameServer.role}启动中,请勿强关---");
             //开始
-            await GameServer.StartSystem();
+            await GameServer.StartSystem(typeName, p, extractor);
             //开始完成
             GlobalLog.Warning($"---{GameServer.role}启动完成---");
             WatchQuit();
@@ -73,12 +75,12 @@ namespace Base
             GlobalLog.Warning($"---{GameServer.role}停止完成---");
         }
 
-        static public async Task Boot(RoleDef role, Type gsType)
+        static public async Task Boot(RoleDef role, Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             //准备
             Ready(role, gsType);
             //开始游戏
-            await Start();
+            await Start(typeName, p, extractor);
             //开启无限循环
             Loop();
             //结束游戏
