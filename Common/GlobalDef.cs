@@ -14,4 +14,10 @@ namespace Common
         Home, //玩家节点
         World //世界节点
     }
+
+    public enum GameSharedRole
+    {
+        Player,
+        World
+    }
 }

@@ -1,15 +1,17 @@
 syntax = "proto3";
 package Message;
 
-message HWPlayerOnlineAsk  // IRequest 玩家上线
+message HWPlayerOnlineAsk  // IRequestWorld 玩家上线
 {
-  uint64 uid = 1;
-  int64 loginTime = 2;
+  uint64 worldId = 1;
+  uint64 uid = 2;
+  int64 loginTime = 3;
 }
 message WHPlayerOnlineAns {}  // IResponse
 
-message HWPlayerOfflineAsk {  // IRequest
-  uint64 uid = 1;
-  int64 offlineTime = 2;
+message HWPlayerOfflineAsk {  // IRequestWorld
+  uint64 worldId = 1;
+  uint64 uid = 2;
+  int64 offlineTime = 3;
 }
 message WHPlayerOfflineAns {}  // IResponse 玩家下线

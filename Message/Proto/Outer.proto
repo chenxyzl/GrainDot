@@ -16,7 +16,9 @@ message SPushTest {}  // IMessage 推送测试
 //游戏服务器的登录 第一条消息 从这里开始
 message C2SLogin  // IRequest 登录游戏服务器
 {
-  string key = 1;  //登录验证
+  uint64 playerId = 1; //选择的角色
+  string key = 2;  //登录验证
+  string unused = 2;
 }
 message S2CLogin {  // IResponse
   Role role = 1;

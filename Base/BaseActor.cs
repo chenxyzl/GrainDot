@@ -12,18 +12,18 @@ namespace Base
         private ICancelable? _cancel;
         public abstract ILog Logger { get; }
         public BaseActor() { }
-        #region 全局组件
+        #region 全局组件i
         //所有model
-        public Dictionary<Type, IActorComponent> _components = new Dictionary<Type, IActorComponent>();
+        public Dictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
         //获取所有组件
-        public Dictionary<Type, IActorComponent> GetAllComponent()
+        public Dictionary<Type, IComponent> GetAllComponent()
         {
             return _components;
         }
         //获取model
-        public K GetComponent<K>() where K : IActorComponent
+        public K GetComponent<K>() where K : class, IComponent
         {
-            IActorComponent component;
+            IComponent component;
             if (!this._components.TryGetValue(typeof(K), out component))
             {
                 A.Abort(Message.Code.Error, $"actor component:{typeof(K).Name} not found"); ;
@@ -32,9 +32,9 @@ namespace Base
             return (K)component;
         }
 
-        public void AddComponent<K>() where K : IActorComponent
+        public void AddComponent<K>() where K : class, IComponent
         {
-            IActorComponent component;
+            IComponent component;
             Type t = typeof(K);
             if (this._components.TryGetValue(t, out component))
             {
@@ -54,7 +54,7 @@ namespace Base
         }
 
 
-        void EnterUpState()
+        protected void EnterUpState()
         {
             if (_cancel == null)
             {

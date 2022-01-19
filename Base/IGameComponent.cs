@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Akka.Actor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    public interface IPlayerHotfixLife
+    public interface IGameHotfixLife
     {
         //添加组件
         public void AddComponent(BaseActor self);
@@ -19,16 +20,16 @@ namespace Base
         //停止
         public Task Stop(BaseActor self);
         //每一帧 @param:now 参数为服务器当前时间
-        public Task Online(BaseActor self, bool newLogin, long lastLogoutTime);
+        public Task Online(BaseActor self, IActorRef actor, ulong playerId);
         //下线
-        public Task Offline(BaseActor self);
+        public Task Offline(BaseActor self, ulong playerId);
         //tick
         public Task Tick(BaseActor self, long dt);
     }
 
-    public abstract class IPlayerComponent : IComponent
+    public abstract class IGameComponent : IComponent
     {
         protected BaseActor Node;
-        public IPlayerComponent(BaseActor a) { Node = a; }
+        public IGameComponent(BaseActor a) { Node = a; }
     }
 }

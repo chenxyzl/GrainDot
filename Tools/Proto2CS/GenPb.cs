@@ -296,7 +296,7 @@ namespace Proto
             sb.Append($"\tpublic partial class {msgName}");
 
 
-            string[] msgTypes = { "IMessage", "IRequest", "IResponse", "IActorMessage", "IActorRequest", "IActorResponse" };
+            string[] msgTypes = { "IMessage", "IRequest", "IResponse", "IRequsetPlayer", "IRequsetWorld" };
             if (msgTypes.ToList().IndexOf(parentClass) != -1)
             {
                 sb.Append($": {parentClass}\n");

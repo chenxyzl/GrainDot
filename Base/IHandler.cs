@@ -1,19 +1,6 @@
-﻿using Message;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Base
+﻿namespace Base
 {
-    [InnerRpc]
-    public interface IInnerHandlerDispatcher
+    public interface IComponent
     {
-        public void Dispatcher(BaseActor actor, InnerRequest message) { }
-    }
-
-    []
-    public interface IGateHandlerDispatcher
-    {
-        public void Dispatcher(BaseActor actor, Request message) { }
     }
 }

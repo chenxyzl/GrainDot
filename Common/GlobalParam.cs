@@ -29,6 +29,6 @@ namespace Common
         /// <summary>
         /// 玩家最大分片数
         /// </summary>
-        public static int MAX_NUMBER_OF_MAP_SHARD = 10000;
+        public static int MAX_NUMBER_OF_WORLD_SHARD = 1000;
     }
 }

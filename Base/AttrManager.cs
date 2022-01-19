@@ -47,6 +47,10 @@ namespace Base
             Config.Instance.ReloadConfig();
             //重新加载Handler
             RpcManager.Instance.ReloadHanlder();
+            //
+            PlayerAttrManager.Instance.ReloadHanlder();
+            //
+            GameAttrManager.Instance.ReloadHanlder();
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {

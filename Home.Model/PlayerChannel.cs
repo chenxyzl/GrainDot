@@ -21,11 +21,15 @@ namespace Home.Model
         {
             logger = new NLogAdapter(this.ConnectionId);
         }
+
+        static Props Props = Props.Create(() => new PlayerActor();
+
         public override void OnClose()
         {
             //通知actor下线
             actor = null;
         }
+
 
         public override void OnConnected() { }
 
@@ -87,15 +91,18 @@ namespace Home.Model
 
         }
 
-        public void BindPlayerActor(Request message)
+        public async void BindPlayerActor(Request message)
         {
             //第一条消息必须是登录
             A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
             A.Ensure(actor == null, Code.Error, "player has bind", true);
             actor = Game.GameServer.GetChild("xx");
+            var login = SerializerHelper.FromBinary<C2SLogin>(message.Content);
+            login.Unused = this.ConnectionId;
+            message.Content = login.ToBinary();
             A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
             //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)
-            //var a = await Game.GameServer.GetChild("xx").Ask<S2CLogin>(1, TimeSpan.FromSeconds(3));
+            var a = await Game.GameServer.GetChild("xx").Ask<Request>(1, TimeSpan.FromSeconds(3));
             actor.Tell(message);
         }
 

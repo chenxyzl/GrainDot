@@ -7,6 +7,7 @@ using Akka.Cluster;
 using Akka.Cluster.Sharding;
 using System.Threading.Tasks;
 using Akka.Cluster.Tools.Client;
+using System;
 
 namespace Base
 {
@@ -31,7 +32,7 @@ namespace Base
         public Dictionary<Type, IGlobalComponent> _components = new Dictionary<Type, IGlobalComponent>();
         public List<IGlobalComponent> _componentsList = new List<IGlobalComponent>();
         //获取model
-        public K GetComponent<K>() where K : IGlobalComponent
+        public K GetComponent<K>() where K : class, IGlobalComponent
         {
             IGlobalComponent component;
             if (!this._components.TryGetValue(typeof(K), out component))
@@ -42,7 +43,7 @@ namespace Base
             return (K)component;
         }
 
-        protected void AddComponent<K>() where K : IGlobalComponent
+        protected void AddComponent<K>() where K : class, IGlobalComponent
         {
             IGlobalComponent component;
             Type t = typeof(K);
@@ -79,7 +80,7 @@ namespace Base
             //全局触发AfterLoad
             foreach (var x in _componentsList)
             {
-                await x.AfterLoad();
+                await x.Start();
             }
         }
 
@@ -136,10 +137,13 @@ namespace Base
         /// </summary>
         public abstract void RegisterGlobalComponent();
 
+        public void StartPlayerShardProxy()
+        {
+            ClusterSharding.Get(system).StartProxy(GameSharedRole.Player.ToString(), role.ToString(), MessageExtractor.PlayerMessageExtractor);
+        }
         public void StartWorldShardProxy()
         {
-            ClusterSharding.Get(system)
-            .StartProxy(GameWorldShard.world.name, Optional.of(role.name), WorldMessageExtractor())
+            ClusterSharding.Get(system).StartProxy(GameSharedRole.World.ToString(), role.ToString(), MessageExtractor.WorldMessageExtractor);
         }
     }
 }

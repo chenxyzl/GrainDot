@@ -32,6 +32,9 @@ namespace Message
 		[ProtoMember(1)]
 		public string Key { get; set; }
 
+		[ProtoMember(2)]
+		public string Unused { get; set; }
+
 	}
 
 	[ProtoContract]

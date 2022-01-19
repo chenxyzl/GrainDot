@@ -39,14 +39,14 @@ namespace Base
             AttrManager.Instance.Reload();
         }
         //准备
-        static public void Ready(RoleDef role, Type gsType)
+        static public void Ready(Type gsType)
         {
-            GlobalLog.Warning($"---{role}加载中---");
+            GlobalLog.Warning($"---{gsType.Name}加载中---");
             //程序集合初始化
             Reload();
             //创建服务器启动类
             GameServer = Activator.CreateInstance(gsType) as GameServer;
-            GlobalLog.Warning($"---{role}加载完成---");
+            GlobalLog.Warning($"---{gsType.Name}加载完成---");
         }
         //开始游戏
         static public async Task Start(string typeName, Props p, HashCodeMessageExtractor extractor)
@@ -75,10 +75,10 @@ namespace Base
             GlobalLog.Warning($"---{GameServer.role}停止完成---");
         }
 
-        static public async Task Boot(RoleDef role, Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
+        static public async Task Boot(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             //准备
-            Ready(role, gsType);
+            Ready(gsType);
             //开始游戏
             await Start(typeName, p, extractor);
             //开启无限循环

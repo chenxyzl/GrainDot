@@ -3,12 +3,15 @@ using System.Collections.Generic;
 namespace Message
 {
 	[ProtoContract]
-	public partial class HWPlayerOnlineAsk: IRequest
+	public partial class HWPlayerOnlineAsk: IRequestWorld
 	{
 		[ProtoMember(1)]
-		public ulong Uid { get; set; }
+		public ulong WorldId { get; set; }
 
 		[ProtoMember(2)]
+		public ulong Uid { get; set; }
+
+		[ProtoMember(3)]
 		public long LoginTime { get; set; }
 
 	}
@@ -19,12 +22,15 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class HWPlayerOfflineAsk: IRequest
+	public partial class HWPlayerOfflineAsk: IRequestWorld
 	{
 		[ProtoMember(1)]
-		public ulong Uid { get; set; }
+		public ulong WorldId { get; set; }
 
 		[ProtoMember(2)]
+		public ulong Uid { get; set; }
+
+		[ProtoMember(3)]
 		public long OfflineTime { get; set; }
 
 	}

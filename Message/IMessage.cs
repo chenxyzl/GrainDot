@@ -1,14 +1,27 @@
-﻿namespace Message
+﻿using System;
+
+namespace Message
 {
-	public interface IMessage
-	{
-	}
+    public interface IMessage
+    {
 
-	public interface IRequest : IMessage
-	{
-	}
+    }
 
-	public interface IResponse : IMessage
-	{
-	}
+    public interface IRequest : IMessage //知道actorRef直接发送的
+    {
+
+    }
+
+    public interface IResponse : IMessage //根据sender直接返回的
+    {
+
+    }
+    public interface IRequestPlayer : IMessage //从代理发送给玩家的
+    {
+        ulong PlayerId { get; }
+    }
+    public interface IRequestWorld : IMessage //从代理发送给world
+    {
+        ulong WorldId { get; }
+    }
 }

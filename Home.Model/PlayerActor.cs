@@ -13,24 +13,25 @@ namespace Home.Model
     {
         IBaseSocketConnection session;
         public ulong PlayerId;
-        public ILog _log;
+        private ILog _log;
         public override ILog Logger { get { if (_log == null) { _log = new NLogAdapter($"player:{PlayerId}"); } return _log; } }
         public readonly SortedDictionary<ulong, SenderMessage> InnerRequestCallback = new SortedDictionary<ulong, SenderMessage>();
         public readonly SortedDictionary<ulong, SenderMessage> OuterRequestCallback = new SortedDictionary<ulong, SenderMessage>();
         public IActorRef worldShardProxy;
 
-        public PlayerActor(IBaseSocketConnection c, ulong playerId) : base()
+        public PlayerActor() : base()
         {
+            PlayerId = 0; //todo 从自己的地址中分析出来
             session = c;
-            PlayerId = playerId;
             PlayerAttrManager.Instance.Hotfix.AddComponent(this);
-        }
+        }   
 
         protected override async void PreStart()
-        {
+        {   
             base.PreStart();
             await PlayerAttrManager.Instance.Hotfix.Load(this);
             await PlayerAttrManager.Instance.Hotfix.Start(this, false);
+            EnterUpState();
         }
 
 
