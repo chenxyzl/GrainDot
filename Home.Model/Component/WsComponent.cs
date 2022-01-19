@@ -11,14 +11,15 @@ namespace Home.Model
     public class WsComponent : IGlobalComponent
     {
         IWebSocketServer _server;
-        public WsComponent(GameServer n) : base(n) { }
+        public WsComponent() { }
 
-        public override Task PreStop()
+        public Task Load()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public override async Task AfterLoad()
+
+        public async Task Start()
         {
             await StartWsServer<WsPlayerChannel>(15001);
         }
@@ -34,6 +35,22 @@ namespace Home.Model
                 {
                     Console.WriteLine($"服务启动");
                 }).BuildAsync();
+        }
+
+        public Task PreStop()
+        {
+            _server.Close();
+            return Task.CompletedTask;
+        }
+        public Task Stop()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Tick()
+        {
+            //tick里检查所有的链接是否有超时未登陆的 如果有则关闭链接
+            return Task.CompletedTask;
         }
     }
 }

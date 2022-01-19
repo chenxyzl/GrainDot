@@ -23,22 +23,22 @@ namespace Home.Model
         {
             PlayerId = 0; //todo 从自己的地址中分析出来
             session = c;
-            PlayerAttrManager.Instance.Hotfix.AddComponent(this);
+            PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
         }   
 
         protected override async void PreStart()
         {   
             base.PreStart();
-            await PlayerAttrManager.Instance.Hotfix.Load(this);
-            await PlayerAttrManager.Instance.Hotfix.Start(this, false);
+            await PlayerHotfixManager.Instance.Hotfix.Load(this);
+            await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
             EnterUpState();
         }
 
 
         protected override async void PostStop()
         {
-            await PlayerAttrManager.Instance.Hotfix.PreStop(this);
-            await PlayerAttrManager.Instance.Hotfix.Stop(this);
+            await PlayerHotfixManager.Instance.Hotfix.PreStop(this);
+            await PlayerHotfixManager.Instance.Hotfix.Stop(this);
             base.PostStop();
         }
 
@@ -77,7 +77,7 @@ namespace Home.Model
 
         async void Tick(long now)
         {
-            await PlayerAttrManager.Instance.Hotfix.Tick(this, now);
+            await PlayerHotfixManager.Instance.Hotfix.Tick(this, now);
         }
 
         public async Task Send(Response message)

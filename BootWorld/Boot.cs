@@ -14,7 +14,7 @@ namespace BootWorld
     {
         static async Task Main(string[] args)
         {
-            await Game.Boot(RoleDef.World, typeof(World.Model.World));
+            await Boot.Boot(RoleDef.World, typeof(World.Model.World));
         }
     }
 }

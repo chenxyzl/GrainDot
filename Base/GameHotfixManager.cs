@@ -15,7 +15,7 @@ namespace Base
         }
         public void ReloadHanlder()
         {
-            HashSet<Type> types = AttrManager.Instance.GetTypes<GameServiceAttribute>();
+            HashSet<Type> types = HotfixManager.Instance.GetTypes<GameServiceAttribute>();
             if (types.Count == 0)
             {
                 GlobalLog.Warning($"{this.GetType().FullName} hotfix success but no type changed");

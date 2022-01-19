@@ -84,6 +84,16 @@ namespace Base
             }
         }
 
+
+        public async Task Tick()
+        {
+            //全局触发PreStop
+            foreach (var x in _componentsList)
+            {
+                await x.Tick();
+            }
+        }
+
         protected async Task PreStop()
         {
             //全局触发PreStop

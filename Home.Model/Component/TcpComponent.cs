@@ -11,21 +11,15 @@ namespace Home.Model
     public class TcpComponent : IGlobalComponent
     {
         private ITcpSocketServer _server;
-        public TcpComponent(GameServer n) : base(n) { }
-        public override Task Load()
+        public TcpComponent(GameServer n) { }
+        public Task Load()
         {
             return Task.CompletedTask;
         }
 
-        public override async Task AfterLoad()
+        public async Task Start()
         {
             await StartTcpServer<PlayerChannel>(15000);
-        }
-
-        public override Task PreStop()
-        {
-            _server.Close();
-            return Task.CompletedTask;
         }
 
         private async Task StartTcpServer<T>(ushort port) where T : TcpSocketConnection
@@ -41,6 +35,24 @@ namespace Home.Model
                 {
                     Console.WriteLine($"服务启动");
                 }).BuildAsync();
+        }
+
+
+        public Task PreStop()
+        {
+            _server.Close();
+            return Task.CompletedTask;
+        }
+
+        public Task Stop()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task Tick()
+        {
+            //tick里检查所有的链接是否有超时未登陆的 如果有则关闭链接
+            return Task.CompletedTask;
         }
     }
 }

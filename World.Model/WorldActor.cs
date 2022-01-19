@@ -16,26 +16,26 @@ namespace World.Model
 
         public WorldActor() : base()
         {
-            GameAttrManager.Instance.Hotfix.AddComponent(this);
+            GameHotfixManager.Instance.Hotfix.AddComponent(this);
         }
         protected override async void PreStart()
         {
             base.PreStart();
-            await GameAttrManager.Instance.Hotfix.Load(this);
-            await GameAttrManager.Instance.Hotfix.Start(this, false);   
+            await GameHotfixManager.Instance.Hotfix.Load(this);
+            await GameHotfixManager.Instance.Hotfix.Start(this, false);   
             EnterUpState();
         }
 
 
         protected override async void PostStop()
         {
-            await GameAttrManager.Instance.Hotfix.PreStop(this);
-            await GameAttrManager.Instance.Hotfix.Stop(this);
+            await GameHotfixManager.Instance.Hotfix.PreStop(this);
+            await GameHotfixManager.Instance.Hotfix.Stop(this);
             base.PostStop();
         }
         async void Tick(long now)
         {
-            await GameAttrManager.Instance.Hotfix.Tick(this, now);
+            await GameHotfixManager.Instance.Hotfix.Tick(this, now);
         }
         protected override void OnReceive(object message)
         {

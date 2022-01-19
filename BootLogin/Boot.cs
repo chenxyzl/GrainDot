@@ -14,7 +14,7 @@ namespace BootLogin
     {
         static async Task Main(string[] args)
         {
-            await Game.Boot(RoleDef.Login, typeof(Login.Model.Login));
+            await Boot.Boot(RoleDef.Login, typeof(Login.Model.Login));
         }
     }
 }

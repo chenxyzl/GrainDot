@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    public static class Game
+    public static class Boot
     {
         static public ServerState ServerState = ServerState.Unknow;
         //当前的角色服务器
@@ -34,12 +34,12 @@ namespace Base
         }
 
         //加载程序集合
-        static public void Reload()
+        static void Reload()
         {
-            AttrManager.Instance.Reload();
+            HotfixManager.Instance.Reload();
         }
         //准备
-        static public void Ready(Type gsType)
+        static void Ready(Type gsType)
         {
             GlobalLog.Warning($"---{gsType.Name}加载中---");
             //程序集合初始化
@@ -49,7 +49,7 @@ namespace Base
             GlobalLog.Warning($"---{gsType.Name}加载完成---");
         }
         //开始游戏
-        static public async Task Start(string typeName, Props p, HashCodeMessageExtractor extractor)
+        static async Task Start(string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             GlobalLog.Warning($"---{GameServer.role}启动中,请勿强关---");
             //开始
@@ -58,24 +58,25 @@ namespace Base
             GlobalLog.Warning($"---{GameServer.role}启动完成---");
             WatchQuit();
         }
-        static public void Loop()
+        static void Loop()
         {
             GlobalLog.Warning($"---{GameServer.role}开启loop---");
             while (!_quitFlag)
             {
                 Thread.Sleep(1);
+                _ = GameServer.Tick();
             }
             GlobalLog.Warning($"---{GameServer.role}退出loop---");
         }
         //结束游戏
-        static public async Task Stop()
+        static async Task Stop()
         {
             GlobalLog.Warning($"---{GameServer.role}停止中,请勿强关---");
             await GameServer.StopSystem();
             GlobalLog.Warning($"---{GameServer.role}停止完成---");
         }
 
-        static public async Task Boot(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
+        static public async Task Run(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             //准备
             Ready(gsType);
