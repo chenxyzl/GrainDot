@@ -52,8 +52,8 @@ namespace Base
         {
             IInnerHandlerDispatcher innerHandlerDispatcherTemp = null;
             IGateHandlerDispatcher outerHandlerDispatcherTemp = null;
-            HashSet<Type> innerTypes = AttrManager.Instance.GetTypes<InnerRpcAttribute>();
-            HashSet<Type> outerTypes = AttrManager.Instance.GetTypes<OuterRpcAttribute>();
+            HashSet<Type> innerTypes = HotfixManager.Instance.GetTypes<InnerRpcAttribute>();
+            HashSet<Type> outerTypes = HotfixManager.Instance.GetTypes<OuterRpcAttribute>();
             if (innerTypes.Count > 1)
             {
                 A.Abort(Code.Error, $"InnerRpcAttribute Count Must 0 or 1, now is {innerTypes.Count}");

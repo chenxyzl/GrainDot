@@ -37,7 +37,7 @@ namespace Base.Network.Http
         void ParaseRouter(string tag)
         {
             var r = new Dictionary<string, AMRpcHandler>();
-            var handlers = AttrManager.Instance.GetTypes<HttpMethodAttribute>();
+            var handlers = HotfixManager.Instance.GetTypes<HttpMethodAttribute>();
             foreach (var h in handlers)
             {
                 var attrs = h.GetCustomAttributes(typeof(HttpMethodAttribute), true) as HttpMethodAttribute[];

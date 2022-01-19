@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Base
 {
-    class AttrManager : Single<AttrManager>
+    class HotfixManager : Single<HotfixManager>
     {
         private UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
         //加载程序集
@@ -48,9 +48,9 @@ namespace Base
             //重新加载Handler
             RpcManager.Instance.ReloadHanlder();
             //
-            PlayerAttrManager.Instance.ReloadHanlder();
+            PlayerHotfixManager.Instance.ReloadHanlder();
             //
-            GameAttrManager.Instance.ReloadHanlder();
+            GameHotfixManager.Instance.ReloadHanlder();
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {

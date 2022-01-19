@@ -1,4 +1,4 @@
-﻿using Base.CustomAttribute.PlayerLife;
+﻿using Base.CustomAttribute.GameLife;
 using Message;
 using System;
 using System.Collections.Generic;
@@ -6,16 +6,16 @@ using System.Linq;
 
 namespace Base
 {
-    public class PlayerAttrManager : Single<PlayerAttrManager>
+    public class GameHotfixManager : Single<GameHotfixManager>
     {
-        private IPlayerHotfixLife hotfix;
-        public IPlayerHotfixLife Hotfix
+        private IGameHotfixLife hotfix;
+        public IGameHotfixLife Hotfix
         {
             get { return A.RequireNotNull(hotfix, Code.Error, $"{this.GetType().FullName} must not null"); ; }
         }
         public void ReloadHanlder()
         {
-            HashSet<Type> types = AttrManager.Instance.GetTypes<PlayerServiceAttribute>();
+            HashSet<Type> types = AttrManager.Instance.GetTypes<GameServiceAttribute>();
             if (types.Count == 0)
             {
                 GlobalLog.Warning($"{this.GetType().FullName} hotfix success but no type changed");
@@ -23,9 +23,9 @@ namespace Base
             }
             if (types.Count > 1)
             {
-                A.Abort(Code.Error, $"PlayerLife.ServiceAttribute Count:{types.Count} Error");
+                A.Abort(Code.Error, $"GameLife.ServiceAttribute Count:{types.Count} Error");
             }
-            hotfix = Activator.CreateInstance(types.First()) as IPlayerHotfixLife;
+            hotfix = Activator.CreateInstance(types.First()) as IGameHotfixLife;
         }
     }
 }

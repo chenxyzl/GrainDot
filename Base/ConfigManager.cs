@@ -18,7 +18,7 @@ namespace Base
         public void ReloadConfig()
         {
             Dictionary<Type, ACategory> newDic = new Dictionary<Type, ACategory>();
-            HashSet<Type> types = AttrManager.Instance.GetTypes<ConfigAttribute>();
+            HashSet<Type> types = HotfixManager.Instance.GetTypes<ConfigAttribute>();
             foreach (var type in types)
             {
                 object obj = Activator.CreateInstance(type);
