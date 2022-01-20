@@ -11,7 +11,12 @@ namespace Base
     public class SenderMessage
     {
 
-        public long CreateTime { get; }
-        public ETTask<IResponse> Tcs { get; }
+        public long CreateTime { get; private set; }
+        public ETTask<IResponse> Tcs { get; private set; }
+        public SenderMessage(long createTime, ETTask<IResponse> tcs)
+        {
+            CreateTime = createTime;
+            Tcs = tcs;
+        }
     }
 }

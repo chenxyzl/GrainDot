@@ -30,5 +30,9 @@ namespace Common
         /// 玩家最大分片数
         /// </summary>
         public static int MAX_NUMBER_OF_WORLD_SHARD = 1000;
+        /// <summary>
+        /// rpc超时时间
+        /// </summary>
+        public static int RPC_TIMEOUT_TIME = 15000;
     }
 }
