@@ -6,11 +6,11 @@ namespace Base.Helper
     {
         private static readonly long epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
 
+        //标准
         public static long NowSeconds()
         {
             return (DateTime.UtcNow.Ticks - epoch) / 10000000;
         }
-
         public static long NowNano()
         {
             return DateTime.UtcNow.Ticks - epoch;
