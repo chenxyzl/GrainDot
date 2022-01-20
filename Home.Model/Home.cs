@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using Akka.Actor;
+using Base;
 using Home.Model.Component;
 using System;
 using System.Collections.Generic;
@@ -17,24 +18,11 @@ namespace Home.Model
             AddComponent<WsComponent>();
             AddComponent<ConnectionDic>();
         }
-        public void AddPlayer(PlayerActor player, string playerId)
+        public IActorRef GetLocalPlayerActorRef(uint playerId)
         {
-
-        }
-
-        public void RemovePlayer(string playerid)
-        {
-
-        }
-
-        public void AddChannel(PlayerChannel channel,  string playerId)
-        {
-
-        }
-
-        public void RemoveChannel(string playerid)
-        {
-
+            //todo 拼路径
+            var path = playerId.ToString();
+            return GetChild(path);
         }
     }
 }

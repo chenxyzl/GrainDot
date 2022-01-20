@@ -97,12 +97,14 @@ namespace Home.Model
             A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
             A.Ensure(actor == null, Code.Error, "player has bind", true);
             actor = Boot.GameServer.GetChild("xx");
+            //玩家没有获取到则断开链接让客户用重新走http登陆
+            A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
+            //填充链接id
             var login = SerializerHelper.FromBinary<C2SLogin>(message.Content);
             login.Unused = this.ConnectionId;
             message.Content = login.ToBinary();
-            A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
             //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)
-            var a = await Boot.GameServer.GetChild("xx").Ask<Request>(1, TimeSpan.FromSeconds(3));
+            var a = await actor.Ask<Request>(1, TimeSpan.FromSeconds(3));
             actor.Tell(message);
         }
 

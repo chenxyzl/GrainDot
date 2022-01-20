@@ -22,12 +22,11 @@ namespace Home.Model
         public PlayerActor() : base()
         {
             PlayerId = 0; //todo 从自己的地址中分析出来
-            session = c;
             PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
-        }   
+        }
 
         protected override async void PreStart()
-        {   
+        {
             base.PreStart();
             await PlayerHotfixManager.Instance.Hotfix.Load(this);
             await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
@@ -83,6 +82,14 @@ namespace Home.Model
         public async Task Send(Response message)
         {
             await session.Send(message.ToBinary());
+        }
+
+        public void LoginPreDeal(Request request)
+        {
+            var c2sLogin = SerializerHelper.FromBinary<C2SLogin>(request.Content);
+            var connectionId = c2sLogin.Unused;
+            var home = (Boot.GameServer as Home);
+            home.GetComponent<ConnectionDicCommponent>
         }
     }
 }

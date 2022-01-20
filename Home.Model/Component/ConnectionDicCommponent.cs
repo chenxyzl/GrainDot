@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Base;
@@ -6,10 +7,11 @@ using Base.Network;
 
 namespace Home.Model.Component
 {
-    public class ConnectionDic : IGlobalComponent
+    public class ConnectionDicCommponent : IGlobalComponent
     {
         private Dictionary<string, IBaseSocketConnection> connects = new Dictionary<string, IBaseSocketConnection>();
-        public ConnectionDic()
+        private object lockObj = new object();
+        public ConnectionDicCommponent()
         {
         }
 
@@ -41,26 +43,40 @@ namespace Home.Model.Component
 #nullable enable
         public IBaseSocketConnection? GetConnection(string connectId)
         {
-            return connects[connectId];
+            lock (lockObj)
+            {
+                return connects[connectId];
+
+            }
         }
 
         public void AddConnection(IBaseSocketConnection connection)
         {
-            var connectId = connection.ConnectionId;
-            if (connects[connectId] != null)
+            lock (lockObj)
             {
-                GlobalLog.Error($"connectId:{connectId} repeated!");
+                var connectId = connection.ConnectionId;
+                if (connects[connectId] != null)
+                {
+                    GlobalLog.Error($"connectId:{connectId} repeated, close old!");
+                    connects[connectId].Close();
+                }
+                connects[connectId] = connection;
             }
-            connects[connectId] = connection;
         }
 
         public void RemoveConnection(string connectId)
         {
-            if (connects[connectId] != null)
+            lock (lockObj)
             {
-                GlobalLog.Error($"connectId:{connectId} not found!");
+                if (connects[connectId] == null)
+                {
+                    //actor 消毁时候是会再次断开链接
+                    //GlobalLog.Error($"connectId:{connectId} not found!");
+                } else
+                {
+                    connects.Remove(connectId);
+                }
             }
-            connects.Remove(connectId);
         }
     }
 }
