@@ -20,6 +20,8 @@ namespace Home.Model
         public readonly SortedDictionary<ulong, SenderMessage> OuterRequestCallback = new SortedDictionary<ulong, SenderMessage>();
         public IActorRef worldShardProxy;
 
+        public static readonly Props P = Props.Create<PlayerActor>();
+
         public PlayerActor() : base()
         {
             PlayerId = 0; //todo 从自己的地址中分析出来

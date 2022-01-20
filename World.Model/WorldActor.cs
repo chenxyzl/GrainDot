@@ -12,6 +12,7 @@ namespace World.Model
         public ulong WorldId { get; private set; }
         private ILog _log;
         public override ILog Logger { get { if (_log == null) { _log = new NLogAdapter($"world:{WorldId}"); } return _log; } }
+        public static readonly Props P = Props.Create<WorldActor>();
 
 
         public WorldActor() : base()

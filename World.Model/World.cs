@@ -11,5 +11,9 @@ namespace World.Model
     public class World : GameServer
     {
         public World() : base(Common.RoleDef.World) { }
+
+        public override void RegisterGlobalComponent()
+        {
+        }
     }
 }

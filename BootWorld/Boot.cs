@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using World.Model;
 
 namespace BootWorld
 {
@@ -14,7 +15,7 @@ namespace BootWorld
     {
         static async Task Main(string[] args)
         {
-            await Boot.Boot(RoleDef.World, typeof(World.Model.World));
+            await Boot.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P, MessageExtractor.WorldMessageExtractor);
         }
     }
 }

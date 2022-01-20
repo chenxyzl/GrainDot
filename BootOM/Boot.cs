@@ -14,7 +14,7 @@ namespace BootOM
     {
         static async Task Main(string[] args)
         {
-            await Boot.Boot(RoleDef.OM, typeof(OM.Model.OM));
+            await Boot.Run(typeof(OM.Model.OM));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Base;
 using Base.Helper;
 using Common;
+using Home.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace BootHome
     {
         static async Task Main(string[] args)
         {
-            await Boot.Boot(typeof(Home.Model.Home), GameSharedRole.Player.ToString(), MessageExtractor.PlayerMessageExtractor);
+            await Boot.Run(typeof(Home.Model.Home), GameSharedRole.Player.ToString(), PlayerActor.P, MessageExtractor.PlayerMessageExtractor);
         }
     }
 }

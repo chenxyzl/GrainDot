@@ -11,5 +11,10 @@ namespace OM.Model
     public class OM : GameServer
     {
         public OM() : base(Common.RoleDef.OM) { }
+
+        public override void RegisterGlobalComponent()
+        {
+
+        }
     }
 }
