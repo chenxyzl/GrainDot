@@ -13,7 +13,7 @@ namespace Base.Helper
         }
         public static long NowNano()
         {
-            return DateTime.UtcNow.Ticks - epoch;
+            return (DateTime.UtcNow.Ticks - epoch) * 100;
         }
 
         public static long Now()
