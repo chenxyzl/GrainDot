@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Home.Model
+namespace Home.Model.Component
 {
     public class TcpComponent : IGlobalComponent
     {
@@ -24,16 +24,25 @@ namespace Home.Model
 
         private async Task StartTcpServer<T>(ushort port) where T : TcpSocketConnection
         {
-            _server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(6001)
+            _server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(port)
                 .SetLengthFieldEncoder(2)
                 .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
                 .OnException(ex =>
                 {
-                    Console.WriteLine($"服务端异常:{ex.Message}");
+                    Console.WriteLine($"{this.GetType().Name}:{port} 服务端异常:{ex.Message}");
+                })
+                .OnNewConnection((server, connection) =>
+                {
+                    Boot.GameServer.GetComponent<ConnectionDic>().AddConnection(connection);
+                })
+                .OnConnectionClose(
+                (server, connection) =>
+                {
+                    Boot.GameServer.GetComponent<ConnectionDic>().RemoveConnection(connection.ConnectionId);
                 })
                 .OnServerStarted(server =>
                 {
-                    Console.WriteLine($"服务启动");
+                    Console.WriteLine($"{this.GetType().Name}:{port} 服务启动");
                 }).BuildAsync();
         }
 

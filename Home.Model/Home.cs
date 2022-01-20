@@ -1,4 +1,5 @@
 ﻿using Base;
+using Home.Model.Component;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Home.Model
         {
             AddComponent<TcpComponent>();
             AddComponent<WsComponent>();
+            AddComponent<ConnectionDic>();
         }
         public void AddPlayer(PlayerActor player, string playerId)
         {

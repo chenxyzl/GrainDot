@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Home.Model
+namespace Home.Model.Component
 {
     public class WsComponent : IGlobalComponent
     {
@@ -26,14 +26,23 @@ namespace Home.Model
 
         public async Task StartWsServer<T>(ushort port) where T : WebSocketConnection
         {
-            _server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(6001)
+            _server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(port)
                 .OnException(ex =>
                 {
-                    Console.WriteLine($"服务端异常:{ex.Message}");
+                    Console.WriteLine($"{this.GetType().Name}:{port} 服务端异常:{ex.Message}");
+                })
+                .OnNewConnection((server, connection) =>
+                {
+                    Boot.GameServer.GetComponent<ConnectionDic>().AddConnection(connection);
+                })
+                .OnConnectionClose(
+                (server, connection) =>
+                {
+                    Boot.GameServer.GetComponent<ConnectionDic>().RemoveConnection(connection.ConnectionId);
                 })
                 .OnServerStarted(server =>
                 {
-                    Console.WriteLine($"服务启动");
+                    Console.WriteLine($"{this.GetType().Name}:{port} 服务启动");
                 }).BuildAsync();
         }
 

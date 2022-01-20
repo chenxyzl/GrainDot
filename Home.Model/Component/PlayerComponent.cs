@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Base;
 
-namespace Home.Model
+namespace Home.Model.Component
 {
     public class PlayerComponent : IPlayerComponent
     {
