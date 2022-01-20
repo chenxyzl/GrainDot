@@ -12,6 +12,7 @@ namespace Base
         private ICancelable? _cancel;
         public abstract ILog Logger { get; }
         public BaseActor() { }
+        public IActorRef Get() => this.Self;
         #region 全局组件i
         //所有model
         public Dictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
@@ -31,8 +32,7 @@ namespace Base
 
             return (K)component;
         }
-
-        public void AddComponent<K>() where K : class, IComponent
+        public void AddComponent<K>(params object[] args) where K : class, IComponent
         {
             IComponent component;
             Type t = typeof(K);
@@ -40,8 +40,9 @@ namespace Base
             {
                 A.Abort(Message.Code.Error, $"actor component:{t.Name} repeated");
             }
-            var arg = new object[] { this };
-            K obj = Activator.CreateInstance(t, arg) as K;
+            var allArgs = new List<object>();
+            foreach (var a in args) allArgs.Add(a);
+            K obj = Activator.CreateInstance(t, allArgs.ToArray()) as K;
             this._components.Add(t, obj);
         }
         #endregion

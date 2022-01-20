@@ -3,6 +3,7 @@ using Base;
 using Base.Helper;
 using Base.Network;
 using Base.Serializer;
+using Home.Model.Component;
 using Message;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -89,7 +90,7 @@ namespace Home.Model
             var c2sLogin = SerializerHelper.FromBinary<C2SLogin>(request.Content);
             var connectionId = c2sLogin.Unused;
             var home = (Boot.GameServer as Home);
-            home.GetComponent<ConnectionDicCommponent>
+            var connect = home.GetComponent<ConnectionDicCommponent>().GetConnection(connectionId)
         }
     }
 }

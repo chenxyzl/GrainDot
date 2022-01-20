@@ -11,7 +11,7 @@ namespace Base
         public void Dispatcher(BaseActor actor, InnerRequest message) { }
     }
 
-    []
+    [OuterRpc]
     public interface IGateHandlerDispatcher
     {
         public void Dispatcher(BaseActor actor, Request message) { }

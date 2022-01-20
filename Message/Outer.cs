@@ -30,6 +30,9 @@ namespace Message
 	public partial class C2SLogin: IRequest
 	{
 		[ProtoMember(1)]
+		public ulong PlayerId { get; set; }
+
+		[ProtoMember(2)]
 		public string Key { get; set; }
 
 		[ProtoMember(2)]

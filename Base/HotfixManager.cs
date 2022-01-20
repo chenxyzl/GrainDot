@@ -51,6 +51,8 @@ namespace Base
             PlayerHotfixManager.Instance.ReloadHanlder();
             //
             GameHotfixManager.Instance.ReloadHanlder();
+            //
+            HttpHotfixManager.Instance.ReloadHanlder();
         }
         public HashSet<Type> GetTypes<T>() where T : BaseAttribute
         {

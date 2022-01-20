@@ -1,6 +1,13 @@
 syntax = "proto3";
 package Message;
 
+message AHPlayerLoginKeyAsk {  // IRequestPlayer api服务器获取玩家的登录的key
+  uint64 playerId = 1;  //玩家的id
+}
+message HAPlayerLoginKeyAns {  // IResponse
+  string playerKey = 1;        //
+}
+
 message HWPlayerOnlineAsk  // IRequestWorld 玩家上线
 {
   uint64 worldId = 1;

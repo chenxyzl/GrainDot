@@ -19,6 +19,7 @@ namespace Base
         static public GameServer GameServer;
         //退出标记
         static bool _quitFlag = false;
+        static long lastTime = 0;
         //退出标记监听
         static void WatchQuit()
         {
@@ -54,6 +55,18 @@ namespace Base
             GlobalLog.Warning($"---{GameServer.role}启动中,请勿强关---");
             //开始
             await GameServer.StartSystem(typeName, p, extractor);
+            lastTime = TimeHelper.Now();
+            //开始完成
+            GlobalLog.Warning($"---{GameServer.role}启动完成---");
+            WatchQuit();
+        }
+        //开始游戏
+        static async Task Start()
+        {
+            GlobalLog.Warning($"---{GameServer.role}启动中,请勿强关---");
+            //开始
+            await GameServer.StartSystem();
+            lastTime = TimeHelper.Now();
             //开始完成
             GlobalLog.Warning($"---{GameServer.role}启动完成---");
             WatchQuit();
@@ -64,6 +77,10 @@ namespace Base
             while (!_quitFlag)
             {
                 Thread.Sleep(1);
+                var now = TimeHelper.Now();
+                //1000毫秒tick一次
+                if (now - lastTime < 1000) continue;
+                lastTime += 1000;
                 _ = GameServer.Tick();
             }
             GlobalLog.Warning($"---{GameServer.role}退出loop---");
@@ -82,6 +99,17 @@ namespace Base
             Ready(gsType);
             //开始游戏
             await Start(typeName, p, extractor);
+            //开启无限循环
+            Loop();
+            //结束游戏
+            await Stop();
+        }
+        static public async Task Run(Type gsType)
+        {
+            //准备
+            Ready(gsType);
+            //开始游戏
+            await Start();
             //开启无限循环
             Loop();
             //结束游戏

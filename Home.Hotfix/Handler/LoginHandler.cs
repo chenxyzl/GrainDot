@@ -1,5 +1,7 @@
-﻿using Base.Helper;
+﻿using Base;
+using Base.Helper;
 using Home.Model;
+using Home.Model.Component;
 using Message;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,12 @@ namespace Home.Hotfix.Handler
         public static Task NotifyTest(PlayerActor player, CNotifyTest msg)
         {
             return Task.CompletedTask;
+        }
+        public static Task<HAPlayerLoginKeyAns> LoginKeyHandler(PlayerActor player, AHPlayerLoginKeyAsk msg)
+        {
+            var loginKeyComponent = (Boot.GameServer as Home.Model.Home).GetComponent<LoginKeyComponent>();
+            var key = loginKeyComponent.AddPlayerRef(player.Get());
+            return Task.FromResult(new HAPlayerLoginKeyAns { PlayerKey = key });
         }
     }
 }

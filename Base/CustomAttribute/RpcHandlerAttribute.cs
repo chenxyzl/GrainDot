@@ -11,5 +11,5 @@ namespace Base
     public class InnerRpcAttribute : BaseAttribute { }
 
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-    public class OuterRpcAttribute : BaseAttribute { }
+    public class GateRpcAttribute : BaseAttribute { }
 }

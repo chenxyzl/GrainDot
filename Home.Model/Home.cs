@@ -16,7 +16,7 @@ namespace Home.Model
         {
             AddComponent<TcpComponent>();
             AddComponent<WsComponent>();
-            AddComponent<ConnectionDic>();
+            AddComponent<ConnectionDicCommponent>();
         }
         public IActorRef GetLocalPlayerActorRef(uint playerId)
         {

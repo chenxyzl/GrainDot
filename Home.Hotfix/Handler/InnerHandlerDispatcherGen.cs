@@ -12,6 +12,7 @@ namespace Home.Hotfix.Handler
         {
             switch (message.Opcode)
             {
+                case 10000: return await LoginHandler.LoginKeyHandler(player, SerializerHelper.FromBinary<AHPlayerLoginKeyAsk>(message.Content));
             }
             A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
             return null;
@@ -21,6 +22,7 @@ namespace Home.Hotfix.Handler
         {
             switch (message.Opcode)
             {
+
             }
             A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
         }

@@ -8,15 +8,13 @@ using System.Threading.Tasks;
 namespace Base
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class HttpMethodAttribute : BaseAttribute
+    public class HttpHandlerAttribute : BaseAttribute
     {
         public string Router { get; private set; }
-        public string Tag { get; private set; }
         public readonly uint HttpId;
-        public HttpMethodAttribute(string router, string tag = "")
+        public HttpHandlerAttribute(string router)
         {
             Router = router;
-            Tag = tag;
         }
     }
 }

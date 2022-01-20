@@ -43,7 +43,7 @@ namespace Base
             return (K)component;
         }
 
-        protected void AddComponent<K>() where K : class, IGlobalComponent
+        protected void AddComponent<K>(params object[] args) where K : class, IGlobalComponent
         {
             IGlobalComponent component;
             Type t = typeof(K);
@@ -51,8 +51,7 @@ namespace Base
             {
                 A.Abort(Message.Code.Error, $"game component:{t.Name} repeated");
             }
-            var arg = new object[] { this };
-            K obj = Activator.CreateInstance(t, arg) as K;
+            K obj = Activator.CreateInstance(t, args) as K;
             _components.Add(t, obj);
             _componentsList.Add(obj);
         }
@@ -111,6 +110,12 @@ namespace Base
                 await x.Stop();
             }
         }
+
+        protected async Task StartRole()
+        {
+
+        }
+
         virtual public async Task StartSystem(string typeName, Props p, HashCodeMessageExtractor extractor)
         {
             await BeforCreate();
@@ -123,6 +128,13 @@ namespace Base
                 extractor
                 );
             ClusterClientReceptionist.Get(system).RegisterService(shardRegion);
+            await AfterCreate();
+        }
+
+        virtual public async Task StartSystem()
+        {
+            await BeforCreate();
+            system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
             await AfterCreate();
         }
 
