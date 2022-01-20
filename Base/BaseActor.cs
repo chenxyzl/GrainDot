@@ -16,6 +16,7 @@ namespace Base
         #region 全局组件i
         //所有model
         public Dictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();
+        public List<IComponent> _componentsList = new List<IComponent>();
         //获取所有组件
         public Dictionary<Type, IComponent> GetAllComponent()
         {
@@ -44,6 +45,7 @@ namespace Base
             foreach (var a in args) allArgs.Add(a);
             K obj = Activator.CreateInstance(t, allArgs.ToArray()) as K;
             this._components.Add(t, obj);
+            _componentsList.Add(obj);
         }
         #endregion
         protected override void PostStop()

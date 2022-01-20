@@ -16,13 +16,13 @@ namespace Home.Hotfix.Service
     {
         public void AddComponent(BaseActor self)
         {
-            //后续优化 带插入循序的map
             self.AddComponent<PlayerComponent>();
             self.AddComponent<BagComponent>();
         }
 
         public async Task Load(BaseActor self)
         {
+            //因为热更新
             await self.GetComponent<PlayerComponent>().Load();
             await self.GetComponent<BagComponent>().Load();
         }
