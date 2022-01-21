@@ -29,11 +29,19 @@ namespace Base
     {
         //rpc字典
         private Dictionary<uint, RpcItem> gateRpcDic = new Dictionary<uint, RpcItem>();
-        public Dictionary<uint, RpcItem> GateRpcDic { get { return gateRpcDic; } }
+        public RpcItem GateRpc(uint opcode) { return gateRpcDic[opcode]; }
 
         //rpc字典
         private Dictionary<uint, RpcItem> innerRpcDic = new Dictionary<uint, RpcItem>();
-        public Dictionary<uint, RpcItem> InnerRpcDic { get { return innerRpcDic; } }
+        public RpcItem InnerRpc(uint opcode) { return innerRpcDic[opcode]; }
+
+        //protobuf type to opCode
+        private Dictionary<Type, uint> requestToOpcode = new Dictionary<Type, uint>();
+        public uint GetRequestOpcode(Type t) { return A.RequireNotNull(requestToOpcode[t], Code.Error, $"request type:{t.Name} to code not found"); }
+        private Dictionary<uint, Type> opcodeToResponse = new Dictionary<uint, Type>();
+        public Type GetResponseOpcode(uint opcode) { return A.RequireNotNull(opcodeToResponse[opcode], Code.Error, $"response opcode:{opcode} to code not found"); }
+
+
         //内部rpc调用派发
         private IInnerHandlerDispatcher innerHandlerDispatcher = null;
         public IInnerHandlerDispatcher InnerHandlerDispatcher
@@ -74,6 +82,12 @@ namespace Base
             (outerHandlerDispatcher, outerHandlerDispatcherTemp) = (outerHandlerDispatcherTemp, outerHandlerDispatcher);
             innerHandlerDispatcherTemp = null;
             outerHandlerDispatcherTemp = null;
+        }
+
+        public void AddTypeToOpcode(Type t, uint opcode)
+        {
+            A.Ensure(!requestToOpcode.ContainsKey(t), Code.Error, $"type:{t.Name} repeated");
+            requestToOpcode[t] = opcode;
         }
     }
 }

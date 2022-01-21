@@ -8,8 +8,9 @@ namespace Home.Hotfix.Handler
 {
     public partial class InnerHandlerDispatcher
     {
-        public async Task<IResponse> DispatcherWithResult(PlayerActor player, InnerRequest message)
+        public async Task<IResponse> DispatcherWithResult(BaseActor actor, InnerRequest message)
         {
+            PlayerActor player = actor as PlayerActor;
             switch (message.Opcode)
             {
                 case 10000: return await LoginHandler.LoginKeyHandler(player, SerializerHelper.FromBinary<AHPlayerLoginKeyAsk>(message.Content));
@@ -18,8 +19,9 @@ namespace Home.Hotfix.Handler
             return null;
         }
 
-        public async Task DispatcherNoResult(PlayerActor player, InnerRequest message)
+        public async Task DispatcherNoResult(BaseActor actor, InnerRequest message)
         {
+            PlayerActor player = actor as PlayerActor;
             switch (message.Opcode)
             {
 

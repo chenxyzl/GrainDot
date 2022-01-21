@@ -5,8 +5,10 @@ using Base.Network;
 using Base.Serializer;
 using Home.Model.Component;
 using Message;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Share.Model.Component;
 
 namespace Home.Model
 {
@@ -16,8 +18,6 @@ namespace Home.Model
         public ulong PlayerId;
         private ILog _log;
         public override ILog Logger { get { if (_log == null) { _log = new NLogAdapter($"player:{PlayerId}"); } return _log; } }
-        public readonly SortedDictionary<ulong, SenderMessage> InnerRequestCallback = new SortedDictionary<ulong, SenderMessage>();
-        public readonly SortedDictionary<ulong, SenderMessage> OuterRequestCallback = new SortedDictionary<ulong, SenderMessage>();
         public IActorRef worldShardProxy;
 
         public static readonly Props P = Props.Create<PlayerActor>();
@@ -62,16 +62,45 @@ namespace Home.Model
 
                 case Request request:
                     {
-                        //todo 如果sn为0 清空所有缓存消息
-                        //todo 如果sn已存在直接回传sn
-                        //todo 如果sn不存在且不等于lastSn+1 触发断线
                         //
-                        RpcManager.Instance.OuterHandlerDispatcher.Dispatcher(this, request);
+                        try
+                        {
+                            RpcManager.Instance.OuterHandlerDispatcher.Dispatcher(this, request);
+                        }
+                        catch (CodeException e)
+                        {
+                            //严重错误直接踢下线
+                            if (e.Serious)
+                            {
+                                session.Close();
+                                session = null;
+                            }
+                            Logger.Warning(e.ToString());
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Warning(e.ToString());
+                        }
+
                         break;
                     }
                 case InnerRequest request:
                     {
-                        RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
+                        try
+                        {
+                            RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Warning(e.ToString());
+                        }
+
+                        break;
+                    }
+
+                case InnerResponse response:
+                    {
+                        this.GetComponent<CallComponent>().RunResponse(response);
                         break;
                     }
             }
@@ -84,7 +113,7 @@ namespace Home.Model
 
         public async Task Send(Response message)
         {
-            await session.Send(message.ToBinary());
+            await session?.Send(message.ToBinary());
         }
 
         public void LoginPreDeal(Request request)
@@ -92,7 +121,8 @@ namespace Home.Model
             var c2sLogin = SerializerHelper.FromBinary<C2SLogin>(request.Content);
             var connectionId = c2sLogin.Unused;
             var home = (Boot.GameServer as Home);
-            var connect = home.GetComponent<ConnectionDicCommponent>().GetConnection(connectionId)
+            var connect = home.GetComponent<ConnectionDicCommponent>().GetConnection(connectionId);
+            session = connect;
         }
     }
 }

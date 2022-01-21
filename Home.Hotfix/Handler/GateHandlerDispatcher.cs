@@ -1,4 +1,5 @@
-﻿using Base;
+﻿using System;
+using Base;
 using Base.Serializer;
 using Home.Model;
 using Message;
@@ -10,12 +11,33 @@ namespace Home.Hotfix.Handler
         public async void Dispatcher(BaseActor actor, Request message)
         {
             var player = actor as PlayerActor;
-            var rpcitem = A.RequireNotNull(RpcManager.Instance.GateRpcDic[message.Opcode], Code.Error, $"gate opcode:{message.Opcode} not exit", true);
+            var rpcitem = A.RequireNotNull(RpcManager.Instance.GateRpc(message.Opcode), Code.Error, $"gate opcode:{message.Opcode} not exit", true);
             if (rpcitem.RpcType == RpcType.CS)
             {
-                IResponse ret = await DispatcherWithResult(player, message);
-                Response rsp = new Response { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() };
-                await player.Send(rsp);
+                try
+                {
+                    IResponse ret = await DispatcherWithResult(player, message);
+                    await player.Send(new Response { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() });
+                }
+                catch (CodeException e)
+                {
+                    if (e.Serious) //严重错误不处理 继续上抛
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        await player.Send(new Response { Sn = message.Sn, Code = e.Code, Opcode = message.Opcode });
+                        player.Logger.Warning(e.ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    player.Logger.Error(e.ToString());
+                    await player.Send(new Response { Sn = message.Sn, Code = Code.Error, Opcode = message.Opcode });
+                }
+
+
             }
             else if (rpcitem.RpcType == RpcType.C)
             {

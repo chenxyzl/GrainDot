@@ -12,7 +12,8 @@ namespace Base
         private ICancelable? _cancel;
         public abstract ILog Logger { get; }
         public BaseActor() { }
-        public IActorRef Get() => this.Self;
+        public IActorRef GetSelf() => this.Self;
+        public IActorRef GetSender() => this.Sender;
         #region 全局组件i
         //所有model
         public Dictionary<Type, IComponent> _components = new Dictionary<Type, IComponent>();

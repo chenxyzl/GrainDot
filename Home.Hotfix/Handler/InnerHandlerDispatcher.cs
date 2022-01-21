@@ -2,6 +2,8 @@
 using Home.Model;
 using Message;
 using Base.Serializer;
+using Akka.Actor;
+using System;
 
 namespace Home.Hotfix.Handler
 {
@@ -10,21 +12,30 @@ namespace Home.Hotfix.Handler
     {
         public async void Dispatcher(BaseActor actor, InnerRequest message)
         {
-            var player = actor as PlayerActor;
-            var rpcitem = A.RequireNotNull(RpcManager.Instance.InnerRpcDic[message.Opcode], Code.Error, $"inner opcode:{message.Opcode} not exit", true);
+            var sender = actor.GetSender();
+            var rpcitem = A.RequireNotNull(RpcManager.Instance.InnerRpc(message.Opcode), Code.Error, $"inner opcode:{message.Opcode} not exit", true);
             if (rpcitem.RpcType == RpcType.CS)
             {
-                IResponse ret = await DispatcherWithResult(player, message);
-                InnerResponse rsp = new InnerResponse { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() };
+                try
+                {
+                    IResponse ret = await DispatcherWithResult(actor, message);
+                    sender.Tell(new InnerResponse { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() });
+                }
+                catch (CodeException e)
+                {
+                    sender.Tell(new InnerResponse { Sn = message.Sn, Code = e.Code, Opcode = message.Opcode });
+                    actor.Logger.Warning(e.ToString());
+                }
             }
             else if (rpcitem.RpcType == RpcType.C)
             {
-                await DispatcherNoResult(player, message);
+                await DispatcherNoResult(actor, message);
             }
             else
             {
                 A.Abort(Code.Error, $"opcode:{rpcitem.Opcode} type error", true);
             }
+
         }
     }
 }

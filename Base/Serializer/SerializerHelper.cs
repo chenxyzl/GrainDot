@@ -31,5 +31,12 @@ namespace Base.Serializer
                 return ProtoBuf.Serializer.Deserialize(typeof(T), stream) as T;
             }
         }
+        public static IMessage FromBinary(Type type, byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+            {
+                return ProtoBuf.Serializer.Deserialize(type, stream) as IMessage;
+            }
+        }
     }
 }
