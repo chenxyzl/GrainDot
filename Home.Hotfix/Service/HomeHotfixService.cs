@@ -12,7 +12,7 @@ namespace Home.Hotfix.Service
 {
 
     [PlayerService]
-    public class HotfixService : IPlayerHotfixLife
+    public class HomeHotfixService : IPlayerHotfixLife
     {
         public void AddComponent(BaseActor self)
         {

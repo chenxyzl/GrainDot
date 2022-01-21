@@ -5,7 +5,7 @@ using World.Model;
 
 namespace World.Hotfix.Handler
 {
-    public static class LoginHandler
+    public static class WorldLoginHandler
     {
 
         public static Task<WHPlayerOnlineAns> Login(WorldSession player, HWPlayerOnlineAsk ask)

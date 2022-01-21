@@ -8,7 +8,7 @@ using System;
 namespace Home.Hotfix.Handler
 {
     //为了高性能，对此文件的所有函数做了delegate缓存
-    public partial class InnerHandlerDispatcher : IInnerHandlerDispatcher
+    public partial class HomeInnerHandlerDispatcher : IInnerHandlerDispatcher
     {
         public async void Dispatcher(BaseActor actor, InnerRequest message)
         {

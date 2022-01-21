@@ -22,7 +22,7 @@ namespace Home.Model
             logger = new NLogAdapter(this.ConnectionId);
         }
 
-        static Props Props = Props.Create(() => new PlayerActor();
+        static Props Props = Props.Create(() => new PlayerActor());
 
         public override void OnClose()
         {
@@ -62,7 +62,7 @@ namespace Home.Model
             {
                 if (actor == null)
                 {
-                    _ = BindPlayerActor(message);
+                    BindPlayerActor(message);
                 }
                 else
                 {
@@ -95,12 +95,13 @@ namespace Home.Model
         {
             //第一条消息必须是登录
             A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
+            var login = SerializerHelper.FromBinary<C2SLogin>(message.Content);
             A.Ensure(actor == null, Code.Error, "player has bind", true);
-            actor = GameServer.Instance.GetHome().GetLocalPlayerActorRef("xx");
+            //获取actor
+            actor = GameServer.Instance.GetHome().GetLocalPlayerActorRef(login.PlayerId);
             //玩家没有获取到则断开链接让客户用重新走http登陆
             A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
             //填充链接id
-            var login = SerializerHelper.FromBinary<C2SLogin>(message.Content);
             login.Unused = this.ConnectionId;
             message.Content = login.ToBinary();
             //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)

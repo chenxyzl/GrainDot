@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Home.Hotfix.Handler
 {
-    public partial class InnerHandlerDispatcher
+    public partial class WorldInnerHandlerDispatcher
     {
         public async Task<IResponse> DispatcherWithResult(PlayerActor player, InnerRequest message)
         {

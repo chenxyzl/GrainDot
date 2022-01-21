@@ -18,7 +18,7 @@ namespace Home.Model
             AddComponent<WsComponent>();
             AddComponent<ConnectionDicCommponent>();
         }
-        public IActorRef GetLocalPlayerActorRef(uint playerId)
+        public IActorRef GetLocalPlayerActorRef(ulong playerId)
         {
             //todo 拼路径
             var path = playerId.ToString();

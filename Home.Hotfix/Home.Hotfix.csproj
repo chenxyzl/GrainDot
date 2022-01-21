@@ -14,10 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Handler\InnerHandlerDispatcherGen.cs" />
-    <Compile Include="Handler\LoginHandler.cs" />
     <Compile Include="Service\BagService.cs" />
-    <Compile Include="Service\HotfixService.cs" />
   </ItemGroup>
 
   <ItemGroup>

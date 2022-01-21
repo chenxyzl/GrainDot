@@ -9,7 +9,7 @@ namespace Base
 {
     public abstract class BaseActor : UntypedActor
     {
-        private ICancelable? _cancel;
+        private ICancelable _cancel;
         public abstract ILog Logger { get; }
         public BaseActor() { }
         public IActorRef GetSelf() => this.Self;

@@ -24,11 +24,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class GameServiceAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameServiceAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -36,11 +36,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameLoadAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameLoadAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -48,11 +48,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameStartAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameStartAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -60,11 +60,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GamePreStopAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GamePreStopAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -72,11 +72,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameStopAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameStopAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -84,11 +84,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameOnlineAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameOnlineAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -96,11 +96,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameOfflineAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameOfflineAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -108,11 +108,11 @@ namespace Base.CustomAttribute.GameLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class GameTickAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public GameTickAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 }

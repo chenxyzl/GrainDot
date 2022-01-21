@@ -1,11 +1,11 @@
 ﻿using Base;
-using Home.Model;
 using Message;
+using Home.Model;
 
 namespace Home.Hotfix.Handler
 {
     //为了高性能，对此文件的所有函数做了delegate缓存
-    public partial class InnerHandlerDispatcher : IInnerHandlerDispatcher
+    public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
     {
         public async void Dispatcher(BaseActor actor, InnerRequest message)
         {

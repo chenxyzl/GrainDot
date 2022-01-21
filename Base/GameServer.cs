@@ -39,7 +39,7 @@ namespace Base
                 _quitFlag = true;
                 e.Cancel = true;
             };
-        }Ø
+        }
         //
         public GameServer(RoleDef r)
         {

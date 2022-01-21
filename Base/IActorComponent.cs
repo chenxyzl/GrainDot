@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Base
 {
-    public abstract class IActorComponent
+    public abstract class IActorComponent : IComponent
     {
-        protected BaseActor Actor;
-        public IActorComponent(BaseActor a) { Actor = a; }
+        protected BaseActor Node;
+        public IActorComponent(BaseActor a) { Node = a; }
     }
 }

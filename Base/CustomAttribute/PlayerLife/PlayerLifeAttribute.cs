@@ -25,11 +25,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class PlayerServiceAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerServiceAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -37,11 +37,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerLoadAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerLoadAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -49,11 +49,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerStartAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerStartAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -61,11 +61,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerPreStopAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerPreStopAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -73,11 +73,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerStopAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerStopAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -85,11 +85,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerOnlineAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerOnlineAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -97,11 +97,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerOfflineAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerOfflineAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 
@@ -109,11 +109,11 @@ namespace Base.CustomAttribute.PlayerLife
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class PlayerTickAttribute : BaseAttribute
     {
-        public Type AttributeType { get; }
+        public Type AttrType { get; }
 
         public PlayerTickAttribute()
         {
-            this.AttributeType = this.GetType();
+            this.AttrType = this.GetType();
         }
     }
 }

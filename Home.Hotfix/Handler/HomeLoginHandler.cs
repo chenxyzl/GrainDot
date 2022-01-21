@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Home.Hotfix.Handler
 {
-    public static class LoginHandler
+    public static class HomeLoginHandler
     {
         public static Task<S2CPong> Ping(PlayerActor player, C2SPing ping)
         {

@@ -8,7 +8,7 @@ namespace World.Hotfix.Service
 {
 
     [GameService]
-    public class HotfixService : IGameHotfixLife
+    public class WorldHotfixService : IGameHotfixLife
     {
         public void AddComponent(BaseActor self)
         {
