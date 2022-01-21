@@ -29,8 +29,9 @@ namespace Base
         //退出标记
         bool _quitFlag = false;
         long lastTime = 0;
+
         //退出标记监听
-        virtual void WatchQuit()
+        protected virtual void WatchQuit()
         {
             Console.CancelKeyPress += (sender, e) =>
             {
@@ -38,7 +39,7 @@ namespace Base
                 _quitFlag = true;
                 e.Cancel = true;
             };
-        }
+        }Ø
         //
         public GameServer(RoleDef r)
         {
@@ -81,6 +82,8 @@ namespace Base
 
         virtual protected async Task BeforCreate()
         {
+            //拦截退出
+            WatchQuit();
             //加载配置
             LoadConfig();
             //注册组建
