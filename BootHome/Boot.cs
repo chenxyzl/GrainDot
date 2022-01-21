@@ -15,7 +15,7 @@ namespace BootHome
     {
         static async Task Main(string[] args)
         {
-            await Boot.Run(typeof(Home.Model.Home), GameSharedRole.Player.ToString(), PlayerActor.P, MessageExtractor.PlayerMessageExtractor);
+            await GameServer.Run(typeof(Home.Model.Home), GameSharedRole.Player.ToString(), PlayerActor.P, MessageExtractor.PlayerMessageExtractor);
         }
     }
 }

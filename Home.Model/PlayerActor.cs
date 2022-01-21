@@ -120,8 +120,7 @@ namespace Home.Model
         {
             var c2sLogin = SerializerHelper.FromBinary<C2SLogin>(request.Content);
             var connectionId = c2sLogin.Unused;
-            var home = (Boot.GameServer as Home);
-            var connect = home.GetComponent<ConnectionDicCommponent>().GetConnection(connectionId);
+            var connect = GameServer.Instance.GetHome().GetComponent<ConnectionDicCommponent>().GetConnection(connectionId);
             session = connect;
         }
     }

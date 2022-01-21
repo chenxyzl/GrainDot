@@ -39,10 +39,11 @@ namespace Share.Model.Component
         {
             //request转id
             var tcs = ETTask<IResponse>.Create(true);
+            var opcode = RpcManager.Instance.GetRequestOpcode(request.GetType());
             var callComponent = Node.GetComponent<CallComponent>();
-            var rid = callComponent.AddRequestCallBack(new SenderMessage(TimeHelper.Now(), tcs));
+            var rid = callComponent.AddRequestCallBack(new SenderMessage(TimeHelper.Now(), tcs, opcode));
             //
-            InnerRequest innerRequest = new InnerRequest { Opcode = RpcManager.Instance.GetRequestOpcode(request.GetType()), Content = request.ToBinary(), Sn = rid };
+            InnerRequest innerRequest = new InnerRequest { Opcode = opcode, Content = request.ToBinary(), Sn = rid };
             other.Tell(innerRequest);
             //
             long beginTime = TimeHelper.Now();
@@ -98,7 +99,8 @@ namespace Share.Model.Component
                 {
                     break;
                 }
-                //todo 超时调用
+                requestCallbackDic.Remove(first.Key);
+                first.Value.Tcs.SetException(new CodeException(Code.Error, $"rpc opcode:{first.Value.Opcode} time out, please check"));
             }
             return Task.CompletedTask;
         }

@@ -23,7 +23,7 @@ namespace Home.Hotfix.Handler
         }
         public static Task<HAPlayerLoginKeyAns> LoginKeyHandler(PlayerActor player, AHPlayerLoginKeyAsk msg)
         {
-            var loginKeyComponent = (Boot.GameServer as Model.Home).GetComponent<LoginKeyComponent>();
+            var loginKeyComponent = GameServer.Instance.GetHome().GetComponent<LoginKeyComponent>();
             var key = loginKeyComponent.AddPlayerRef(player.GetSelf());
             return Task.FromResult(new HAPlayerLoginKeyAns { PlayerKey = key });
         }

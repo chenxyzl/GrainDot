@@ -13,10 +13,12 @@ namespace Base
 
         public long CreateTime { get; private set; }
         public ETTask<IResponse> Tcs { get; private set; }
-        public SenderMessage(long createTime, ETTask<IResponse> tcs)
+        public uint Opcode { get; private set; }
+        public SenderMessage(long createTime, ETTask<IResponse> tcs, uint opCode)
         {
             CreateTime = createTime;
             Tcs = tcs;
+            Opcode = opCode;
         }
     }
 }

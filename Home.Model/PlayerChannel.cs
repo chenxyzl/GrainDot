@@ -96,7 +96,7 @@ namespace Home.Model
             //第一条消息必须是登录
             A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
             A.Ensure(actor == null, Code.Error, "player has bind", true);
-            actor = (Boot.GameServer as Home).GetLocalPlayerActorRef("xx");
+            actor = GameServer.Instance.GetHome().GetLocalPlayerActorRef("xx");
             //玩家没有获取到则断开链接让客户用重新走http登陆
             A.RequireNotNull(actor, Code.Error, "player actor not found, login api may be overdue， please relogin", true);
             //填充链接id
@@ -141,7 +141,7 @@ namespace Home.Model
 
         public void BindPlayerActor()
         {
-            Base.Boot.GameServer.GetChild("xx");
+            GameServer.Instance.GetChild("xx");
         }
     }
 

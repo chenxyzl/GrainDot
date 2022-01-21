@@ -33,12 +33,12 @@ namespace Home.Model.Component
                 })
                 .OnNewConnection((server, connection) =>
                 {
-                    Boot.GameServer.GetComponent<ConnectionDicCommponent>().AddConnection(connection);
+                    GameServer.Instance.GetComponent<ConnectionDicCommponent>().AddConnection(connection);
                 })
                 .OnConnectionClose(
                 (server, connection) =>
                 {
-                    Boot.GameServer.GetComponent<ConnectionDicCommponent>().RemoveConnection(connection.ConnectionId);
+                    GameServer.Instance.GetComponent<ConnectionDicCommponent>().RemoveConnection(connection.ConnectionId);
                 })
                 .OnServerStarted(server =>
                 {

@@ -15,7 +15,7 @@ namespace BootWorld
     {
         static async Task Main(string[] args)
         {
-            await Boot.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P, MessageExtractor.WorldMessageExtractor);
+            await GameServer.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P, MessageExtractor.WorldMessageExtractor);
         }
     }
 }

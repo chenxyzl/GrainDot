@@ -25,4 +25,12 @@ namespace Home.Model
             return GetChild(path);
         }
     }
+
+    public static class GameServerExt
+    {
+        static public Home GetHome(this GameServer _)
+        {
+            return GameServer.Instance as Home;
+        }
+    }
 }

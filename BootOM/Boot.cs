@@ -14,7 +14,7 @@ namespace BootOM
     {
         static async Task Main(string[] args)
         {
-            await Boot.Run(typeof(OM.Model.OM));
+            await GameServer.Run(typeof(OM.Model.OM));
         }
     }
 }
