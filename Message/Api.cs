@@ -28,7 +28,7 @@ namespace Message
 
 //登录选角色界面
 	[ProtoContract]
-	public partial class C2ALogin: IMessage
+	public partial class C2ALogin: IRequest
 	{
 		[ProtoMember(1)]
 		public int MobileType { get; set; }
@@ -42,7 +42,7 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class A2CLogin: IMessage
+	public partial class A2CLogin: IResponse
 	{
 		[ProtoMember(1)]
 		public List<SimpleRole> Rols = new List<SimpleRole>();
@@ -51,7 +51,7 @@ namespace Message
 
 //角色登录验证
 	[ProtoContract]
-	public partial class A2CRoleLogin: IMessage
+	public partial class A2CRoleLogin: IRequest
 	{
 		[ProtoMember(1)]
 		public ulong Uid { get; set; }
@@ -62,7 +62,7 @@ namespace Message
 	}
 
 	[ProtoContract]
-	public partial class C2ARoleLogin: IMessage
+	public partial class C2ARoleLogin: IResponse
 	{
 		[ProtoMember(1)]
 		public string Addr { get; set; }

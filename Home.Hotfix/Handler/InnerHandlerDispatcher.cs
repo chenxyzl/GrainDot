@@ -13,8 +13,8 @@ namespace Home.Hotfix.Handler
         public async void Dispatcher(BaseActor actor, InnerRequest message)
         {
             var sender = actor.GetSender();
-            var rpcitem = A.RequireNotNull(RpcManager.Instance.InnerRpc(message.Opcode), Code.Error, $"inner opcode:{message.Opcode} not exit", true);
-            if (rpcitem.RpcType == RpcType.CS)
+            var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"inner opcode:{message.Opcode} not exit", true);
+            if (rpcType == RpcType.CS)
             {
                 try
                 {
@@ -27,13 +27,13 @@ namespace Home.Hotfix.Handler
                     actor.Logger.Warning(e.ToString());
                 }
             }
-            else if (rpcitem.RpcType == RpcType.C)
+            else if (rpcType == RpcType.C)
             {
                 await DispatcherNoResult(actor, message);
             }
             else
             {
-                A.Abort(Code.Error, $"opcode:{rpcitem.Opcode} type error", true);
+                A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
             }
 
         }

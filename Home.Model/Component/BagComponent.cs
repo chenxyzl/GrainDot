@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Home.Model.Component
 {
-    public class BagComponent : IPlayerComponent
+    public class BagComponent : IActorComponent
     {
         public BagComponent(BaseActor a) : base(a)
         {

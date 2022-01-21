@@ -26,10 +26,4 @@ namespace Base
         //tick
         public Task Tick(BaseActor self, long dt);
     }
-
-    public abstract class IGameComponent : IComponent
-    {
-        protected BaseActor Node;
-        public IGameComponent(BaseActor a) { Node = a; }
-    }
 }

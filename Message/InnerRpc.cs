@@ -4,9 +4,9 @@ namespace Message
 	{
 		public void Load()
 		{
-			AddRpcInfo(10000, OpType.SS, typeof(Message.AHPlayerLoginKeyAsk), typeof(Message.HAPlayerLoginKeyAns));
-			AddRpcInfo(10001, OpType.SS, typeof(Message.HWPlayerOnlineAsk), typeof(Message.WHPlayerOnlineAns));
-			AddRpcInfo(10002, OpType.SS, typeof(Message.HWPlayerOfflineAsk), typeof(Message.WHPlayerOfflineAns));
+			AddRpcInfo(10000, OpType.CS, typeof(Message.AHPlayerLoginKeyAsk), typeof(Message.HAPlayerLoginKeyAns));
+			AddRpcInfo(10001, OpType.CS, typeof(Message.HWPlayerOnlineAsk), typeof(Message.WHomPlayerOnlineAns));
+			AddRpcInfo(10002, OpType.CS, typeof(Message.HWPlayerOfflineAsk), typeof(Message.WHPlayerOfflineAns));
 		}
 	}
 }

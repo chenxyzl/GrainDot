@@ -25,10 +25,4 @@ namespace Base
         //tick
         public Task Tick(BaseActor self, long dt);
     }
-
-    public abstract class IPlayerComponent : IComponent
-    {
-        protected BaseActor Node;
-        public IPlayerComponent(BaseActor a) { Node = a; }
-    }
 }

@@ -1,4 +1,4 @@
-namespace 
+namespace Message
 {
 	public partial class OpcodeTypeComponent
 	{

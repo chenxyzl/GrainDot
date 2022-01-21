@@ -11,8 +11,8 @@ namespace Home.Hotfix.Handler
         public async void Dispatcher(BaseActor actor, Request message)
         {
             var player = actor as PlayerActor;
-            var rpcitem = A.RequireNotNull(RpcManager.Instance.GateRpc(message.Opcode), Code.Error, $"gate opcode:{message.Opcode} not exit", true);
-            if (rpcitem.RpcType == RpcType.CS)
+            var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"gate opcode:{message.Opcode} not exit", true);
+            if (rpcType == RpcType.CS)
             {
                 try
                 {
@@ -39,13 +39,13 @@ namespace Home.Hotfix.Handler
 
 
             }
-            else if (rpcitem.RpcType == RpcType.C)
+            else if (rpcType == RpcType.C)
             {
                 await DispatcherNoResult(player, message);
             }
             else
             {
-                A.Abort(Code.Error, $"opcode:{rpcitem.Opcode} type error", true);
+                A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
             }
         }
     }

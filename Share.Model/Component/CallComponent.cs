@@ -12,7 +12,7 @@ using Message;
 
 namespace Share.Model.Component
 {
-    public class CallComponent : IPlayerComponent
+    public class CallComponent : IActorComponent
     {
         private ulong _requestIncId = 0;
         private SortedDictionary<ulong, SenderMessage> requestCallbackDic = new SortedDictionary<ulong, SenderMessage>();
