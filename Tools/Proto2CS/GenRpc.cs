@@ -28,11 +28,13 @@ namespace Proto
             string s = File.ReadAllText(protoName);
 
             StringBuilder sb = new StringBuilder();
+            sb.Append("using System.Collections.Generic;\n");
+            sb.Append("\n");
             sb.Append($"namespace {ns}\n");
             sb.Append("{\n");
-            sb.Append($"\tpublic partial class RpcManager\n");
+            sb.Append($"\tpublic partial class RpcItemMessage\n");
             sb.Append("\t{\n");
-            sb.Append($"\t\tpublic void AddInnerRpcItem{opcodeClassName}()\n");
+            sb.Append($"\t\tstatic public List<RpcItem> rpcItems{opcodeClassName} = new List<RpcItem>\n");
             sb.Append("\t\t{\n");
             int i = -1;
             foreach (string line in s.Split('\n'))
@@ -57,9 +59,9 @@ namespace Proto
                 }
                 var param = infoArr[2] == "" ? "null" : $"typeof({CommandHelper.Instance.Namespace}.{infoArr[2]})";
                 var ret = infoArr[3] == "" ? "null" : $"typeof({CommandHelper.Instance.Namespace}.{infoArr[3]})";
-                sb.Append($"\t\t\tAddRpcInfo({infoArr[0]}, OpType.{infoArr[1]}, {param}, {ret}, {infoArr[4]});\n");
+                sb.Append($"\t\t\tnew RpcItem({infoArr[0]}, OpType.{infoArr[1]}, {param}, {ret}, \"{infoArr[4]}\"),\n");
             }
-            sb.Append("\t\t}\n");
+            sb.Append("\t\t};\n");
             sb.Append("\t}\n");
             sb.Append("}\n");
 

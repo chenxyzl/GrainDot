@@ -1,55 +1,22 @@
-﻿
-using Base.Alg;
-using Common;
-using Message;
+﻿using Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Base
 {
-    public enum RpcType
-    {
-        CS = 0,
-        C = 1,
-        S = 2
-    }
-    public struct RpcItem
-    {
-        public uint Opcode { get; private set; }
-        public RpcType RpcType { get; private set; }
-        public Type InType { get; private set; }
-        public Type OutType { get; private set; }
-        public string RpcName { get; private set; }
-
-        public RpcItem(uint v1, RpcType cS, Type type1, Type type2, string v2) : this()
-        {
-            Opcode = v1;
-            RpcType = cS;
-            InType = type1;
-            OutType = type2;
-            RpcName = v2;
-        }
-    }
-
     //管理rpc相关
     public partial class RpcManager : Single<RpcManager>
     {
-        //rpc字典
-        private Dictionary<uint, RpcItem> gateRpcDic = new Dictionary<uint, RpcItem>();
-        //rpc字典
-        private Dictionary<uint, RpcItem> innerRpcDic = new Dictionary<uint, RpcItem>();
-
+        //
+        bool onlyFirst = true;
         //protobuf type to opCode
         private Dictionary<Type, uint> requestOpcodeDic = new Dictionary<Type, uint>();
         public uint GetRequestOpcode(Type t) { return A.RequireNotNull(requestOpcodeDic[t], Code.Error, $"request type:{t.Name} to code not found"); }
         private Dictionary<uint, Type> opcodeResponseDic = new Dictionary<uint, Type>();
         public Type GetResponseOpcode(uint opcode) { return A.RequireNotNull(opcodeResponseDic[opcode], Code.Error, $"response opcode:{opcode} to code not found"); }
-        private Dictionary<uint, RpcType> rpcTypeDic = new Dictionary<uint, RpcType>();
-        public RpcType GetRpcType(uint opcode) { return A.RequireNotNull(rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found"); }
+        private Dictionary<uint, OpType> rpcTypeDic = new Dictionary<uint, OpType>();
+        public OpType GetRpcType(uint opcode) { return A.RequireNotNull(rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found"); }
 
 
 
@@ -93,16 +60,40 @@ namespace Base
             innerHandlerDispatcherTemp = null;
             outerHandlerDispatcherTemp = null;
 
-            //这两没必须重启时候加--暂时保留
-            AddInnerRpcItem();
-            AddOuterRpcItem();
+            //不会改变的，只需要Load一次
+            if (onlyFirst)
+            {
+                ParaseRpcItems();
+                onlyFirst = false;
+            }
         }
+        public void ParaseRpcItems(List<RpcItem> rpcItems)
+        {
+            foreach (var item in rpcItems)
+            {
+                if (requestOpcodeDic.TryGetValue(item.InType, out var _))
+                {
+                    A.Abort(Code.Error, $"requestOpcodeDic:{item.InType} repeated", true);
+                }
+                requestOpcodeDic.Add(item.InType, item.Opcode);
 
-        public void AddInnerRpcItem(RpcItem rpcItem)
-        {
+                if (opcodeResponseDic.TryGetValue(item.Opcode, out var _))
+                {
+                    A.Abort(Code.Error, $"opcodeResponseDic:{item.Opcode} repeated", true);
+                }
+                opcodeResponseDic.Add(item.Opcode, item.OutType);
+
+                if (rpcTypeDic.TryGetValue(item.Opcode, out var _))
+                {
+                    A.Abort(Code.Error, $"rpcTypeDic:{item.Opcode} repeated", true);
+                }
+                rpcTypeDic.Add(item.Opcode, item.OpType);
+            }
         }
-        public void AddOutRpcItem(RpcItem rpcItem)
+        public void ParaseRpcItems()
         {
+            ParaseRpcItems(RpcItemMessage.rpcItemsInner);
+            ParaseRpcItems(RpcItemMessage.rpcItemsOuter);
         }
     }
 }

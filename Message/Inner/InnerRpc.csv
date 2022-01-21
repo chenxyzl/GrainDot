@@ -1,6 +1,6 @@
 sn,rpc类型,参数类型,返回值类型,函数名,描述
 10000,CS,AHPlayerLoginKeyAsk,HAPlayerLoginKeyAns,PlayerLoginKeyHandler,api服务器获取玩家的登录key
-10001,CS,HWPlayerOnlineAsk,WHomPlayerOnlineAns,PlayerOnlineHandler,玩家上线
+10001,CS,HWPlayerOnlineAsk,WHPlayerOnlineAns,PlayerOnlineHandler,玩家上线
 10002,CS,HWPlayerOfflineAsk,WHPlayerOfflineAns,PlayerOfflineHandler,玩家下线
 
 

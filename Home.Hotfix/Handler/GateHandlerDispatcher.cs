@@ -12,7 +12,7 @@ namespace Home.Hotfix.Handler
         {
             var player = actor as PlayerActor;
             var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"gate opcode:{message.Opcode} not exit", true);
-            if (rpcType == RpcType.CS)
+            if (rpcType == OpType.CS)
             {
                 try
                 {
@@ -39,7 +39,7 @@ namespace Home.Hotfix.Handler
 
 
             }
-            else if (rpcType == RpcType.C)
+            else if (rpcType == OpType.C)
             {
                 await DispatcherNoResult(player, message);
             }

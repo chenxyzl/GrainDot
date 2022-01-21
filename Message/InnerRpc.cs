@@ -1,12 +1,14 @@
+using System.Collections.Generic;
+
 namespace Message
 {
-	public partial class OpcodeTypeComponent
+	public partial class RpcItemMessage
 	{
-		public void Load()
+		static public List<RpcItem> rpcItemsInner = new List<RpcItem>
 		{
-			AddRpcInfo(10000, OpType.CS, typeof(Message.AHPlayerLoginKeyAsk), typeof(Message.HAPlayerLoginKeyAns));
-			AddRpcInfo(10001, OpType.CS, typeof(Message.HWPlayerOnlineAsk), typeof(Message.WHomPlayerOnlineAns));
-			AddRpcInfo(10002, OpType.CS, typeof(Message.HWPlayerOfflineAsk), typeof(Message.WHPlayerOfflineAns));
-		}
+			new RpcItem(10000, OpType.CS, typeof(Message.AHPlayerLoginKeyAsk), typeof(Message.HAPlayerLoginKeyAns), "PlayerLoginKeyHandler"),
+			new RpcItem(10001, OpType.CS, typeof(Message.HWPlayerOnlineAsk), typeof(Message.WHPlayerOnlineAns), "PlayerOnlineHandler"),
+			new RpcItem(10002, OpType.CS, typeof(Message.HWPlayerOfflineAsk), typeof(Message.WHPlayerOfflineAns), "PlayerOfflineHandler"),
+		};
 	}
 }

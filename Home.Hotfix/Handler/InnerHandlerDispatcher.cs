@@ -14,7 +14,7 @@ namespace Home.Hotfix.Handler
         {
             var sender = actor.GetSender();
             var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"inner opcode:{message.Opcode} not exit", true);
-            if (rpcType == RpcType.CS)
+            if (rpcType == OpType.CS)
             {
                 try
                 {
@@ -27,7 +27,7 @@ namespace Home.Hotfix.Handler
                     actor.Logger.Warning(e.ToString());
                 }
             }
-            else if (rpcType == RpcType.C)
+            else if (rpcType == OpType.C)
             {
                 await DispatcherNoResult(actor, message);
             }
