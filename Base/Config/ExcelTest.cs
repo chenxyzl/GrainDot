@@ -1,12 +1,12 @@
 ﻿
-using Base;
+using Base.ConfigParse;
 using ExcelMapper;
 using Message;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
-namespace Share.Model
+namespace Base.Config
 {
     [SheetName("MapListTest")]
     public partial class MapListValue : IExcelConfig<int>

@@ -7,6 +7,7 @@ using World.Model;
 namespace Home.Hotfix.Handler
 {
     //为了高性能，对此文件的所有函数做了delegate缓存
+    [InnerRpc]
     public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
     {
         public async void Dispatcher(WorldSession session, InnerRequest message)

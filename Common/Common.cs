@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public enum RoleDef
+    public enum RoleType
     {
         NULL, //一键启动节点
         OM, //集群管理后台

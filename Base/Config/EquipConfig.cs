@@ -1,9 +1,9 @@
 ﻿
 using ExcelMapper;
-using Base;
+using Base.ConfigParse;
 using Message;
 
-namespace Share.Model
+namespace Base.Config
 {
 
     public class EAConfig : IExcelConfig<int>

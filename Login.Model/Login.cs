@@ -10,7 +10,7 @@ namespace Login.Model
 {
     public class Login : GameServer
     {
-        public Login() : base(Common.RoleDef.Login) { }
+        public Login() : base(Common.RoleType.Login) { }
 
         public override void RegisterGlobalComponent()
         {

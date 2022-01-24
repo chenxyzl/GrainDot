@@ -1,8 +1,8 @@
 ﻿
 using ExcelMapper;
-using Base;
+using Base.ConfigParse;
 
-namespace Share.Model
+namespace Base.Config
 {
 
     [SheetName("职业类型")]

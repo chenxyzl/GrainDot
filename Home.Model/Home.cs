@@ -11,7 +11,7 @@ namespace Home.Model
 {
     public class Home : GameServer
     {
-        public Home() : base(Common.RoleDef.Home) { }
+        public Home() : base(Common.RoleType.Home) { }
         public override void RegisterGlobalComponent()
         {
             AddComponent<TcpComponent>();

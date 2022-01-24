@@ -5,20 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 
 namespace Base.Helper
 {
     public static class DllHelper
     {
-        public static Assembly[] GetHotfixAssembly()
+        public static Assembly[] GetHotfixAssembly(RoleType role)
         {
             Assembly[] assembly = {
                 typeof(GameServer).Assembly,
                 Assembly.Load(File.ReadAllBytes("./Share.Hotfix.dll"), File.ReadAllBytes("./Share.Hotfix.pdb")),
-                Assembly.Load(File.ReadAllBytes("./OM.Hotfix.dll"), File.ReadAllBytes("./OM.Hotfix.pdb")),
-                Assembly.Load(File.ReadAllBytes("./World.Hotfix.dll"), File.ReadAllBytes("./World.Hotfix.pdb")),
-                Assembly.Load(File.ReadAllBytes("./Login.Hotfix.dll"), File.ReadAllBytes("./Login.Hotfix.pdb")),
-                Assembly.Load(File.ReadAllBytes("./Home.Hotfix.dll"), File.ReadAllBytes("./Home.Hotfix.pdb")),
+                Assembly.Load(File.ReadAllBytes($"./{role}.Hotfix.dll"), File.ReadAllBytes($"./{role}.Hotfix.pdb")),
             };
 
             return assembly;

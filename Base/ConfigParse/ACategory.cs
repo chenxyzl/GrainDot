@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Base
+namespace Base.ConfigParse
 {
     public abstract class ACategory : ISupportInitialize
     {

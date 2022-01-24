@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace Base
+namespace Base.ConfigParse
 {
 	public static class ConfigHelper
 	{

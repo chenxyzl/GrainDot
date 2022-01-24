@@ -1,4 +1,4 @@
-﻿namespace Base
+﻿namespace Base.ConfigParse
 {
     /// <summary>
     /// 每个Config的基类

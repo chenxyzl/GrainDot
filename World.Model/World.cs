@@ -10,7 +10,7 @@ namespace World.Model
 {
     public class World : GameServer
     {
-        public World() : base(Common.RoleDef.World) { }
+        public World() : base(Common.RoleType.World) { }
 
         public override void RegisterGlobalComponent()
         {

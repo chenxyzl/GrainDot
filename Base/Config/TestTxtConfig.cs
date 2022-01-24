@@ -1,7 +1,7 @@
 
-using Base;
+using Base.ConfigParse;
 
-namespace Share.Model
+namespace Base.Config
 {
     public partial class TestTxtConfig : IConfig<ulong>
     {

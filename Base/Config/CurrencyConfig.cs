@@ -1,11 +1,11 @@
 ﻿
 using ExcelMapper;
-using Base;
+using Base.ConfigParse;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Message;
 
-namespace Share.Model
+namespace Base.Config
 {
 
     [SheetName("货币")]

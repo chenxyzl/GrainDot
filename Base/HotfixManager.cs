@@ -18,7 +18,7 @@ namespace Base
         public void Reload()
         {
             var t = new UnOrderMultiMapSet<Type, Type>();
-            var asm = Helper.DllHelper.GetHotfixAssembly();
+            var asm = Helper.DllHelper.GetHotfixAssembly(GameServer.Instance.role);
             foreach (var x in asm)
             {
                 foreach (var type in x.GetTypes())
@@ -44,7 +44,7 @@ namespace Base
             types = t;
 
             //重新加载配置
-            Config.Instance.ReloadConfig();
+            ConfigManager.Instance.ReloadConfig();
             //重新加载Handler
             RpcManager.Instance.ReloadHanlder();
             //

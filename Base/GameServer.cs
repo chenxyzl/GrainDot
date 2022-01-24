@@ -25,7 +25,7 @@ namespace Base
         //根系统
         public ActorSystem system { get; protected set; }
         //角色类型
-        public RoleDef role { get; private set; }
+        public RoleType role { get; private set; }
         //退出标记
         bool _quitFlag = false;
         long lastTime = 0;
@@ -41,7 +41,7 @@ namespace Base
             };
         }
         //
-        public GameServer(RoleDef r)
+        public GameServer(RoleType r)
         {
             role = r;
             Logger = new NLogAdapter(role.ToString());

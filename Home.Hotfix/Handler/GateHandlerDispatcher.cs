@@ -6,6 +6,8 @@ using Message;
 
 namespace Home.Hotfix.Handler
 {
+
+    [GateRpc]
     public partial class GateHandlerDispatcher : IGateHandlerDispatcher
     {
         public async void Dispatcher(BaseActor actor, Request message)

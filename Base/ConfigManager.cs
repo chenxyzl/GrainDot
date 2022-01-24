@@ -1,5 +1,6 @@
 ﻿
 using Base.Alg;
+using Base.ConfigParse;
 using Common;
 using Message;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace Base
 {
 
-    public class Config : Single<Config>
+    public class ConfigManager : Single<ConfigManager>
     {
         private Dictionary<Type, ACategory> configs = new Dictionary<Type, ACategory>();
         public void ReloadConfig()

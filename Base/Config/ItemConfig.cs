@@ -1,9 +1,9 @@
 ﻿
 using ExcelMapper;
-using Base;
+using Base.ConfigParse;
 using Message;
 
-namespace Share.Model
+namespace Base.Config
 {
 
     [SheetName(new string[] { "材料", "道具" })]

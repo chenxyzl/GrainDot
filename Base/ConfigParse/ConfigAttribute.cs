@@ -1,4 +1,4 @@
-﻿namespace Base
+﻿namespace Base.ConfigParse
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class ConfigAttribute : BaseAttribute
