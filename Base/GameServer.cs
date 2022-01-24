@@ -78,12 +78,12 @@ namespace Base
         virtual protected void LoadConfig()
         {
 
-            //var baseConfig = File.ReadAllText($"../Conf/Base.conf");
-            //var config = File.ReadAllText($"../Conf/{role}.conf");
-            //var a = ConfigurationFactory.ParseString(baseConfig);
-            //var b  = ConfigurationFactory.ParseString(config);
-            //_systemConfig = b.WithFallback(a);
-            _systemConfig  = File.ReadAllText($"../Conf/{role}.conf");
+            var baseConfig = File.ReadAllText($"../Conf/Base.conf");
+            var config = File.ReadAllText($"../Conf/{role}.conf");
+            var a = ConfigurationFactory.ParseString(baseConfig);
+            var b  = ConfigurationFactory.ParseString(config);
+            _systemConfig = b.WithFallback(a);
+            //_systemConfig  = File.ReadAllText($"../Conf/{role}.conf");
         }
 
         virtual protected async Task BeforCreate()
