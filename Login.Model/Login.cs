@@ -14,7 +14,7 @@ namespace Login.Model
 
         public override void RegisterGlobalComponent()
         {
-            AddComponent<HttpComponent>(20001);
+            AddComponent<HttpComponent>(":20001");
         }
     }
 }

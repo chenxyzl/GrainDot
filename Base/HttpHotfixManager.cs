@@ -16,7 +16,7 @@ namespace Base
             foreach (var type in types)
             {
                 var attr = A.RequireNotNull(type.GetCustomAttribute<HttpHandlerAttribute>(), Code.Error, "HttpHandlerAttribute must exist");
-                A.Ensure(handlesTemp[attr.Router] == null, Code.Error, $"router{attr.Router} must not repeated");
+                A.Ensure(!handlesTemp.ContainsKey(attr.Router), Code.Error, $"router{attr.Router} must not repeated");
                 var handler = Activator.CreateInstance(type) as IHttpHandler;
                 handlesTemp[attr.Router] = handler;
             }
