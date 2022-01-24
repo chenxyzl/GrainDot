@@ -1,6 +1,6 @@
 ﻿using System;
 using Base;
-using Base.Serializer;
+using Base.Serialize;
 using Home.Model;
 using Message;
 

@@ -11,7 +11,7 @@ namespace Home.Model.Component
     public class TcpComponent : IGlobalComponent
     {
         private ITcpSocketServer _server;
-        public TcpComponent(GameServer n) { }
+        public TcpComponent() { }
         public Task Load()
         {
             return Task.CompletedTask;

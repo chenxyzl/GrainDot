@@ -26,7 +26,7 @@ namespace Base.ConfigParse
     /// 管理该所有的配置
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ACategory<K, T> : ACategory where T : IConfig<K>
+    public abstract class ACategory<K, T> : ACategory where T : IExcelConfig<K>
     {
         protected Dictionary<K, T> dict;
 
@@ -34,29 +34,7 @@ namespace Base.ConfigParse
         {
             //typeof(T).GetTypeInfo().IsAssignableFrom(typeof(IExcelConfig).Ge‌​tTypeInfo())
             var fileName = this.GetType().GetCustomAttribute<ConfigAttribute>().FileName;
-            if (typeof(IExcelConfig<K>).IsAssignableFrom(typeof(T)))
-            {
-                FromExcel(fileName);
-            }
-            else
-            {
-                FromTextJson(fileName);
-            }
-        }
-
-        private void FromTextJson(string fileName)
-        {
-            string path = $"../Config/{fileName}.txt";
-            string configStr = ConfigHelper.GetText(path);
-
-            try
-            {
-                this.dict = ConfigHelper.ToObject<Dictionary<K, T>>(configStr);
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"parser json fail: {configStr}", e);
-            }
+            FromExcel(fileName);
         }
         private void FromExcel(string fileName)
         {
@@ -97,7 +75,7 @@ namespace Base.ConfigParse
 
         public override void EndInit()
         {
-            
+
         }
 
         public T Get(K id)
@@ -125,7 +103,7 @@ namespace Base.ConfigParse
     /// 管理该所有的配置
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ACategory<K, T, V> : ACategory where T : ExcelClassMap<V> where V : IConfig<K>
+    public abstract class ACategory<K, T, V> : ACategory where T : ExcelClassMap<V> where V : IExcelConfig<K>
     {
         protected Dictionary<K, V> dict;
 

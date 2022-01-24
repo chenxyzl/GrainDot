@@ -2,7 +2,7 @@
 using Base;
 using Base.Helper;
 using Base.Network;
-using Base.Serializer;
+using Base.Serialize;
 using DotNetty.Transport.Channels;
 using Message;
 using System;
@@ -38,7 +38,7 @@ namespace Home.Model
             Request message;
             try
             {
-                message = SerializerHelper.FromBinary<Request>(bytes);
+                message = SerializeHelper.FromBinary<Request>(bytes);
             }
             catch (Exception e) //避免协议破解
             {
@@ -95,7 +95,7 @@ namespace Home.Model
         {
             //第一条消息必须是登录
             A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
-            var login = SerializerHelper.FromBinary<C2SLogin>(message.Content);
+            var login = SerializeHelper.FromBinary<C2SLogin>(message.Content);
             A.Ensure(actor == null, Code.Error, "player has bind", true);
             //获取actor
             actor = GameServer.Instance.GetHome().GetLocalPlayerActorRef(login.PlayerId);

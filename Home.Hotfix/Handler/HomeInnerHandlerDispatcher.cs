@@ -1,7 +1,7 @@
 ﻿using Base;
 using Home.Model;
 using Message;
-using Base.Serializer;
+using Base.Serialize;
 using Akka.Actor;
 using System;
 

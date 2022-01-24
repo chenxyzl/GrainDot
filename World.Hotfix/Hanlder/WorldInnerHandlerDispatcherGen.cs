@@ -1,5 +1,5 @@
 ﻿using Base;
-using Base.Serializer;
+using Base.Serialize;
 using World.Model;
 using Message;
 using System.Threading.Tasks;

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using Akka.Actor;
+using Akka.Serialization;
 
-namespace Akka.Serialization.Protobuf
+namespace Base.Serialize
 {
     /// <summary>
     /// Generic Google Protocol Buffers serializer for Akka.NET using Marc Gravell protobuf-net.

@@ -6,7 +6,7 @@ using Akka.Actor;
 using Base;
 using Base.ET;
 using Base.Helper;
-using Base.Serializer;
+using Base.Serialize;
 using Common;
 using Message;
 
@@ -79,7 +79,7 @@ namespace Share.Model.Component
             else
             {
                 var retType = RpcManager.Instance.GetResponseOpcode(respone.Opcode);
-                var ret = SerializerHelper.FromBinary(retType, respone.Content) as IResponse;
+                var ret = SerializeHelper.FromBinary(retType, respone.Content) as IResponse;
                 senderMessage.Tcs.SetResult(ret);
             }
         }

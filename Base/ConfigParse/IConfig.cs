@@ -3,13 +3,8 @@
     /// <summary>
     /// 每个Config的基类
     /// </summary>
-    public interface IConfig<K>
+    public interface IExcelConfig<K>
     {
         K Id { get; set; }
-    }
-
-    public interface IExcelConfig<K> : IConfig<K>
-    {
-
     }
 }

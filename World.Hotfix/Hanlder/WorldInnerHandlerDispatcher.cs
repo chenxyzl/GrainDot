@@ -1,6 +1,6 @@
 ﻿using Akka.Actor;
 using Base;
-using Base.Serializer;
+using Base.Serialize;
 using Message;
 using World.Model;
 

@@ -8,3 +8,4 @@ Bin/
 **/*.csproj.user
 **/~$*.xlsx
 **/.vs/*
+Logs/

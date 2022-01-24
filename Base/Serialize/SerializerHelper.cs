@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Base.Serializer
+namespace Base.Serialize
 {
-    public static class SerializerHelper
+    public static class SerializeHelper
     {
         public static byte[] ToBinary(object obj)
         {

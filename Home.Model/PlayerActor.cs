@@ -2,7 +2,7 @@
 using Base;
 using Base.Helper;
 using Base.Network;
-using Base.Serializer;
+using Base.Serialize;
 using Home.Model.Component;
 using Message;
 using System;
@@ -118,7 +118,7 @@ namespace Home.Model
 
         public void LoginPreDeal(Request request)
         {
-            var c2sLogin = SerializerHelper.FromBinary<C2SLogin>(request.Content);
+            var c2sLogin = SerializeHelper.FromBinary<C2SLogin>(request.Content);
             var connectionId = c2sLogin.Unused;
             var connect = GameServer.Instance.GetHome().GetComponent<ConnectionDicCommponent>().GetConnection(connectionId);
             session = connect;

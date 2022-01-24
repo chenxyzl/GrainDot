@@ -1,5 +1,5 @@
 ﻿using Base;
-using Base.Serializer;
+using Base.Serialize;
 using Home.Model;
 using Message;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ namespace Home.Hotfix.Handler
             PlayerActor player = actor as PlayerActor;
             switch (message.Opcode)
             {
-                case 10000: return await HomeLoginHandler.LoginKeyHandler(player, SerializerHelper.FromBinary<AHPlayerLoginKeyAsk>(message.Content));
+                case 10000: return await HomeLoginHandler.LoginKeyHandler(player, SerializeHelper.FromBinary<AHPlayerLoginKeyAsk>(message.Content));
             }
             A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
             return null;

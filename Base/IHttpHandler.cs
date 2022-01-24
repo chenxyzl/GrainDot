@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Base.Serializer;
+using Base.Serialize;
 using Message;
 
 namespace Base
@@ -15,7 +15,7 @@ namespace Base
 
         public async Task<byte[]> Handle(byte[] data)
         {
-            var msg = SerializerHelper.FromBinary<RSP>(data);
+            var msg = SerializeHelper.FromBinary<RSP>(data);
             var ret = await Run(msg);
             return ret.ToBinary();
         }
