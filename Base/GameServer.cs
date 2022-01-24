@@ -10,6 +10,7 @@ using Akka.Cluster.Tools.Client;
 using System;
 using Base.Helper;
 using System.Threading;
+using System.Text;
 
 namespace Base
 {
@@ -198,9 +199,19 @@ namespace Base
             }
             GlobalLog.Warning($"---{role}退出loop---");
         }
+
+        static private void BeforeRun()
+        {
+            //支持gbk2132
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
+
         //有actor的启动
         static public async Task Run(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
         {
+            //before
+            BeforeRun();
+            //创建
             Instance = Activator.CreateInstance(gsType) as GameServer;
             //准备
             Instance.Reload();
@@ -214,6 +225,9 @@ namespace Base
         //无actor的启动
         static public async Task Run(Type gsType)
         {
+            //before；
+            BeforeRun();
+            //创建
             Instance = Activator.CreateInstance(gsType) as GameServer;
             //准备
             Instance.Reload();

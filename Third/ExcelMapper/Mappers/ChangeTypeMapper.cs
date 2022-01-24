@@ -38,7 +38,10 @@ namespace ExcelMapper.Mappers
         {
             try
             {
-                object result = Convert.ChangeType(readResult.StringValue, Type);
+                object result;
+                if (Type.Name == "UInt32" && readResult.StringValue == "-1") result = Convert.ChangeType(UInt32.MaxValue.ToString(), Type);
+                else if (Type.Name == "UInt64" && readResult.StringValue == "-1") result = Convert.ChangeType(UInt64.MaxValue.ToString(), Type);
+                else result = Convert.ChangeType(readResult.StringValue, Type);
                 return CellValueMapperResult.Success(result);
             }
             catch (Exception exception)
