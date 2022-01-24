@@ -25,6 +25,8 @@ namespace Message
 
 		ItemNotCurrency = 10005,
 
+		PlayerNotOnline = 10006， //玩家不在线
+
 	}
 
 }

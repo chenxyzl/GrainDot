@@ -10,9 +10,16 @@ namespace World.Model
 {
     public class WorldSession
     {
-        readonly public WorldActor World;
-        readonly public IActorRef Self;
-        readonly public ulong PlayerID;
+        public WorldActor World { get; private set; }
+        public IActorRef Self { get; private set; }
+        public ulong PlayerID { get; private set; }
+        public WorldSession(WorldActor w, IActorRef s, ulong p)
+        {
+            World = w;
+            Self = s;
+            PlayerID = p;
+        }
+
         public void Send(IMessage message)
         {
             //创建sn

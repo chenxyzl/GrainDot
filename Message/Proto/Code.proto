@@ -4,13 +4,14 @@ package Message;
 
 enum Code {
   Ok = 0;
-  Error = 1;                    //内部未知错误
-  GateSignFailed = 2;           // gate校验失败
-  AccountIllegal = 3;           //账号id非法
+  Error = 1;                        //内部未知错误
+  GateSignFailed = 2;               // gate校验失败
+  AccountIllegal = 3;               //账号id非法
   ItemNodEnough = 10000;            //道具数量不足
   ItemIdNotExist = 10001;           //道具不存在
   ItemTypeNotDeal = 10002;          //道具类型未处理
   AddCountMustBiggerThan0 = 10003;  //道具增加的数必须大于0
   ConfigNotFound = 10004;           //配置不存在
-  ItemNotCurrency = 10005;			//道具不是货币类型
+  ItemNotCurrency = 10005;          //道具不是货币类型
+  PlayerNotOnline = 10006;          //玩家不在线
 }

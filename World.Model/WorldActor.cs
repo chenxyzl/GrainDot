@@ -23,7 +23,7 @@ namespace World.Model
         {
             base.PreStart();
             await GameHotfixManager.Instance.Hotfix.Load(this);
-            await GameHotfixManager.Instance.Hotfix.Start(this, false);   
+            await GameHotfixManager.Instance.Hotfix.Start(this, false);
             EnterUpState();
         }
 
@@ -59,6 +59,15 @@ namespace World.Model
                         break;
                     }
             }
+        }
+    }
+
+
+    public static class ComponentExt
+    {
+        static WorldActor World(this IActorComponent self)
+        {
+            return self.Node as WorldActor;
         }
     }
 }

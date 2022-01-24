@@ -124,4 +124,12 @@ namespace Home.Model
             session = connect;
         }
     }
+
+    public static class ComponentExt
+    {
+        static PlayerActor Player(this IActorComponent self)
+        {
+            return self.Node as PlayerActor;
+        }
+    }
 }

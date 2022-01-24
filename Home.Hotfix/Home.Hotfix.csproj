@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Service\BagService.cs" />
+    <Compile Include="Service\PlayerBagService.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Base;
 using Base.Serializer;
-using Home.Model;
+using World.Model;
 using Message;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace Home.Hotfix.Handler
 {
     public partial class WorldInnerHandlerDispatcher
     {
-        public async Task<IResponse> DispatcherWithResult(PlayerActor player, InnerRequest message)
+        public async Task<IResponse> DispatcherWithResult(WorldSession player, InnerRequest message)
         {
             switch (message.Opcode)
             {
@@ -17,7 +17,7 @@ namespace Home.Hotfix.Handler
             return null;
         }
 
-        public async Task DispatcherNoResult(PlayerActor player, InnerRequest message)
+        public async Task DispatcherNoResult(WorldSession player, InnerRequest message)
         {
             switch (message.Opcode)
             {

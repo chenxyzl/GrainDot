@@ -5,13 +5,12 @@ using Message;
 
 namespace Login.Hotfix.Handler
 {
-    [HttpHandler(router:"/api/login")]
-    public class RoleList : IHttpHandler
+    [HttpHandler(router: "/api/login")]
+    public class RoleList : HttpHandler<C2ALogin, A2CLogin>
     {
-        public Task<R> Run<R, T>(T message)
-            where R : IResponse
-            where T : IRequest
+        protected override Task<C2ALogin> Run(A2CLogin data)
         {
+            //todo 登录http实现
             throw new NotImplementedException();
         }
     }

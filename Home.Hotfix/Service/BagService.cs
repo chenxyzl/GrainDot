@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Home.Hotfix.Service
 {
-    public static class PlayerBagService
+    public static class BagService
     {
         public static Task Load(this BagComponent self)
         {

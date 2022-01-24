@@ -10,7 +10,7 @@ namespace Base.Helper
 			byte[] retVal;
             using (FileStream file = new FileStream(filePath, FileMode.Open))
 			{
-                MD5 md5 = new MD5CryptoServiceProvider();
+                MD5 md5 = MD5.Create();
 				retVal = md5.ComputeHash(file);
 			}
 			return retVal.ToHex("x2");
