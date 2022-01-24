@@ -15,7 +15,14 @@ namespace World.Model.Component
 
         public WorldSession AddOrUpdateWorldSession(ulong playerId, IActorRef player)
         {
-            sessionManager[playerId] = new WorldSession { Self = player, PlayerID = playerId World = this.Node as WorldActor };
+            var session = new WorldSession(this.World(), player, playerId);
+            sessionManager[playerId] = session;
+            return session;
+        }
+
+        public void RemoveSession(ulong playerId)
+        {
+            sessionManager.Remove(playerId);
         }
     }
 }

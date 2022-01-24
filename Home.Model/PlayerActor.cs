@@ -127,7 +127,7 @@ namespace Home.Model
 
     public static class ComponentExt
     {
-        static PlayerActor Player(this IActorComponent self)
+        static public PlayerActor Player(this IActorComponent self)
         {
             return self.Node as PlayerActor;
         }

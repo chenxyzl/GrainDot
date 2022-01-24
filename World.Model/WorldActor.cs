@@ -65,7 +65,7 @@ namespace World.Model
 
     public static class ComponentExt
     {
-        static WorldActor World(this IActorComponent self)
+        public static WorldActor World(this IActorComponent self)
         {
             return self.Node as WorldActor;
         }
