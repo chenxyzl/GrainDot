@@ -7,6 +7,7 @@ using Akka.Actor;
 using Akka.Cluster.Sharding;
 using Akka.Cluster.Tools.Client;
 using Akka.Configuration;
+using Akka.Remote.Routing;
 using Base.Helper;
 using Common;
 using Message;
@@ -57,6 +58,7 @@ public abstract class GameServer
     {
         var baseConfig = File.ReadAllText("../Conf/Base.conf");
         var config = File.ReadAllText($"../Conf/{role}.conf");
+        // var o = ConfigurationFactory.Default();
         var a = ConfigurationFactory.ParseString(baseConfig);
         var b = ConfigurationFactory.ParseString(config);
         _systemConfig = b.WithFallback(a);
@@ -79,7 +81,6 @@ public abstract class GameServer
     {
         //全局触发AfterLoad
         foreach (var x in _componentsList) await x.Start();
-
         //触发挤时间
         Instance.lastTime = TimeHelper.Now();
     }
@@ -121,7 +122,6 @@ public abstract class GameServer
     protected virtual async Task StartSystem()
     {
         await BeforCreate();
-        var sharding = ClusterSharding.Get(system);
         system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
         await AfterCreate();
     }

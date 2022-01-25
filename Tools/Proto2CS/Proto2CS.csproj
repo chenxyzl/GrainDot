@@ -21,15 +21,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove=".vs\**"/>
+        <Compile Remove=".vs\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove=".vs\**"/>
+        <EmbeddedResource Remove=".vs\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove=".vs\**"/>
+        <None Remove=".vs\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,9 +39,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.0"/>
-        <PackageReference Include="protobuf-net" Version="3.0.73"/>
+        <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.2-mauipre.1.22054.8" />
+        <PackageReference Include="protobuf-net" Version="3.0.73" />
     </ItemGroup>
 
 </Project>
