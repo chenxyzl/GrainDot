@@ -4,51 +4,41 @@ using Base.Serialize;
 using Home.Model;
 using Message;
 
-namespace Home.Hotfix.Handler
+namespace Home.Hotfix.Handler;
+
+[GateRpc]
+public partial class GateHandlerDispatcher : IGateHandlerDispatcher
 {
-
-    [GateRpc]
-    public partial class GateHandlerDispatcher : IGateHandlerDispatcher
+    public async void Dispatcher(BaseActor actor, Request message)
     {
-        public async void Dispatcher(BaseActor actor, Request message)
-        {
-            var player = actor as PlayerActor;
-            var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"gate opcode:{message.Opcode} not exit", true);
-            if (rpcType == OpType.CS)
+        var player = actor as PlayerActor;
+        var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
+            $"gate opcode:{message.Opcode} not exit", true);
+        if (rpcType == OpType.CS)
+            try
             {
-                try
+                var ret = await DispatcherWithResult(player, message);
+                await player.Send(new Response
+                    {Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary()});
+            }
+            catch (CodeException e)
+            {
+                if (e.Serious) //严重错误不处理 继续上抛
                 {
-                    IResponse ret = await DispatcherWithResult(player, message);
-                    await player.Send(new Response { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() });
-                }
-                catch (CodeException e)
-                {
-                    if (e.Serious) //严重错误不处理 继续上抛
-                    {
-                        throw e;
-                    }
-                    else
-                    {
-                        await player.Send(new Response { Sn = message.Sn, Code = e.Code, Opcode = message.Opcode });
-                        player.Logger.Warning(e.ToString());
-                    }
-                }
-                catch (Exception e)
-                {
-                    player.Logger.Error(e.ToString());
-                    await player.Send(new Response { Sn = message.Sn, Code = Code.Error, Opcode = message.Opcode });
+                    throw e;
                 }
 
-
+                await player.Send(new Response {Sn = message.Sn, Code = e.Code, Opcode = message.Opcode});
+                player.Logger.Warning(e.ToString());
             }
-            else if (rpcType == OpType.C)
+            catch (Exception e)
             {
-                await DispatcherNoResult(player, message);
+                player.Logger.Error(e.ToString());
+                await player.Send(new Response {Sn = message.Sn, Code = Code.Error, Opcode = message.Opcode});
             }
-            else
-            {
-                A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
-            }
-        }
+        else if (rpcType == OpType.C)
+            await DispatcherNoResult(player, message);
+        else
+            A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
     }
 }

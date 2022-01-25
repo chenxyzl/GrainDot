@@ -4,31 +4,29 @@
 
 using System;
 
-namespace ExcelMapper
+namespace ExcelMapper;
+
+/// <summary>
+///     Specifies the column index that is used when deserializing a property
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public sealed class ExcelColumnIndexAttribute : Attribute
 {
     /// <summary>
-    /// Specifies the column index that is used when deserializing a property
+    ///     Initializes a new instance of <see cref="ExcelColumnIndexAttribute" /> with the specified column index.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class ExcelColumnIndexAttribute : Attribute
+    /// <param name="index">The index of the column.</param>
+    public ExcelColumnIndexAttribute(int index)
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ExcelColumnIndexAttribute"/> with the specified column index.
-        /// </summary>
-        /// <param name="index">The index of the column.</param>
-        public ExcelColumnIndexAttribute(int index)
-        {
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index), index, $"Column index {index} must be greater or equal to zero.");
-            }
+        if (index < 0)
+            throw new ArgumentOutOfRangeException(nameof(index), index,
+                $"Column index {index} must be greater or equal to zero.");
 
-            Index = index;
-        }
-
-        /// <summary>
-        /// The index of the column.
-        /// </summary>
-        public int Index { get; }
+        Index = index;
     }
+
+    /// <summary>
+    ///     The index of the column.
+    /// </summary>
+    public int Index { get; }
 }

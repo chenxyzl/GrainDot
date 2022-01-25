@@ -1,9 +1,7 @@
-﻿using Base;
-using Message;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 public static class ExtensionMethods
@@ -20,11 +18,11 @@ public static class ExtensionMethods
     public static IEnumerable<MethodInfo> GetExtensionMethods(this Assembly assembly, Type extendedType)
     {
         var query = from type in assembly.GetTypes()
-                    where type.IsAbstract && type.IsSealed
-                    from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                    where method.IsDefined(typeof(System.Runtime.CompilerServices.ExtensionAttribute), false)
-                    where method.GetParameters()[0].ParameterType.IsAssignableFrom(extendedType)
-                    select method;
+            where type.IsAbstract && type.IsSealed
+            from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)
+            where method.IsDefined(typeof(ExtensionAttribute), false)
+            where method.GetParameters()[0].ParameterType.IsAssignableFrom(extendedType)
+            select method;
         return query;
     }
 

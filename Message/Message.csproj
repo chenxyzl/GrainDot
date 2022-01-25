@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ApplicationIcon />
-    <StartupObject />
-    <BaseOutputPath>../Bin</BaseOutputPath>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ApplicationIcon/>
+        <StartupObject/>
+        <BaseOutputPath>../Bin</BaseOutputPath>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>../Bin/</OutputPath>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>../Bin/</OutputPath>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="protobuf-net" Version="3.0.101" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="protobuf-net" Version="3.0.101"/>
+    </ItemGroup>
 
 </Project>

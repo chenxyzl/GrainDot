@@ -1,165 +1,149 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Base.Alg
+namespace Base.Alg;
+
+public class MultiMapSet<T, K>
 {
-	public class MultiMapSet<T, K>
-	{
-		private readonly SortedDictionary<T, HashSet<K>> dictionary = new SortedDictionary<T, HashSet<K>>();
+    // 重用list
+    private static readonly Queue<HashSet<K>> queue = new();
 
-		// 重用list
-		private static readonly Queue<HashSet<K>> queue = new Queue<HashSet<K>>();
-		
-		private static HashSet<K> Empty = new HashSet<K>();
+    private static readonly HashSet<K> Empty = new();
+    private readonly SortedDictionary<T, HashSet<K>> dictionary = new();
 
-		public SortedDictionary<T, HashSet<K>> GetDictionary()
-		{
-			return this.dictionary;
-		}
+    public int Count => dictionary.Count;
 
-		public void Add(T t, K k)
-		{
-			HashSet<K> list;
-			this.dictionary.TryGetValue(t, out list);
-			if (list == null)
-			{
-				list = this.FetchList();
-				this.dictionary[t] = list;
-			}
-			list.Add(k);
-		}
+    /// <summary>
+    ///     返回内部的list
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
+    public HashSet<K> this[T t]
+    {
+        get
+        {
+            dictionary.TryGetValue(t, out var list);
+            return list ?? Empty;
+        }
+    }
 
-		public KeyValuePair<T, HashSet<K>> First()
-		{
-			return this.dictionary.First();
-		}
+    public SortedDictionary<T, HashSet<K>> GetDictionary()
+    {
+        return dictionary;
+    }
 
-		public T FirstKey()
-		{
-			return this.dictionary.Keys.First();
-		}
+    public void Add(T t, K k)
+    {
+        HashSet<K> list;
+        dictionary.TryGetValue(t, out list);
+        if (list == null)
+        {
+            list = FetchList();
+            dictionary[t] = list;
+        }
 
-		public int Count
-		{
-			get
-			{
-				return this.dictionary.Count;
-			}
-		}
+        list.Add(k);
+    }
 
-		private HashSet<K> FetchList()
-		{
-			if (queue.Count > 0)
-			{
-				HashSet<K> list = queue.Dequeue();
-				list.Clear();
-				return list;
-			}
-			return new HashSet<K>();
-		}
+    public KeyValuePair<T, HashSet<K>> First()
+    {
+        return dictionary.First();
+    }
 
-		private void RecycleList(HashSet<K> list)
-		{
-			list.Clear();
-			queue.Enqueue(list);
-		}
+    public T FirstKey()
+    {
+        return dictionary.Keys.First();
+    }
 
-		public bool Remove(T t, K k)
-		{
-			HashSet<K> list;
-			this.dictionary.TryGetValue(t, out list);
-			if (list == null)
-			{
-				return false;
-			}
-			if (!list.Remove(k))
-			{
-				return false;
-			}
-			if (list.Count == 0)
-			{
-				this.RecycleList(list);
-				this.dictionary.Remove(t);
-			}
-			return true;
-		}
+    private HashSet<K> FetchList()
+    {
+        if (queue.Count > 0)
+        {
+            var list = queue.Dequeue();
+            list.Clear();
+            return list;
+        }
 
-		public bool Remove(T t)
-		{
-			HashSet<K> list = null;
-			this.dictionary.TryGetValue(t, out list);
-			if (list != null)
-			{
-				this.RecycleList(list);
-			}
-			return this.dictionary.Remove(t);
-		}
+        return new HashSet<K>();
+    }
 
-		/// <summary>
-		/// 不返回内部的list,copy一份出来
-		/// </summary>
-		/// <param name="t"></param>
-		/// <returns></returns>
-		public K[] GetAll(T t)
-		{
-			HashSet<K> list;
-			this.dictionary.TryGetValue(t, out list);
-			if (list == null)
-			{
-				return new K[0];
-			}
-			return list.ToArray();
-		}
+    private void RecycleList(HashSet<K> list)
+    {
+        list.Clear();
+        queue.Enqueue(list);
+    }
 
-		/// <summary>
-		/// 返回内部的list
-		/// </summary>
-		/// <param name="t"></param>
-		/// <returns></returns>
-		public HashSet<K> this[T t]
-		{
-			get
-			{
-				this.dictionary.TryGetValue(t, out var list);
-				return list ?? Empty;
-			}
-		}
+    public bool Remove(T t, K k)
+    {
+        HashSet<K> list;
+        dictionary.TryGetValue(t, out list);
+        if (list == null) return false;
 
-		public K GetOne(T t)
-		{
-			HashSet<K> list;
-			this.dictionary.TryGetValue(t, out list);
-			if (list != null && list.Count > 0)
-			{
-				return list.FirstOrDefault();
-			}
-			return default(K);
-		}
+        if (!list.Remove(k)) return false;
 
-		public bool Contains(T t, K k)
-		{
-			HashSet<K> list;
-			this.dictionary.TryGetValue(t, out list);
-			if (list == null)
-			{
-				return false;
-			}
-			return list.Contains(k);
-		}
+        if (list.Count == 0)
+        {
+            RecycleList(list);
+            dictionary.Remove(t);
+        }
 
-		public bool ContainsKey(T t)
-		{
-			return this.dictionary.ContainsKey(t);
-		}
+        return true;
+    }
 
-		public void Clear()
-		{
-			foreach (HashSet<K> list in this.dictionary.Values)
-			{
-				list.Clear();
-				queue.Enqueue(list);
-			}
-			dictionary.Clear();
-		}
-	}
+    public bool Remove(T t)
+    {
+        HashSet<K> list = null;
+        dictionary.TryGetValue(t, out list);
+        if (list != null) RecycleList(list);
+
+        return dictionary.Remove(t);
+    }
+
+    /// <summary>
+    ///     不返回内部的list,copy一份出来
+    /// </summary>
+    /// <param name="t"></param>
+    /// <returns></returns>
+    public K[] GetAll(T t)
+    {
+        HashSet<K> list;
+        dictionary.TryGetValue(t, out list);
+        if (list == null) return new K[0];
+
+        return list.ToArray();
+    }
+
+    public K GetOne(T t)
+    {
+        HashSet<K> list;
+        dictionary.TryGetValue(t, out list);
+        if (list != null && list.Count > 0) return list.FirstOrDefault();
+
+        return default;
+    }
+
+    public bool Contains(T t, K k)
+    {
+        HashSet<K> list;
+        dictionary.TryGetValue(t, out list);
+        if (list == null) return false;
+
+        return list.Contains(k);
+    }
+
+    public bool ContainsKey(T t)
+    {
+        return dictionary.ContainsKey(t);
+    }
+
+    public void Clear()
+    {
+        foreach (var list in dictionary.Values)
+        {
+            list.Clear();
+            queue.Enqueue(list);
+        }
+
+        dictionary.Clear();
+    }
 }

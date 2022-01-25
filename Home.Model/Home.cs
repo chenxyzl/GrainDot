@@ -1,36 +1,35 @@
 ﻿using Akka.Actor;
 using Base;
+using Common;
 using Home.Model.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Home.Model
+namespace Home.Model;
+
+public class Home : GameServer
 {
-    public class Home : GameServer
+    public Home() : base(RoleType.Home)
     {
-        public Home() : base(Common.RoleType.Home) { }
-        public override void RegisterGlobalComponent()
-        {
-            AddComponent<TcpComponent>();
-            AddComponent<WsComponent>();
-            AddComponent<ConnectionDicCommponent>();
-        }
-        public IActorRef GetLocalPlayerActorRef(ulong playerId)
-        {
-            //todo 拼路径
-            var path = playerId.ToString();
-            return GetChild(path);
-        }
     }
 
-    public static class GameServerExt
+    public override void RegisterGlobalComponent()
     {
-        static public Home GetHome(this GameServer _)
-        {
-            return GameServer.Instance as Home;
-        }
+        AddComponent<TcpComponent>();
+        AddComponent<WsComponent>();
+        AddComponent<ConnectionDicCommponent>();
+    }
+
+    public IActorRef GetLocalPlayerActorRef(ulong playerId)
+    {
+        //todo 拼路径
+        var path = playerId.ToString();
+        return GetChild(path);
+    }
+}
+
+public static class GameServerExt
+{
+    public static Home GetHome(this GameServer _)
+    {
+        return GameServer.Instance as Home;
     }
 }

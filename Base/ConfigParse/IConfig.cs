@@ -1,10 +1,9 @@
-﻿namespace Base.ConfigParse
+﻿namespace Base.ConfigParse;
+
+/// <summary>
+///     每个Config的基类
+/// </summary>
+public interface IExcelConfig<K>
 {
-    /// <summary>
-    /// 每个Config的基类
-    /// </summary>
-    public interface IExcelConfig<K>
-    {
-        K Id { get; set; }
-    }
+    K Id { get; set; }
 }

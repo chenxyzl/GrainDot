@@ -1,40 +1,43 @@
-﻿using Microsoft.Extensions.CommandLineUtils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace Proto
 {
     public class CommandHelper
     {
-        public static CommandHelper Instance { get; private set; } = new CommandHelper();
-        private CommandHelper() { }
-        CommandLineApplication commandLineApplication;
-        private CommandOption ns;
-        public string Namespace => ns.Value();
-        private CommandOption protoPath;
-        public List<string> ProtoPath => protoPath.Values;
-        private CommandOption outputPath;
-        public string OutputPath => outputPath.Value();
-        private CommandOption server;
-        public bool GenServer => server.HasValue();
         private CommandOption client;
-        public bool GenClient => client.HasValue();
-        private CommandOption innerFiles;
-        public List<string> InnerFiles => innerFiles.Values;
-        private CommandOption outerFiles;
-        public List<string> OuterFiles => outerFiles.Values;
-        private CommandOption innerClass;
-        public string InnerClass => innerClass.Value();
-        private CommandOption outerClass;
-        public string OuterClass => outerClass.Value();
 
-        private CommandOption outputOuterFile;
-        private CommandOption outputInnerFile;
-        public string OuputInnerFile => outputInnerFile.Value();
-        public string OutputOuterFile => outputOuterFile.Value();
+        private CommandLineApplication commandLineApplication;
+        private CommandOption innerClass;
+        private CommandOption innerFiles;
+        private CommandOption ns;
 
         private CommandOption nsOpcode;
+        private CommandOption outerClass;
+        private CommandOption outerFiles;
+        private CommandOption outputInnerFile;
+
+        private CommandOption outputOuterFile;
+        private CommandOption outputPath;
+        private CommandOption protoPath;
+        private CommandOption server;
+
+        private CommandHelper()
+        {
+        }
+
+        public static CommandHelper Instance { get; } = new();
+        public string Namespace => ns.Value();
+        public List<string> ProtoPath => protoPath.Values;
+        public string OutputPath => outputPath.Value();
+        public bool GenServer => server.HasValue();
+        public bool GenClient => client.HasValue();
+        public List<string> InnerFiles => innerFiles.Values;
+        public List<string> OuterFiles => outerFiles.Values;
+        public string InnerClass => innerClass.Value();
+        public string OuterClass => outerClass.Value();
+        public string OuputInnerFile => outputInnerFile.Value();
+        public string OutputOuterFile => outputOuterFile.Value();
         public string NamespaceOpcode => nsOpcode.Value();
 
         public bool Parse(string[] args)

@@ -1,9 +1,8 @@
-﻿namespace Base.ConfigParse
+﻿namespace Base.ConfigParse;
+
+/// <summary>
+///     每个Config的基类
+/// </summary>
+public abstract class AConfigComponent
 {
-    /// <summary>
-    /// 每个Config的基类
-    /// </summary>
-    public abstract class AConfigComponent
-    {
-    }
 }

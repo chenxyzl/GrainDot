@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -15,22 +14,21 @@ namespace Proto
             cs = new StringBuilder();
             sc = new StringBuilder();
             foreach (var filePath in CommandHelper.Instance.OuterFiles)
-            {
                 Parse(CommandHelper.Instance.Namespace, filePath);
-            }
+
             Generate(CommandHelper.Instance.Namespace, CommandHelper.Instance.OutputOuterFile,
                 CommandHelper.Instance.OutputPath);
         }
-         
+
         private static void Parse(string ns, string filePath)
         {
             Console.WriteLine($"read {filePath}");
             var lines = File.ReadAllLines(filePath);
-            for(int i = 1; i < lines.Length; ++i)
+            for (var i = 1; i < lines.Length; ++i)
             {
                 var line = lines[i].Trim();
                 var texts = line.Split(",");
-                int opcode = int.Parse(texts[0].Trim());
+                var opcode = int.Parse(texts[0].Trim());
                 if (!string.IsNullOrEmpty(texts[2].Trim()))
                     cs.AppendLine($"{{{opcode}, typeof({ns}.{texts[2].Trim()})}},");
                 if (!string.IsNullOrEmpty(texts[3].Trim()))
@@ -47,17 +45,17 @@ namespace Proto
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine($"namespace {ns} \n{{");
             sb.AppendLine("public static class Protocols{");
-            sb.AppendLine("public static Dictionary<uint, System.Type> CS_PROTOCOLS = new Dictionary<uint, System.Type>(){");
+            sb.AppendLine(
+                "public static Dictionary<uint, System.Type> CS_PROTOCOLS = new Dictionary<uint, System.Type>(){");
             sb.AppendLine(cs.ToString());
             sb.AppendLine("};");
 
-            sb.AppendLine("public static Dictionary<uint, System.Type> SC_PROTOCOLS = new Dictionary<uint, System.Type>(){");
+            sb.AppendLine(
+                "public static Dictionary<uint, System.Type> SC_PROTOCOLS = new Dictionary<uint, System.Type>(){");
             sb.AppendLine(sc.ToString());
             sb.AppendLine("};}}");
 
             File.WriteAllText(csPath, sb.ToString());
-
-
         }
     }
 }

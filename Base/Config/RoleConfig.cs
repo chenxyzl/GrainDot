@@ -1,20 +1,16 @@
-﻿
+﻿using Base.ConfigParse;
 using ExcelMapper;
-using Base.ConfigParse;
 
-namespace Base.Config
+namespace Base.Config;
+
+[SheetName("职业类型")]
+public class RoleConfig : IExcelConfig<int>
 {
+    [ExcelColumnName("名字")] public string CareerName { get; set; }
+    [ExcelColumnName("##ID")] public int Id { get; set; }
+}
 
-    [SheetName("职业类型")]
-    public class RoleConfig : IExcelConfig<int>
-    {
-        [ExcelColumnName("##ID")]
-        public int Id { get; set; }
-
-        [ExcelColumnName("名字")]
-        public string CareerName { get; set; }
-    }
-
-    [Config("Role")]
-    public partial class RoleConfigCategory : ACategory<int, RoleConfig> { }
+[Config("Role")]
+public class RoleConfigCategory : ACategory<int, RoleConfig>
+{
 }

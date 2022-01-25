@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Base.Alg
+namespace Base.Alg;
+
+public sealed class AttrMap
 {
-    public sealed class AttrMap
+    private readonly Dictionary<Type, object> components = new();
+
+    public K Get<K>()
     {
-        private Dictionary<Type, object> components = new Dictionary<Type, object>();
-        public K Get<K>()
-        {
-            object component;
-            if (!this.components.TryGetValue(typeof(K), out component))
-            {
-                return default;
-            }
+        object component;
+        if (!components.TryGetValue(typeof(K), out component)) return default;
 
-            return (K)component;
-        }
+        return (K) component;
+    }
 
-        public void Set<K>(K k, object v)
-        {
-            this.components.Add(typeof(K), v);
-        }
+    public void Set<K>(K k, object v)
+    {
+        components.Add(typeof(K), v);
     }
 }

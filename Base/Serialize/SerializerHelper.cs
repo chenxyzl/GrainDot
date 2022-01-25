@@ -1,42 +1,38 @@
-﻿using Message;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+using Message;
+using ProtoBuf;
 
-namespace Base.Serialize
+namespace Base.Serialize;
+
+public static class SerializeHelper
 {
-    public static class SerializeHelper
+    public static byte[] ToBinary(object obj)
     {
-        public static byte[] ToBinary(object obj)
+        using (var stream = new MemoryStream())
         {
-            using (var stream = new MemoryStream())
-            {
-                ProtoBuf.Serializer.Serialize(stream, obj);
-                return stream.ToArray();
-            }
+            Serializer.Serialize(stream, obj);
+            return stream.ToArray();
         }
+    }
 
-        public static byte[] ToBinary<T>(this T obj) where T : class, IMessage
-        {
-            return ToBinary(obj);
-        }
+    public static byte[] ToBinary<T>(this T obj) where T : class, IMessage
+    {
+        return ToBinary(obj);
+    }
 
-        public static T FromBinary<T>(byte[] bytes) where T : class, IMessage
+    public static T FromBinary<T>(byte[] bytes) where T : class, IMessage
+    {
+        using (var stream = new MemoryStream(bytes))
         {
-            using (var stream = new MemoryStream(bytes))
-            {
-                return ProtoBuf.Serializer.Deserialize(typeof(T), stream) as T;
-            }
+            return Serializer.Deserialize(typeof(T), stream) as T;
         }
-        public static IMessage FromBinary(Type type, byte[] bytes)
+    }
+
+    public static IMessage FromBinary(Type type, byte[] bytes)
+    {
+        using (var stream = new MemoryStream(bytes))
         {
-            using (var stream = new MemoryStream(bytes))
-            {
-                return ProtoBuf.Serializer.Deserialize(type, stream) as IMessage;
-            }
+            return Serializer.Deserialize(type, stream) as IMessage;
         }
     }
 }

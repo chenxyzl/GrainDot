@@ -1,45 +1,34 @@
-﻿
-using Base.Alg;
+﻿using System.Collections.Generic;
 using Base.ConfigParse;
-using Common;
-using Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Base
+namespace Base;
+
+public class ConfigManager : Single<ConfigManager>
 {
+    private Dictionary<Type, ACategory> configs = new();
 
-    public class ConfigManager : Single<ConfigManager>
+    public void ReloadConfig()
     {
-        private Dictionary<Type, ACategory> configs = new Dictionary<Type, ACategory>();
-        public void ReloadConfig()
+        var newDic = new Dictionary<Type, ACategory>();
+        var types = HotfixManager.Instance.GetTypes<ConfigAttribute>();
+        foreach (var type in types)
         {
-            Dictionary<Type, ACategory> newDic = new Dictionary<Type, ACategory>();
-            HashSet<Type> types = HotfixManager.Instance.GetTypes<ConfigAttribute>();
-            foreach (var type in types)
-            {
-                object obj = Activator.CreateInstance(type);
+            var obj = Activator.CreateInstance(type);
 
-                ACategory iCategory = obj as ACategory;
-                if (iCategory == null)
-                {
-                    throw new Exception($"class: {type.Name} not inherit from ACategory");
-                }
-                iCategory.BeginInit();
-                iCategory.EndInit();
-                newDic[iCategory.ConfigType] = iCategory;
-            }
-            (configs, newDic) = (newDic, configs);
-            newDic.Clear();
+            var iCategory = obj as ACategory;
+            if (iCategory == null) throw new Exception($"class: {type.Name} not inherit from ACategory");
+
+            iCategory.BeginInit();
+            iCategory.EndInit();
+            newDic[iCategory.ConfigType] = iCategory;
         }
 
-        public T Get<T>() where T : ACategory
-        {
-            return (T)configs[typeof(T)];
-        }
+        (configs, newDic) = (newDic, configs);
+        newDic.Clear();
+    }
+
+    public T Get<T>() where T : ACategory
+    {
+        return (T) configs[typeof(T)];
     }
 }

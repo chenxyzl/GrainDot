@@ -1,121 +1,116 @@
-﻿using DotNetty.Buffers;
-using DotNetty.Codecs.Http;
-using DotNetty.Codecs.Http.WebSockets;
-using DotNetty.Common.Concurrency;
-using DotNetty.Common.Utilities;
-using DotNetty.Transport.Channels;
-using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DotNetty.Buffers;
+using DotNetty.Codecs.Http;
+using DotNetty.Codecs.Http.WebSockets;
+using DotNetty.Common.Utilities;
+using DotNetty.Transport.Channels;
 using TaskCompletionSource = DotNetty.Common.Concurrency.TaskCompletionSource;
 
-namespace Base.Network
+namespace Base.Network;
+
+internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
 {
-    class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
+    private readonly TaskCompletionSource completionSource;
+    private readonly WebSocketClientHandshaker handshaker;
+
+    private readonly Semaphore _handshakerSp = new(0, 1);
+
+    public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
+        : base(ip, port, clientEvent)
     {
-        public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
-            : base(ip, port, clientEvent)
-        {
-            string uri = $"ws://{ip}:{port}{path}";
-            handshaker = WebSocketClientHandshakerFactory.NewHandshaker(
-                new Uri(uri), WebSocketVersion.V13, null, true, new DefaultHttpHeaders());
+        var uri = $"ws://{ip}:{port}{path}";
+        handshaker = WebSocketClientHandshakerFactory.NewHandshaker(
+            new Uri(uri), WebSocketVersion.V13, null, true, new DefaultHttpHeaders());
 
-            completionSource = new TaskCompletionSource();
-        }
-        Semaphore _handshakerSp = new Semaphore(0, 1);
-        readonly WebSocketClientHandshaker handshaker;
-        readonly TaskCompletionSource completionSource;
-        public Task HandshakeCompletion => this.completionSource.Task;
+        completionSource = new TaskCompletionSource();
+    }
 
-        public override void OnChannelActive(IChannelHandlerContext ctx)
+    public Task HandshakeCompletion => completionSource.Task;
+
+    public override async Task Send(byte[] bytes)
+    {
+        try
         {
-            base.OnChannelActive(ctx);
-            handshaker.HandshakeAsync(ctx.Channel).LinkOutcome(completionSource);
+            if (!handshaker.IsHandshakeComplete) _handshakerSp.WaitOne();
+
+            await _channel.WriteAndFlushAsync(new BinaryWebSocketFrame(Unpooled.WrappedBuffer(bytes)));
+            _clientEvent?.OnSend(this, bytes);
         }
-        public override void OnChannelReceive(IChannelHandlerContext ctx, object msg)
+        catch (Exception ex)
         {
-            PackException(() =>
+            _clientEvent.OnException?.Invoke(ex);
+        }
+    }
+
+    public override async Task Send(string msgStr)
+    {
+        try
+        {
+            if (!handshaker.IsHandshakeComplete) _handshakerSp.WaitOne();
+
+            await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
+            //_clientEvent?.OnSend(this, msgStr);
+        }
+        catch (Exception ex)
+        {
+            _clientEvent.OnException?.Invoke(ex);
+        }
+    }
+
+    public override void OnChannelActive(IChannelHandlerContext ctx)
+    {
+        base.OnChannelActive(ctx);
+        handshaker.HandshakeAsync(ctx.Channel).LinkOutcome(completionSource);
+    }
+
+    public override void OnChannelReceive(IChannelHandlerContext ctx, object msg)
+    {
+        PackException(() =>
+        {
+            var ch = ctx.Channel;
+            if (!handshaker.IsHandshakeComplete)
             {
-                IChannel ch = ctx.Channel;
-                if (!handshaker.IsHandshakeComplete)
+                try
                 {
-                    try
-                    {
-                        handshaker.FinishHandshake(ch, (IFullHttpResponse)msg);
-                        _handshakerSp.Release();
-                        _clientEvent.OnClientStarted?.Invoke(this);
-                        completionSource.TryComplete();
-                    }
-                    catch (WebSocketHandshakeException e)
-                    {
-                        Console.WriteLine("WebSocket Client failed to connect");
-                        completionSource.TrySetException(e);
-                    }
-
-                    return;
+                    handshaker.FinishHandshake(ch, (IFullHttpResponse) msg);
+                    _handshakerSp.Release();
+                    _clientEvent.OnClientStarted?.Invoke(this);
+                    completionSource.TryComplete();
+                }
+                catch (WebSocketHandshakeException e)
+                {
+                    Console.WriteLine("WebSocket Client failed to connect");
+                    completionSource.TrySetException(e);
                 }
 
-                if (msg is IFullHttpResponse response)
-                {
-                    throw new InvalidOperationException(
-                        $"Unexpected FullHttpResponse (getStatus={response.Status}, content={response.Content.ToString(Encoding.UTF8)})");
-                }
-
-                if (msg is TextWebSocketFrame textFrame)
-                {
-                    string msgStr = textFrame.Text();
-                    Console.WriteLine(msg);
-                }
-                else if (msg is BinaryWebSocketFrame binaryFram)
-                {
-                    var byets = binaryFram.Content.ToArray();
-                    Console.WriteLine(byets);
-                }
-                else if (msg is PongWebSocketFrame)
-                {
-                    Console.WriteLine("WebSocket Client received pong");
-                }
-                else if (msg is CloseWebSocketFrame)
-                {
-                    Console.WriteLine("WebSocket Client received closing");
-                    ch.CloseAsync();
-                }
-            });
-        }
-
-        public async override Task Send(byte[] bytes)
-        {
-            try
-            {
-                if (!handshaker.IsHandshakeComplete)
-                {
-                    _handshakerSp.WaitOne();
-                }
-                await _channel.WriteAndFlushAsync(new BinaryWebSocketFrame(Unpooled.WrappedBuffer(bytes)));
-                _clientEvent?.OnSend(this, bytes);
+                return;
             }
-            catch (Exception ex)
-            {
-                _clientEvent.OnException?.Invoke(ex);
-            }
-        }
 
-        public async override Task Send(string msgStr)
-        {
-            try
+            if (msg is IFullHttpResponse response)
+                throw new InvalidOperationException(
+                    $"Unexpected FullHttpResponse (getStatus={response.Status}, content={response.Content.ToString(Encoding.UTF8)})");
+
+            if (msg is TextWebSocketFrame textFrame)
             {
-                if (!handshaker.IsHandshakeComplete)
-                {
-                    _handshakerSp.WaitOne();
-                }
-                await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
-                //_clientEvent?.OnSend(this, msgStr);
+                var msgStr = textFrame.Text();
+                Console.WriteLine(msg);
             }
-            catch (Exception ex)
+            else if (msg is BinaryWebSocketFrame binaryFram)
             {
-                _clientEvent.OnException?.Invoke(ex);
+                var byets = binaryFram.Content.ToArray();
+                Console.WriteLine(byets);
             }
-        }
+            else if (msg is PongWebSocketFrame)
+            {
+                Console.WriteLine("WebSocket Client received pong");
+            }
+            else if (msg is CloseWebSocketFrame)
+            {
+                Console.WriteLine("WebSocket Client received closing");
+                ch.CloseAsync();
+            }
+        });
     }
 }

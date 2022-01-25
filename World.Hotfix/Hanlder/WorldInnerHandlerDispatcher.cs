@@ -4,37 +4,32 @@ using Base.Serialize;
 using Message;
 using World.Model;
 
-namespace Home.Hotfix.Handler
+namespace Home.Hotfix.Handler;
+
+//为了高性能，对此文件的所有函数做了delegate缓存
+[InnerRpc]
+public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
-    //为了高性能，对此文件的所有函数做了delegate缓存
-    [InnerRpc]
-    public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
+    public async void Dispatcher(WorldSession session, InnerRequest message)
     {
-        public async void Dispatcher(WorldSession session, InnerRequest message)
-        {
-            var sender = session.World.GetSender();
-            var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error, $"inner opcode:{message.Opcode} not exit", true);
-            if (rpcType == OpType.CS)
+        var sender = session.World.GetSender();
+        var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
+            $"inner opcode:{message.Opcode} not exit", true);
+        if (rpcType == OpType.CS)
+            try
             {
-                try
-                {
-                    IResponse ret = await DispatcherWithResult(session, message);
-                    sender.Tell(new InnerResponse { Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary() });
-                }
-                catch (CodeException e)
-                {
-                    sender.Tell(new InnerResponse { Sn = message.Sn, Code = e.Code, Opcode = message.Opcode });
-                    session.World.Logger.Warning(e.ToString());
-                }
+                var ret = await DispatcherWithResult(session, message);
+                sender.Tell(new InnerResponse
+                    {Sn = message.Sn, Code = Code.Ok, Opcode = message.Opcode, Content = ret.ToBinary()});
             }
-            else if (rpcType == OpType.C)
+            catch (CodeException e)
             {
-                await DispatcherNoResult(session, message);
+                sender.Tell(new InnerResponse {Sn = message.Sn, Code = e.Code, Opcode = message.Opcode});
+                session.World.Logger.Warning(e.ToString());
             }
-            else
-            {
-                A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
-            }
-        }
+        else if (rpcType == OpType.C)
+            await DispatcherNoResult(session, message);
+        else
+            A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
     }
 }

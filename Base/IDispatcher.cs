@@ -1,12 +1,5 @@
-﻿using Message;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace Base;
 
-namespace Base
+public interface IComponent
 {
-    public interface IComponent
-    {
-
-    }
 }

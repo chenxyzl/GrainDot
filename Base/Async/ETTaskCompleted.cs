@@ -1,39 +1,35 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace Base.ET
-{
+namespace Base.ET;
 #pragma warning disable CS0436 // 类型与导入类型冲突
-    [AsyncMethodBuilder(typeof(AsyncETTaskCompletedMethodBuilder))]
+[AsyncMethodBuilder(typeof(AsyncETTaskCompletedMethodBuilder))]
 #pragma warning restore CS0436 // 类型与导入类型冲突
-    public struct ETTaskCompleted : ICriticalNotifyCompletion
+public struct ETTaskCompleted : ICriticalNotifyCompletion
+{
+    [DebuggerHidden]
+    public ETTaskCompleted GetAwaiter()
     {
-        [DebuggerHidden]
-        public ETTaskCompleted GetAwaiter()
-        {
-            return this;
-        }
+        return this;
+    }
 
-        [DebuggerHidden]
-        public bool IsCompleted => true;
+    [DebuggerHidden] public bool IsCompleted => true;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [DebuggerHidden]
-        public void GetResult()
-        {
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerHidden]
+    public void GetResult()
+    {
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [DebuggerHidden]
-        public void OnCompleted(Action continuation)
-        {
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerHidden]
+    public void OnCompleted(Action continuation)
+    {
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [DebuggerHidden]
-        public void UnsafeOnCompleted(Action continuation)
-        {
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [DebuggerHidden]
+    public void UnsafeOnCompleted(Action continuation)
+    {
     }
 }

@@ -1,26 +1,19 @@
-﻿
+﻿using Base.ConfigParse;
 using ExcelMapper;
-using Base.ConfigParse;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Message;
 
-namespace Base.Config
+namespace Base.Config;
+
+[SheetName("货币")]
+public class CurrencyConfig : IExcelConfig<CurrencyType>
 {
+    [ExcelColumnName("名称")] public string Name { get; set; }
 
-    [SheetName("货币")]
-    public class CurrencyConfig : IExcelConfig<CurrencyType>
-    {
-        [ExcelColumnName("##ID")]
-        public CurrencyType Id { get; set; }
+    [ExcelColumnName("最大堆叠数")] public uint MaxCount { get; set; }
+    [ExcelColumnName("##ID")] public CurrencyType Id { get; set; }
+}
 
-        [ExcelColumnName("名称")]
-        public string Name { get; set; }
-
-        [ExcelColumnName("最大堆叠数")]
-        public uint MaxCount { get; set; }
-    }
-
-    [Config("Item")]
-    public partial class CurrencyConfigCategory : ACategory<CurrencyType, CurrencyConfig> { }
+[Config("Item")]
+public class CurrencyConfigCategory : ACategory<CurrencyType, CurrencyConfig>
+{
 }

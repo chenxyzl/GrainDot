@@ -1,20 +1,12 @@
-﻿using Base;
-using Base.Helper;
-using Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Base;
 
-namespace BootLogin
+namespace BootLogin;
+
+internal class Program
 {
-    class Program
+    private static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            await GameServer.Run(typeof(Login.Model.Login));
-        }
+        await GameServer.Run(typeof(Login.Model.Login));
     }
 }

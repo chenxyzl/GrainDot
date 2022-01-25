@@ -1,21 +1,19 @@
-﻿using System;
-using Akka.Actor;
+﻿using Akka.Actor;
+using Base;
+using Message;
 
-namespace Home.Model
+namespace Home.Model;
+
+public static class ActorRefExt
 {
-    public static class ActorRefExt
-    {
 #nullable enable
-        public static ulong GetPlayerId(this IActorRef self)
-        {
-            var player = self as PlayerActor;
-            if (player == null)
-            {
-                Base.A.Abort(Message.Code.Error, "actor not player actor");
-            }
-            //todo 路径
-            var playerId = ulong.Parse(self.Path.Name);
-            return playerId;
-        }
+    public static ulong GetPlayerId(this IActorRef self)
+    {
+        var player = self as PlayerActor;
+        if (player == null) A.Abort(Code.Error, "actor not player actor");
+
+        //todo 路径
+        var playerId = ulong.Parse(self.Path.Name);
+        return playerId;
     }
 }

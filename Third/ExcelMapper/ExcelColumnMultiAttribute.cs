@@ -4,31 +4,27 @@
 
 using System;
 
-namespace ExcelMapper
+namespace ExcelMapper;
+
+/// <summary>
+///     Specifies the column name that is used when deserializing a property
+/// </summary>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+public sealed class ExcelColumnMultiAttribute : Attribute
 {
     /// <summary>
-    /// Specifies the column name that is used when deserializing a property
+    ///     Initializes a new instance of <see cref="ExcelColumnMultiAttribute" /> with the specified column name.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class ExcelColumnMultiAttribute : Attribute
+    /// <param name="name">The name of the column.</param>
+    public ExcelColumnMultiAttribute(int count)
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="ExcelColumnMultiAttribute"/> with the specified column name.
-        /// </summary>
-        /// <param name="name">The name of the column.</param>
-        public ExcelColumnMultiAttribute(int count)
-        {
-            if (count == 0)
-            {
-                throw new ArgumentException($"Column count:{count}");
-            }
+        if (count == 0) throw new ArgumentException($"Column count:{count}");
 
-            Count = count;
-        }
-
-        /// <summary>
-        /// The name of the column.
-        /// </summary>
-        public int Count { get; }
+        Count = count;
     }
+
+    /// <summary>
+    ///     The name of the column.
+    /// </summary>
+    public int Count { get; }
 }

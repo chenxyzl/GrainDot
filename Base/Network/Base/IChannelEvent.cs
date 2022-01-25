@@ -1,13 +1,11 @@
 ﻿using DotNetty.Transport.Channels;
-using System;
 
-namespace Base.Network
+namespace Base.Network;
+
+internal interface IChannelEvent
 {
-    interface IChannelEvent
-    {
-        void OnChannelActive(IChannelHandlerContext ctx);
-        void OnChannelReceive(IChannelHandlerContext ctx, object msg);
-        void OnChannelInactive(IChannel channel);
-        void OnException(IChannel channel, Exception exception);
-    }
+    void OnChannelActive(IChannelHandlerContext ctx);
+    void OnChannelReceive(IChannelHandlerContext ctx, object msg);
+    void OnChannelInactive(IChannel channel);
+    void OnException(IChannel channel, Exception exception);
 }

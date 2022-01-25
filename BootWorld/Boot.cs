@@ -1,21 +1,15 @@
-﻿using Base;
-using Base.Helper;
+﻿using System.Threading.Tasks;
+using Base;
 using Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using World.Model;
 
-namespace BootWorld
+namespace BootWorld;
+
+internal class Program
 {
-    class Program
+    private static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            await GameServer.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P, MessageExtractor.WorldMessageExtractor);
-        }
+        await GameServer.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P,
+            MessageExtractor.WorldMessageExtractor);
     }
 }

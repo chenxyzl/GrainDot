@@ -1,7 +1,6 @@
-﻿namespace ExcelMapper.Abstractions
+﻿namespace ExcelMapper.Abstractions;
+
+public interface ICellValueMapper
 {
-    public interface ICellValueMapper
-    {
-        CellValueMapperResult MapCellValue(ReadCellValueResult readResult);
-    }
+    CellValueMapperResult MapCellValue(ReadCellValueResult readResult);
 }

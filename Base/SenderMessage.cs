@@ -1,24 +1,18 @@
 ﻿using Base.ET;
 using Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Base
+namespace Base;
+
+public class SenderMessage
 {
-    public class SenderMessage
+    public SenderMessage(long createTime, ETTask<IResponse> tcs, uint opCode)
     {
-
-        public long CreateTime { get; private set; }
-        public ETTask<IResponse> Tcs { get; private set; }
-        public uint Opcode { get; private set; }
-        public SenderMessage(long createTime, ETTask<IResponse> tcs, uint opCode)
-        {
-            CreateTime = createTime;
-            Tcs = tcs;
-            Opcode = opCode;
-        }
+        CreateTime = createTime;
+        Tcs = tcs;
+        Opcode = opCode;
     }
+
+    public long CreateTime { get; }
+    public ETTask<IResponse> Tcs { get; }
+    public uint Opcode { get; }
 }

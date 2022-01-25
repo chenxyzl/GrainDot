@@ -1,17 +1,17 @@
 ﻿using Message;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Base
+namespace Base;
+
+public interface IInnerHandlerDispatcher
 {
-    public interface IInnerHandlerDispatcher
+    public void Dispatcher(BaseActor actor, InnerRequest message)
     {
-        public void Dispatcher(BaseActor actor, InnerRequest message) { }
     }
+}
 
-    public interface IGateHandlerDispatcher
+public interface IGateHandlerDispatcher
+{
+    public void Dispatcher(BaseActor actor, Request message)
     {
-        public void Dispatcher(BaseActor actor, Request message) { }
     }
 }

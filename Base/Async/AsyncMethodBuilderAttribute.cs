@@ -1,16 +1,11 @@
-﻿
-namespace System.Runtime.CompilerServices
-{
-    public sealed class AsyncMethodBuilderAttribute: Attribute
-    {
-        public Type BuilderType
-        {
-            get;
-        }
+﻿namespace System.Runtime.CompilerServices;
 
-        public AsyncMethodBuilderAttribute(Type builderType)
-        {
-            BuilderType = builderType;
-        }
+public sealed class AsyncMethodBuilderAttribute : Attribute
+{
+    public AsyncMethodBuilderAttribute(Type builderType)
+    {
+        BuilderType = builderType;
     }
+
+    public Type BuilderType { get; }
 }

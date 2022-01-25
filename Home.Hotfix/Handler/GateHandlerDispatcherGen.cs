@@ -4,27 +4,31 @@ using Base.Serialize;
 using Home.Model;
 using Message;
 
-namespace Home.Hotfix.Handler
+namespace Home.Hotfix.Handler;
+
+public partial class GateHandlerDispatcher
 {
-    public partial class GateHandlerDispatcher
+    public async Task<IResponse> DispatcherWithResult(PlayerActor player, Request message)
     {
-        public async Task<IResponse> DispatcherWithResult(PlayerActor player, Request message)
+        switch (message.Opcode)
         {
-            switch (message.Opcode)
-            {
-                case 200000: return await HomeLoginHandler.Ping(player, SerializeHelper.FromBinary<C2SPing>(message.Content));
-            }
-            A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
-            return null;
+            case 200000:
+                return await HomeLoginHandler.Ping(player, SerializeHelper.FromBinary<C2SPing>(message.Content));
         }
 
-        public async Task DispatcherNoResult(PlayerActor player, Request message)
+        A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
+        return null;
+    }
+
+    public async Task DispatcherNoResult(PlayerActor player, Request message)
+    {
+        switch (message.Opcode)
         {
-            switch (message.Opcode)
-            {
-                case 200001: await HomeLoginHandler.NotifyTest(player, SerializeHelper.FromBinary<CNotifyTest>(message.Content)); break;
-            }
-            A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
+            case 200001:
+                await HomeLoginHandler.NotifyTest(player, SerializeHelper.FromBinary<CNotifyTest>(message.Content));
+                break;
         }
+
+        A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
     }
 }

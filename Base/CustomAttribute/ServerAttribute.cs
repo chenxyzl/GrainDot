@@ -1,17 +1,7 @@
-﻿using Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Base;
 
-namespace Base
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
+public class ServerAttribute : BaseAttribute
 {
-
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, AllowMultiple = false)]
-    public class ServerAttribute : BaseAttribute
-    {
-        //public RoleDef role { get; private set; }
-        public ServerAttribute() { }
-    }
+    //public RoleDef role { get; private set; }
 }

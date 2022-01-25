@@ -1,46 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Base.ET
+namespace Base.ET;
+
+public class ETCancellationToken
 {
-    public class ETCancellationToken
+    private HashSet<Action> actions = new();
+
+    public void Add(Action callback)
     {
-        private HashSet<Action> actions = new HashSet<Action>();
+        // 如果action是null，绝对不能添加,要抛异常，说明有协程泄漏
+        actions.Add(callback);
+    }
 
-        public void Add(Action callback)
-        {
-            // 如果action是null，绝对不能添加,要抛异常，说明有协程泄漏
-            this.actions.Add(callback);
-        }
-        
-        public void Remove(Action callback)
-        {
-            this.actions?.Remove(callback);
-        }
+    public void Remove(Action callback)
+    {
+        actions?.Remove(callback);
+    }
 
-        public bool IsCancel()
-        {
-            return this.actions == null;
-        }
+    public bool IsCancel()
+    {
+        return actions == null;
+    }
 
-        public void Cancel()
-        {
-            if (this.actions == null)
-            {
-                return;
-            }
+    public void Cancel()
+    {
+        if (actions == null) return;
 
-            this.Invoke();
-        }
+        Invoke();
+    }
 
-        private void Invoke()
-        {
-            HashSet<Action> runActions = this.actions;
-            this.actions = null;
-            foreach (Action action in runActions)
-            {
-                action.Invoke();
-            }
-        }
+    private void Invoke()
+    {
+        var runActions = actions;
+        actions = null;
+        foreach (var action in runActions) action.Invoke();
     }
 }

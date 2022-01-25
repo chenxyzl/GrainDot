@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Base;
 
-namespace Base
+[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
+public class BaseAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
-	public class BaseAttribute : Attribute
-	{
-		public Type AttributeType { get; }
+    public BaseAttribute()
+    {
+        AttributeType = GetType();
+    }
 
-		public BaseAttribute()
-		{
-			this.AttributeType = this.GetType();
-		}
-	}
+    public Type AttributeType { get; }
 }

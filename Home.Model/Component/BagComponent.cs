@@ -1,16 +1,10 @@
 ﻿using Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Home.Model.Component
+namespace Home.Model.Component;
+
+public class BagComponent : IActorComponent
 {
-    public class BagComponent : IActorComponent
+    public BagComponent(BaseActor a) : base(a)
     {
-        public BagComponent(BaseActor a) : base(a)
-        {
-        }
     }
 }

@@ -1,55 +1,52 @@
-﻿using System;
+﻿namespace Base.Network;
 
-namespace Base.Network
+internal abstract class BaseGenericClientBuilder<TBuilder, TTarget, TData> :
+    BaseBuilder<TBuilder, TTarget>,
+    IGenericClientBuilder<TBuilder, TTarget, TData>
+    where TBuilder : class
 {
-    abstract class BaseGenericClientBuilder<TBuilder, TTarget, TData> :
-        BaseBuilder<TBuilder, TTarget>,
-        IGenericClientBuilder<TBuilder, TTarget, TData>
-        where TBuilder : class
+    public BaseGenericClientBuilder(string ip, int port)
+        : base(port)
     {
-        public BaseGenericClientBuilder(string ip, int port)
-            : base(port)
-        {
-            _ip = ip;
-        }
+        _ip = ip;
+    }
 
-        protected string _ip { get; }
-        protected TcpSocketCientEvent<TTarget, TData> _event { get; }
-            = new TcpSocketCientEvent<TTarget, TData>();
+    protected string _ip { get; }
 
-        public TBuilder OnClientClose(Action<TTarget> action)
-        {
-            _event.OnClientClose = action;
+    protected TcpSocketCientEvent<TTarget, TData> _event { get; } = new();
 
-            return this as TBuilder;
-        }
+    public TBuilder OnClientClose(Action<TTarget> action)
+    {
+        _event.OnClientClose = action;
 
-        public TBuilder OnClientStarted(Action<TTarget> action)
-        {
-            _event.OnClientStarted = action;
+        return this as TBuilder;
+    }
 
-            return this as TBuilder;
-        }
+    public TBuilder OnClientStarted(Action<TTarget> action)
+    {
+        _event.OnClientStarted = action;
 
-        public TBuilder OnRecieve(Action<TTarget, TData> action)
-        {
-            _event.OnRecieve = action;
+        return this as TBuilder;
+    }
 
-            return this as TBuilder;
-        }
+    public TBuilder OnRecieve(Action<TTarget, TData> action)
+    {
+        _event.OnRecieve = action;
 
-        public TBuilder OnSend(Action<TTarget, TData> action)
-        {
-            _event.OnSend = action;
+        return this as TBuilder;
+    }
 
-            return this as TBuilder;
-        }
+    public TBuilder OnSend(Action<TTarget, TData> action)
+    {
+        _event.OnSend = action;
 
-        public override TBuilder OnException(Action<Exception> action)
-        {
-            _event.OnException = action;
+        return this as TBuilder;
+    }
 
-            return this as TBuilder;
-        }
+    public override TBuilder OnException(Action<Exception> action)
+    {
+        _event.OnException = action;
+
+        return this as TBuilder;
     }
 }

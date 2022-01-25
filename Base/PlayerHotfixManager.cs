@@ -1,31 +1,26 @@
-﻿using Base.CustomAttribute.PlayerLife;
+﻿using System.Linq;
+using Base.CustomAttribute.PlayerLife;
 using Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Base
+namespace Base;
+
+public class PlayerHotfixManager : Single<PlayerHotfixManager>
 {
-    public class PlayerHotfixManager : Single<PlayerHotfixManager>
+    private IPlayerHotfixLife hotfix;
+
+    public IPlayerHotfixLife Hotfix => A.RequireNotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
+
+    public void ReloadHanlder()
     {
-        private IPlayerHotfixLife hotfix;
-        public IPlayerHotfixLife Hotfix
+        var types = HotfixManager.Instance.GetTypes<PlayerServiceAttribute>();
+        if (types.Count == 0)
         {
-            get { return A.RequireNotNull(hotfix, Code.Error, $"{this.GetType().FullName} must not null"); ; }
+            GlobalLog.Warning($"{GetType().FullName} hotfix success but no type changed");
+            return;
         }
-        public void ReloadHanlder()
-        {
-            HashSet<Type> types = HotfixManager.Instance.GetTypes<PlayerServiceAttribute>();
-            if (types.Count == 0)
-            {
-                GlobalLog.Warning($"{this.GetType().FullName} hotfix success but no type changed");
-                return;
-            }
-            if (types.Count > 1)
-            {
-                A.Abort(Code.Error, $"PlayerLife.ServiceAttribute Count:{types.Count} Error");
-            }
-            hotfix = Activator.CreateInstance(types.First()) as IPlayerHotfixLife;
-        }
+
+        if (types.Count > 1) A.Abort(Code.Error, $"PlayerLife.ServiceAttribute Count:{types.Count} Error");
+
+        hotfix = Activator.CreateInstance(types.First()) as IPlayerHotfixLife;
     }
 }

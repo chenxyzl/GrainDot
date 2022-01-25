@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base;
+﻿using Base;
 
-namespace Home.Model.Component
+namespace Home.Model.Component;
+
+public class PlayerComponent : IActorComponent
 {
-    public class PlayerComponent : IActorComponent
+    public PlayerComponent(BaseActor a) : base(a)
     {
-        public PlayerComponent(BaseActor a) : base(a)
-        {
-        }
     }
 }

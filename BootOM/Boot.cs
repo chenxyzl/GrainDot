@@ -1,20 +1,12 @@
-﻿using Base;
-using Base.Helper;
-using Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Base;
 
-namespace BootOM
+namespace BootOM;
+
+internal class Program
 {
-    class Program
+    private static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
-            await GameServer.Run(typeof(OM.Model.OM));
-        }
+        await GameServer.Run(typeof(OM.Model.OM));
     }
 }

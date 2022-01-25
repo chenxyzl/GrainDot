@@ -1,39 +1,38 @@
 ﻿using System;
 using ExcelMapper.Abstractions;
 
-namespace ExcelMapper.Mappers
+namespace ExcelMapper.Mappers;
+
+public delegate CellValueMapperResult ConvertUsingMapperDelegate(ReadCellValueResult readResult);
+
+/// <summary>
+///     A mapper that tries to map the value of a cell to an object using a given conversion delegate.
+/// </summary>
+public class ConvertUsingMapper : ICellValueMapper
 {
-    public delegate CellValueMapperResult ConvertUsingMapperDelegate(ReadCellValueResult readResult);
+    /// <summary>
+    ///     Constructs a mapper that tries to map the value of a cell to an object using a given conversion delegate.
+    /// </summary>
+    /// <param name="converter">The delegate used to map the value of a cell to an object</param>
+    public ConvertUsingMapper(ConvertUsingMapperDelegate converter)
+    {
+        Converter = converter ?? throw new ArgumentNullException(nameof(converter));
+    }
 
     /// <summary>
-    /// A mapper that tries to map the value of a cell to an object using a given conversion delegate.
+    ///     Gets the delegate used to map the value of a cell to an object.
     /// </summary>
-    public class ConvertUsingMapper : ICellValueMapper
+    public ConvertUsingMapperDelegate Converter { get; }
+
+    public CellValueMapperResult MapCellValue(ReadCellValueResult readResult)
     {
-        /// <summary>
-        /// Gets the delegate used to map the value of a cell to an object.
-        /// </summary>
-        public ConvertUsingMapperDelegate Converter { get; }
-
-        /// <summary>
-        /// Constructs a mapper that tries to map the value of a cell to an object using a given conversion delegate.
-        /// </summary>
-        /// <param name="converter">The delegate used to map the value of a cell to an object</param>
-        public ConvertUsingMapper(ConvertUsingMapperDelegate converter)
+        try
         {
-            Converter = converter ?? throw new ArgumentNullException(nameof(converter));
+            return Converter(readResult);
         }
-
-        public CellValueMapperResult MapCellValue(ReadCellValueResult readResult)
+        catch (Exception exception)
         {
-            try
-            {
-                return Converter(readResult);
-            }
-            catch (Exception exception)
-            {
-                return CellValueMapperResult.Invalid(exception);
-            }
+            return CellValueMapperResult.Invalid(exception);
         }
     }
 }

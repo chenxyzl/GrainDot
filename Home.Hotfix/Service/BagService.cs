@@ -1,17 +1,12 @@
-﻿using Home.Model.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Home.Model.Component;
 
-namespace Home.Hotfix.Service
+namespace Home.Hotfix.Service;
+
+public static class BagService
 {
-    public static class BagService
+    public static Task Load(this BagComponent self)
     {
-        public static Task Load(this BagComponent self)
-        {
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

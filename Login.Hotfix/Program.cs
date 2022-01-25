@@ -1,6 +1,1 @@
-﻿using System;
-
-namespace Login.Hotfix
-{
-    
-}
+﻿namespace Login.Hotfix;

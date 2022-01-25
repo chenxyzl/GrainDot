@@ -1,28 +1,28 @@
-﻿namespace Base.ConfigParse
+﻿namespace Base.ConfigParse;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class ConfigAttribute : BaseAttribute
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ConfigAttribute : BaseAttribute
+    public ConfigAttribute(string fileName)
     {
-        public string FileName { get; }
-
-        public ConfigAttribute(string fileName)
-        {
-            FileName = fileName;
-        }
+        FileName = fileName;
     }
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class SheetNameAttribute : BaseAttribute
-    {
-        public string[] SheetName { get; }
+    public string FileName { get; }
+}
 
-        public SheetNameAttribute(string[] sheetNames)
-        {
-            SheetName = sheetNames;
-        }
-        public SheetNameAttribute(string sheetName)
-        {
-            SheetName = new string[] { sheetName };
-        }
+[AttributeUsage(AttributeTargets.Class)]
+public class SheetNameAttribute : BaseAttribute
+{
+    public SheetNameAttribute(string[] sheetNames)
+    {
+        SheetName = sheetNames;
     }
+
+    public SheetNameAttribute(string sheetName)
+    {
+        SheetName = new[] {sheetName};
+    }
+
+    public string[] SheetName { get; }
 }

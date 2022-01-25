@@ -1,20 +1,15 @@
-﻿using Akka.Actor;
-using Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Base;
+using Common;
 
-namespace OM.Model
+namespace OM.Model;
+
+public class OM : GameServer
 {
-    public class OM : GameServer
+    public OM() : base(RoleType.OM)
     {
-        public OM() : base(Common.RoleType.OM) { }
+    }
 
-        public override void RegisterGlobalComponent()
-        {
-
-        }
+    public override void RegisterGlobalComponent()
+    {
     }
 }

@@ -4,44 +4,44 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
-      <BaseOutputPath>../../Bin/Proto</BaseOutputPath>
-    </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-      <OutputPath>../../Bin/Proto</OutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <BaseOutputPath>../../Bin/Proto</BaseOutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>../../Bin/Proto</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove=".vs\**" />
+        <Compile Remove=".vs\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove=".vs\**" />
+        <EmbeddedResource Remove=".vs\**"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove=".vs\**" />
+        <None Remove=".vs\**"/>
     </ItemGroup>
-  
+
     <ItemGroup>
-      <None Include="../../Proto/**/*.*">
-        <Link>Proto/%(RecursiveDir)%(FileName)%(Extension)</Link>
-      </None>
+        <None Include="../../Proto/**/*.*">
+            <Link>Proto/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </None>
     </ItemGroup>
-  
+
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.0" />
-      <PackageReference Include="protobuf-net" Version="3.0.73" />
+        <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.0"/>
+        <PackageReference Include="protobuf-net" Version="3.0.73"/>
     </ItemGroup>
 
 </Project>

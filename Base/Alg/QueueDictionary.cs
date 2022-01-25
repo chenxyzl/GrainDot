@@ -1,77 +1,56 @@
 ﻿using System.Collections.Generic;
 
-namespace Base.Alg
+namespace Base.Alg;
+
+public class QueueDictionary<T, K>
 {
-	public class QueueDictionary<T, K>
-	{
-		private readonly List<T> list = new List<T>();
-		private readonly Dictionary<T, K> dictionary = new Dictionary<T, K>();
+    private readonly Dictionary<T, K> dictionary = new();
+    private readonly List<T> list = new();
 
-		public void Enqueue(T t, K k)
-		{
-			this.list.Add(t);
-			this.dictionary.Add(t, k);
-		}
+    public int Count => list.Count;
 
-		public void Dequeue()
-		{
-			if (this.list.Count == 0)
-			{
-				return;
-			}
-			T t = this.list[0];
-			this.list.RemoveAt(0);
-			this.dictionary.Remove(t);
-		}
+    public T FirstKey => list[0];
 
-		public void Remove(T t)
-		{
-			this.list.Remove(t);
-			this.dictionary.Remove(t);
-		}
+    public K FirstValue
+    {
+        get
+        {
+            var t = list[0];
+            return this[t];
+        }
+    }
 
-		public bool ContainsKey(T t)
-		{
-			return this.dictionary.ContainsKey(t);
-		}
+    public K this[T t] => dictionary[t];
 
-		public int Count
-		{
-			get
-			{
-				return this.list.Count;
-			}
-		}
+    public void Enqueue(T t, K k)
+    {
+        list.Add(t);
+        dictionary.Add(t, k);
+    }
 
-		public T FirstKey
-		{
-			get
-			{
-				return this.list[0];
-			}
-		}
-		
-		public K FirstValue
-		{
-			get
-			{
-				T t = this.list[0];
-				return this[t];
-			}
-		}
+    public void Dequeue()
+    {
+        if (list.Count == 0) return;
 
-		public K this[T t]
-		{
-			get
-			{
-				return this.dictionary[t];
-			}
-		}
+        var t = list[0];
+        list.RemoveAt(0);
+        dictionary.Remove(t);
+    }
 
-		public void Clear()
-		{
-			this.list.Clear();
-			this.dictionary.Clear();
-		}
-	}
+    public void Remove(T t)
+    {
+        list.Remove(t);
+        dictionary.Remove(t);
+    }
+
+    public bool ContainsKey(T t)
+    {
+        return dictionary.ContainsKey(t);
+    }
+
+    public void Clear()
+    {
+        list.Clear();
+        dictionary.Clear();
+    }
 }

@@ -1,41 +1,41 @@
-﻿using Base.Network;
+﻿using System.Threading.Tasks;
 using DotNetty.Codecs.Http;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using System.Threading.Tasks;
 
-namespace Base.Network
+namespace Base.Network;
+
+internal class WebSocketClientBuilder : BaseGenericClientBuilder<IWebSocketClientBuilder, ISocketClient, byte[]>,
+    IWebSocketClientBuilder
 {
-    class WebSocketClientBuilder : BaseGenericClientBuilder<IWebSocketClientBuilder, ISocketClient, byte[]>, IWebSocketClientBuilder
+    public WebSocketClientBuilder(string ip, int port, string path)
+        : base(ip, port)
     {
-        public WebSocketClientBuilder(string ip, int port, string path)
-            : base(ip, port)
-        {
-            _path = path;
-        }
-        private string _path { get; }
+        _path = path;
+    }
 
-        public async override Task<ISocketClient> BuildAsync()
-        {
-            WebSocketClient tcpClient = new WebSocketClient(_ip, _port, _path, _event);
+    private string _path { get; }
 
-            var clientChannel = await new Bootstrap()
-                .Group(new MultithreadEventLoopGroup())
-                .Channel<TcpSocketChannel>()
-                .Option(ChannelOption.TcpNodelay, true)
-                .Handler(new ActionChannelInitializer<IChannel>(channel =>
-                {
-                    IChannelPipeline pipeline = channel.Pipeline;
-                    pipeline.AddLast(
-                        new HttpClientCodec(),
-                        new HttpObjectAggregator(8192),
-                        new CommonChannelHandler(tcpClient));
-                })).ConnectAsync($"{_ip}:{_port}".ToIPEndPoint());
-            await tcpClient.HandshakeCompletion;
-            tcpClient.SetChannel(clientChannel);
+    public override async Task<ISocketClient> BuildAsync()
+    {
+        var tcpClient = new WebSocketClient(_ip, _port, _path, _event);
 
-            return await Task.FromResult(tcpClient);
-        }
+        var clientChannel = await new Bootstrap()
+            .Group(new MultithreadEventLoopGroup())
+            .Channel<TcpSocketChannel>()
+            .Option(ChannelOption.TcpNodelay, true)
+            .Handler(new ActionChannelInitializer<IChannel>(channel =>
+            {
+                var pipeline = channel.Pipeline;
+                pipeline.AddLast(
+                    new HttpClientCodec(),
+                    new HttpObjectAggregator(8192),
+                    new CommonChannelHandler(tcpClient));
+            })).ConnectAsync($"{_ip}:{_port}".ToIPEndPoint());
+        await tcpClient.HandshakeCompletion;
+        tcpClient.SetChannel(clientChannel);
+
+        return await Task.FromResult(tcpClient);
     }
 }

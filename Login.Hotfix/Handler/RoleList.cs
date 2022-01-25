@@ -3,15 +3,14 @@ using System.Threading.Tasks;
 using Base;
 using Message;
 
-namespace Login.Hotfix.Handler
+namespace Login.Hotfix.Handler;
+
+[HttpHandler("/api/login")]
+public class RoleList : HttpHandler<C2ALogin, A2CLogin>
 {
-    [HttpHandler(router: "/api/login")]
-    public class RoleList : HttpHandler<C2ALogin, A2CLogin>
+    protected override Task<C2ALogin> Run(A2CLogin data)
     {
-        protected override Task<C2ALogin> Run(A2CLogin data)
-        {
-            //todo 登录http实现
-            throw new NotImplementedException();
-        }
+        //todo 登录http实现
+        throw new NotImplementedException();
     }
 }

@@ -1,20 +1,17 @@
 ﻿using Base;
 using Base.Network.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common;
 
-namespace Login.Model
+namespace Login.Model;
+
+public class Login : GameServer
 {
-    public class Login : GameServer
+    public Login() : base(RoleType.Login)
     {
-        public Login() : base(Common.RoleType.Login) { }
+    }
 
-        public override void RegisterGlobalComponent()
-        {
-            AddComponent<HttpComponent>(":20001");
-        }
+    public override void RegisterGlobalComponent()
+    {
+        AddComponent<HttpComponent>(":20001");
     }
 }
