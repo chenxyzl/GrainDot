@@ -9,3 +9,4 @@ Bin/
 **/~$*.xlsx
 **/.vs/*
 Logs/
+.idea/
