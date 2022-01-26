@@ -6,7 +6,7 @@ using Home.Model.Component;
 namespace Home.Hotfix.Service;
 
 [PlayerService]
-public class HomeHotfixService : IPlayerHotfixLife
+public class PlayerHotfixService : IPlayerHotfixLife
 {
     public void AddComponent(BaseActor self)
     {

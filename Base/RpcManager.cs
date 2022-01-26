@@ -7,11 +7,6 @@ namespace Base;
 //管理rpc相关
 public class RpcManager : Single<RpcManager>
 {
-    //内部rpc调用派发
-
-    //
-    private bool onlyFirst = true;
-
     private readonly Dictionary<uint, Type> opcodeResponseDic = new();
 
     //外部rpc调用派发
@@ -20,6 +15,10 @@ public class RpcManager : Single<RpcManager>
     private readonly Dictionary<Type, uint> requestOpcodeDic = new();
 
     private readonly Dictionary<uint, OpType> rpcTypeDic = new();
+    //内部rpc调用派发
+
+    //
+    private bool onlyFirst = true;
 
     public IInnerHandlerDispatcher InnerHandlerDispatcher { get; private set; }
 

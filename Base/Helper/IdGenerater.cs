@@ -10,8 +10,8 @@ public class IdGenerater
     private static readonly ulong _timeFlagLimit = 1UL << 42;
     private static readonly int _incFlag = 10; //每毫秒2^10个id
     private static readonly ulong _incFlagLimit = 1UL << 10;
-    private ulong _lastTime;
     private readonly uint _node;
+    private ulong _lastTime;
     private uint _value;
 
     public IdGenerater(uint node)

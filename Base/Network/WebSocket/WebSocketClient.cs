@@ -12,10 +12,9 @@ namespace Base.Network;
 
 internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
 {
+    private readonly Semaphore _handshakerSp = new(0, 1);
     private readonly TaskCompletionSource completionSource;
     private readonly WebSocketClientHandshaker handshaker;
-
-    private readonly Semaphore _handshakerSp = new(0, 1);
 
     public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
         : base(ip, port, clientEvent)

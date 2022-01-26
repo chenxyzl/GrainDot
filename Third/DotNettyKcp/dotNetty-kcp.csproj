@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>dotNetty_kcp</RootNamespace>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>

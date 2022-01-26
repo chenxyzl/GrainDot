@@ -19,7 +19,7 @@ public class ETTask : ICriticalNotifyCompletion
     {
     }
 
-    public static ETTaskCompleted CompletedTask => new ETTaskCompleted();
+    public static ETTaskCompleted CompletedTask => new();
 
 
     public bool IsCompleted

@@ -17,9 +17,9 @@ public class DoubleMap<K, V>
         vk = new Dictionary<V, K>(capacity);
     }
 
-    public List<K> Keys => new List<K>(kv.Keys);
+    public List<K> Keys => new(kv.Keys);
 
-    public List<V> Values => new List<V>(vk.Keys);
+    public List<V> Values => new(vk.Keys);
 
     public void ForEach(Action<K, V> action)
     {

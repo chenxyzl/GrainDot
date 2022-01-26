@@ -24,8 +24,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
+        <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310"/>
     </ItemGroup>
 
     <PropertyGroup>

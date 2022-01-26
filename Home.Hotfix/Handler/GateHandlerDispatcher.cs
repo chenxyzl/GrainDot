@@ -24,9 +24,7 @@ public partial class GateHandlerDispatcher : IGateHandlerDispatcher
             catch (CodeException e)
             {
                 if (e.Serious) //严重错误不处理 继续上抛
-                {
                     throw e;
-                }
 
                 await player.Send(new Response {Sn = message.Sn, Code = e.Code, Opcode = message.Opcode});
                 player.Logger.Warning(e.ToString());

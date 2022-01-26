@@ -4,17 +4,16 @@ namespace Base.Alg;
 
 public class UnOrderMultiMapSet<T, K>
 {
-    private readonly Dictionary<T, HashSet<K>> dictionary = new();
+    private readonly Dictionary<T, HashSet<K>> _dictionary = new();
 
     // 重用HashSet
-    private readonly Queue<HashSet<K>> queue = new();
+    private readonly Queue<HashSet<K>> _queue = new();
 
     public HashSet<K> this[T t]
     {
         get
         {
-            HashSet<K> set;
-            if (!dictionary.TryGetValue(t, out set)) set = new HashSet<K>();
+            if (!_dictionary.TryGetValue(t, out var set)) set = new HashSet<K>();
 
             return set;
         }
@@ -25,7 +24,7 @@ public class UnOrderMultiMapSet<T, K>
         get
         {
             var count = 0;
-            foreach (var kv in dictionary) count += kv.Value.Count;
+            foreach (var kv in _dictionary) count += kv.Value.Count;
 
             return count;
         }
@@ -33,17 +32,16 @@ public class UnOrderMultiMapSet<T, K>
 
     public Dictionary<T, HashSet<K>> GetDictionary()
     {
-        return dictionary;
+        return _dictionary;
     }
 
     public void Add(T t, K k)
     {
-        HashSet<K> set;
-        dictionary.TryGetValue(t, out set);
+        _dictionary.TryGetValue(t, out var set);
         if (set == null)
         {
             set = FetchList();
-            dictionary[t] = set;
+            _dictionary[t] = set;
         }
 
         set.Add(k);
@@ -51,8 +49,7 @@ public class UnOrderMultiMapSet<T, K>
 
     public bool Remove(T t, K k)
     {
-        HashSet<K> set;
-        dictionary.TryGetValue(t, out set);
+        _dictionary.TryGetValue(t, out var set);
         if (set == null) return false;
 
         if (!set.Remove(k)) return false;
@@ -60,7 +57,7 @@ public class UnOrderMultiMapSet<T, K>
         if (set.Count == 0)
         {
             RecycleList(set);
-            dictionary.Remove(t);
+            _dictionary.Remove(t);
         }
 
         return true;
@@ -68,19 +65,18 @@ public class UnOrderMultiMapSet<T, K>
 
     public bool Remove(T t)
     {
-        HashSet<K> set = null;
-        dictionary.TryGetValue(t, out set);
+        _dictionary.TryGetValue(t, out var set);
         if (set != null) RecycleList(set);
 
-        return dictionary.Remove(t);
+        return _dictionary.Remove(t);
     }
 
 
     private HashSet<K> FetchList()
     {
-        if (queue.Count > 0)
+        if (_queue.Count > 0)
         {
-            var set = queue.Dequeue();
+            var set = _queue.Dequeue();
             set.Clear();
             return set;
         }
@@ -91,16 +87,15 @@ public class UnOrderMultiMapSet<T, K>
     private void RecycleList(HashSet<K> set)
     {
         // 防止暴涨
-        if (queue.Count > 100) return;
+        if (_queue.Count > 100) return;
 
         set.Clear();
-        queue.Enqueue(set);
+        _queue.Enqueue(set);
     }
 
     public bool Contains(T t, K k)
     {
-        HashSet<K> set;
-        dictionary.TryGetValue(t, out set);
+        _dictionary.TryGetValue(t, out var set);
         if (set == null) return false;
 
         return set.Contains(k);
@@ -108,11 +103,11 @@ public class UnOrderMultiMapSet<T, K>
 
     public bool ContainsKey(T t)
     {
-        return dictionary.ContainsKey(t);
+        return _dictionary.ContainsKey(t);
     }
 
     public void Clear()
     {
-        dictionary.Clear();
+        _dictionary.Clear();
     }
 }

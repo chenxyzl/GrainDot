@@ -27,7 +27,7 @@ public struct CellValueMapperResult
     /// </summary>
     public static CellValueMapperResult Success(object value)
     {
-        return new(value, null, HandleAction.UseResultAndStopMapping);
+        return new CellValueMapperResult(value, null, HandleAction.UseResultAndStopMapping);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public struct CellValueMapperResult
     /// </summary>
     public static CellValueMapperResult SuccessIfNoOtherSuccess(object result)
     {
-        return new(result, null, HandleAction.UseResultAndContinueMapping);
+        return new CellValueMapperResult(result, null, HandleAction.UseResultAndContinueMapping);
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public struct CellValueMapperResult
     /// </summary>
     public static CellValueMapperResult Ignore()
     {
-        return new(null, null, HandleAction.IgnoreResultAndContinueMapping);
+        return new CellValueMapperResult(null, null, HandleAction.IgnoreResultAndContinueMapping);
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public struct CellValueMapperResult
     /// </summary>
     public static CellValueMapperResult Invalid(Exception exception)
     {
-        return new(null, exception, HandleAction.UseResultAndContinueMapping);
+        return new CellValueMapperResult(null, exception, HandleAction.UseResultAndContinueMapping);
     }
 
     public enum HandleAction
