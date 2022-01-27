@@ -6,7 +6,7 @@ using Message;
 namespace Base.Config;
 
 [SheetName("MapListTest")]
-public class MapListValue : IExcelConfig<int>
+public class MapListValue : IExcelConfig<uint>
 {
     [ExcelIgnore] [ExcelColumnItem("ListTest")]
     public List<Item> a = new();
@@ -14,17 +14,17 @@ public class MapListValue : IExcelConfig<int>
 
     [ExcelColumnName("key", field: "val")]
     [ExcelColumnMulti(5)]
-    public Dictionary<int, int> MapTest { get; set; }
+    public Dictionary<uint, uint> MapTest { get; set; }
 
     [ExcelColumnName("list")]
     [ExcelColumnMulti(5)]
     public List<int> ListTest { get; set; }
 
-    [ExcelColumnName("id")] public int Id { get; set; }
+    [ExcelColumnName("id")] public uint Id { get; set; }
 }
 
 [Config("Example")]
-internal class ExampleConfigCategory : ACategory<int, MapListValue>
+internal class ExampleConfigCategory : ACategory<uint, MapListValue>
 {
     public override void BeginInit()
     {

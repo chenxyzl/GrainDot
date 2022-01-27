@@ -1,7 +1,9 @@
 ﻿using Akka.Actor;
 using Base;
+using Base.Helper;
 using Common;
 using Home.Model.Component;
+using MongoDB.Bson;
 
 namespace Home.Model;
 
@@ -16,6 +18,9 @@ public class Home : GameServer
         AddComponent<TcpComponent>();
         AddComponent<WsComponent>();
         AddComponent<ConnectionDicCommponent>();
+        var a = new IdGenerater(1).GenerateId();
+        var b = new ObjectId(1.ToString());
+        var c = b.ToString();
     }
 
     public IActorRef GetLocalPlayerActorRef(ulong playerId)

@@ -5,9 +5,7 @@ namespace Base;
 
 public abstract class IActorComponent : IComponent
 {
-    [IgnoreDataMember]
-    [BsonIgnore]
-    public BaseActor Node;
+    [IgnoreDataMember] [BsonIgnore] public BaseActor Node;
 
     public IActorComponent(BaseActor a)
     {

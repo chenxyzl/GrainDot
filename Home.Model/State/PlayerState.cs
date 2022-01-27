@@ -1,13 +1,17 @@
+using Base;
 using Base.State;
-using Message;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Home.Model.State;
 
-public class PlayerState : BaseState
+[BsonCollectionName("PlayerBase")]
+public class PlayerState : IPlayerState
 {
-    public override bool NeedSave { get; protected set; } = true;
-    public ulong PlayerId;
-    public string Name;
-    public ulong Exp; //经验值
     public int TId; //角色模版id
+    public ulong Exp; //经验值
+    public string Name;
+
+    public PlayerState(ulong playerId) : base(playerId)
+    {
+    }
 }

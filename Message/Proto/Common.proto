@@ -1,22 +1,21 @@
-
 syntax = "proto3";
 package Message;
 
 message Item {
-  int32 tid = 1;      //模板id
-  uint64 uid = 2;     //唯一id 不可重叠道具
-  int64 count = 3;    //数量
+  uint64 uid = 1;     //唯一id (普通道具uid就等于tid, uid道具则唯一)
+  uint32 tid = 2;      //模板id
+  uint64 count = 3;    //数量
   int64 getTime = 4;  //获得时间 限时道具
 }
 
 message Hero {
   uint64 tid = 1;  //唯一id //如果不可重叠则唯一id就是模板id
-  int32 uid = 2;   //模板id
-  int32 exp = 2;   //当前经验 //等级由经验换算获得
+  uint32 uid = 2;   //模板id
+  uint32 exp = 3;   //当前经验 //等级由经验换算获得
 }
 
 message Equip {
   uint64 tid = 1;  //唯一id //如果不可重叠则唯一id就是模板id
-  int32 uid = 2;   //模板id
-  int32 exp = 3;   //当前经验 //等级由经验换算获得
+  uint32 uid = 2;   //模板id
+  uint32 exp = 3;   //当前经验 //等级由经验换算获得
 }

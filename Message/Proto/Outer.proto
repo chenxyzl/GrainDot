@@ -18,7 +18,7 @@ message C2SLogin  // IRequest 登录游戏服务器
 {
   uint64 playerId = 1; //选择的角色
   string key = 2;  //登录验证
-  string unused = 2;
+  string unused = 3;
 }
 message S2CLogin {  // IResponse
   Role role = 1;
@@ -30,11 +30,11 @@ message Role {              // IMessage 角色信息
   string name = 3;          //名
   int64 lastLoginTime = 4;  //最近一次登录时间
   int64 lastOfflineTime = 5;  //最近一次下线时间 (上线大于离线表示在线)
-  uint64 exp = 4;             //经验 --等级靠换算
-  map<int32, uint64> currencyBag = 6;  //货币
-  repeated Item itemBag = 7;           //道具背包--角色背包
-  repeated Hero heroBag = 8;           //武将背包
-  repeated Equip equipBag = 9;         //装备背包
+  uint64 exp = 6;             //经验 --等级靠换算
+  map<int32, uint64> currencyBag = 7;  //货币
+  repeated Item itemBag = 8;           //道具背包--角色背包
+  repeated Hero heroBag = 9;           //武将背包
+  repeated Equip equipBag = 10;         //装备背包
 }
 
 message SSyncReward {  // IMessage

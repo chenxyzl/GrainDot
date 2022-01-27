@@ -1,44 +1,49 @@
 using ProtoBuf;
-
-namespace Message;
-
-[ProtoContract]
-public enum ItemType
+using System.Collections.Generic;
+namespace Message
 {
-    Currency = 0,
+	[ProtoContract]
+	public enum ItemType
+	{
+		Currency = 0,
 
-    Item = 1,
+		Item = 1,
 
-    Hero = 2,
+		Hero = 2,
 
-    Equip = 3
-}
+		Equip = 3,
 
-[ProtoContract]
-public enum CurrencyType
-{
-    Placeholder = 0,
+	}
 
-    Gold = 1,
+	[ProtoContract]
+	public enum CurrencyType
+	{
+		Placeholder = 0,
 
-    Diamond = 2,
+		Gold = 1,
 
-    Exp = 3
-}
+		Diamond = 2,
+
+		Exp = 3,
+
+	}
 
 //稀有度
-[ProtoContract]
-public enum Rarity
-{
-    White = 0,
+	[ProtoContract]
+	public enum Rarity
+	{
+		White = 0,
 
-    Green = 1,
+		Green = 1,
 
-    Blue = 2,
+		Blue = 2,
 
-    Purple = 3,
+		Purple = 3,
 
-    Orange = 4,
+		Orange = 4,
 
-    Red = 5
+		Red = 5,
+
+	}
+
 }
