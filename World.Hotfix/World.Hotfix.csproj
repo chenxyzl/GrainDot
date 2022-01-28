@@ -20,12 +20,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
         <ProjectReference Include="..\World.Model\World.Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Service\" />
+        <Compile Include="..\Share\HotfixService\CallService.cs">
+            <Link>Service\CallService.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\HotfixService\DBService.cs">
+            <Link>Service\DBService.cs</Link>
+        </Compile>
     </ItemGroup>
-
+    
 </Project>

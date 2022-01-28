@@ -2,6 +2,8 @@
 using Base;
 using Base.CustomAttribute.PlayerLife;
 using Home.Model.Component;
+using Share.Model.Component;
+using Share.Hotfix.Service;
 
 namespace Home.Hotfix.Service;
 
@@ -12,6 +14,7 @@ public class PlayerHotfixService : IPlayerHotfixLife
     {
         self.AddComponent<PlayerComponent>();
         self.AddComponent<BagComponent>();
+        self.AddComponent<CallComponent>();
     }
 
     public async Task Load(BaseActor self)

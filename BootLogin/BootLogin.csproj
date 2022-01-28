@@ -12,10 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Base\Base.csproj"/>
-        <ProjectReference Include="..\Common\Common.csproj"/>
         <ProjectReference Include="..\Login.Model\Login.Model.csproj"/>
-        <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj"/>
     </ItemGroup>
 
 </Project>

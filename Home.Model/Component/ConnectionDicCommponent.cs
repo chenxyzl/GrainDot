@@ -10,30 +10,6 @@ public class ConnectionDicCommponent : IGlobalComponent
     private readonly Dictionary<string, IBaseSocketConnection> connects = new();
     private readonly object lockObj = new();
 
-    public Task Load()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task PreStop()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task Start()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task Stop()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task Tick()
-    {
-        return Task.CompletedTask;
-    }
 #nullable enable
     public IBaseSocketConnection? GetConnection(string connectId)
     {

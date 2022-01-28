@@ -18,4 +18,11 @@
         <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj"/>
     </ItemGroup>
 
+
+    <ItemGroup>
+        <Compile Include="..\Share\Commponent\DBComponent.cs">
+            <Link>Component\DBComponent.cs</Link>
+        </Compile>
+    </ItemGroup>
+    
 </Project>

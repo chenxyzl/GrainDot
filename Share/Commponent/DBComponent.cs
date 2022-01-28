@@ -1,10 +1,17 @@
+using System.Collections.Generic;
 using Base;
 using MongoDB.Driver;
 
-namespace Share.Component;
+namespace Share.Model.Component;
 
-public class DbComponent : IGlobalComponent
+public class DBComponent : IGlobalComponent
 {
+    public string Url { get; private set; }
     public IMongoDatabase _database;
     public MongoClient _mongoClient;
+
+    public DBComponent(string _url) : base()
+    {
+        Url = _url;
+    }
 }

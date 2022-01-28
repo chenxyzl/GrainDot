@@ -1,4 +1,5 @@
-﻿using Base.ET;
+﻿using Akka.Persistence.Serialization;
+using Base.ET;
 using Message;
 
 namespace Base;
@@ -15,4 +16,18 @@ public class SenderMessage
     public long CreateTime { get; }
     public ETTask<IResponse> Tcs { get; }
     public uint Opcode { get; }
+}
+
+public class SyncActorMessage
+{
+    public SyncActorMessage(long createTime, ETTask tcs, ulong _sn)
+    {
+        CreateTime = createTime;
+        Tcs = tcs;
+        Sn = _sn;
+    }
+
+    public long CreateTime { get; }
+    public ETTask Tcs { get; }
+    public readonly ulong Sn;
 }

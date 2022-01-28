@@ -46,8 +46,4 @@
         <ProjectReference Include="..\Message\Message.csproj" />
         <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Global" />
-    </ItemGroup>
 </Project>

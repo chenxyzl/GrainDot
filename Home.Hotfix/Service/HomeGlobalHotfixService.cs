@@ -4,7 +4,8 @@ using Base;
 using Base.CustomAttribute.GameLife;
 using Base.CustomAttribute.GlobalLife;
 using Home.Model.Component;
-using Share.Component;
+using Share.Hotfix.Service;
+using Share.Model.Component;
 
 namespace Home.Hotfix.Service;
 
@@ -16,11 +17,14 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
         GameServer.Instance.AddComponent<TcpComponent>();
         GameServer.Instance.AddComponent<WsComponent>();
         GameServer.Instance.AddComponent<ConnectionDicCommponent>();
-        GameServer.Instance.AddComponent<DbComponent>();
+        GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
     }
 
     public Task Load()
     {
+        GameServer.Instance.GetComponent<TcpComponent>().Load();
+        GameServer.Instance.GetComponent<WsComponent>().Load();
+        GameServer.Instance.GetComponent<DBComponent>().Load();
         return Task.CompletedTask;
     }
     

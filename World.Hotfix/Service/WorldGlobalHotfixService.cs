@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Akka.Actor;
 using Base;
 using Base.CustomAttribute.GlobalLife;
-using Share.Component;
+using Share.Hotfix.Service;
+using Share.Model.Component;
 
 namespace World.Hotfix.Service;
 
@@ -11,11 +11,12 @@ public class WorldGlobalHotfixService : IGlobalHotfixLife
 {
     public void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<DbComponent>();
+        GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
     }
 
     public Task Load()
     {
+        GameServer.Instance.GetComponent<DBComponent>().Load();
         return Task.CompletedTask;
     }
     

@@ -3,7 +3,8 @@ using Akka.Actor;
 using Base;
 using Base.CustomAttribute.GlobalLife;
 using Base.Network.Http;
-using Share.Component;
+using Share.Hotfix.Service;
+using Share.Model.Component;
 
 namespace Login.Hotfix.Service;
 
@@ -12,15 +13,15 @@ public class LoginGlobalHotfixService : IGlobalHotfixLife
 {
     public void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<DbComponent>();
+        GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
         GameServer.Instance.AddComponent<HttpComponent>(":20001");
     }
 
-    public Task Load()
+    public async Task Load()
     {
-        return Task.CompletedTask;
+        await GameServer.Instance.GetComponent<DBComponent>().Load();
     }
-    
+
     public Task Start()
     {
         return Task.CompletedTask;

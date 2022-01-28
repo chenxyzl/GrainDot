@@ -7,7 +7,7 @@ using Base.Network;
 using Base.Serialize;
 using Home.Model.Component;
 using Message;
-using Share.Component;
+using Share.Model.Component;
 
 namespace Home.Model;
 
@@ -110,6 +110,11 @@ public class PlayerActor : BaseActor
             case InnerResponse response:
             {
                 GetComponent<CallComponent>().RunResponse(response);
+                break;
+            }
+
+            case SyncActorMessage msg:
+            {
                 break;
             }
         }

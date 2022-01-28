@@ -14,11 +14,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
+        <ProjectReference Include="..\Login.Model\Login.Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Handler\" />
+        <Compile Include="..\Share\HotfixService\GlobalDBService.cs">
+            <Link>Service\GlobalDBService.cs</Link>
+        </Compile>
     </ItemGroup>
-
+    
 </Project>

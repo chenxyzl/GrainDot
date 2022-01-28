@@ -9,21 +9,22 @@ using Base.Serialize;
 using Common;
 using Message;
 
-namespace Share.Component;
+namespace Share.Model.Component;
 
 public class CallComponent : IActorComponent
 {
-    private ulong _requestIncId;
+    private ulong _incId;
 
     public SortedDictionary<ulong, SenderMessage> RequestCallbackDic { get; } = new();
+    public SortedDictionary<ulong, SyncActorMessage> SyncCallbackDic { get; } = new();
 
     public CallComponent(BaseActor node) : base(node)
     {
     }
 
-    public ulong NextRequestId()
+    public ulong NextId()
     {
-        return ++_requestIncId;
+        return ++_incId;
     }
 
     public void RunResponse(InnerResponse respone)

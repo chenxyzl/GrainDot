@@ -18,9 +18,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Component\"/>
+        <Compile Include="..\Share\Commponent\CallComponent.cs">
+            <Link>Component\CallComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\Commponent\DBComponent.cs">
+            <Link>Component\DBComponent.cs</Link>
+        </Compile>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Component\"/>
-    </ItemGroup>
+
 </Project>

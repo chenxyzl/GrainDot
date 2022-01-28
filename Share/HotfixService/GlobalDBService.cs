@@ -17,7 +17,7 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
-public static class DBService
+public static class GlobalDBService
 {
     static public Task Load(this DBComponent self)
     {
@@ -38,39 +38,37 @@ public static class DBService
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this CallComponent self, ulong id, string collection = null)
+    static public async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await Query<T>(self, id.ToString(), collection);
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this CallComponent self, string id, string collection = null)
+    static public async Task<T> Query<T>(this DBComponent self, string id, string collection = null)
         where T : BaseState
     {
         IAsyncCursor<T> cursor =
-            await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+            await self.GetCollection<T>(collection)
                 .FindAsync(d => d.Id == id);
 
         var result = await cursor.FirstOrDefaultAsync();
-        await self.ResumeActorThread();
         return result;
     }
 
     //查询多个
-    public static async Task<List<T>> Query<T>(this CallComponent self, Expression<Func<T, bool>> filter,
+    public static async Task<List<T>> Query<T>(this DBComponent self, Expression<Func<T, bool>> filter,
         string collection = null)
         where T : BaseState
     {
-        IAsyncCursor<T> cursor = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        IAsyncCursor<T> cursor = await self.GetCollection<T>(collection)
             .FindAsync(filter);
         var result = await cursor.ToListAsync();
-        await self.ResumeActorThread();
         return result;
     }
 
     //保存1个
-    static public async Task Save<T>(this CallComponent self, T state, string collectionName = null) where T : BaseState
+    static public async Task Save<T>(this DBComponent self, T state, string collectionName = null) where T : BaseState
     {
         if (state == null)
         {
@@ -83,35 +81,32 @@ public static class DBService
             collectionName = state.GetType().Name;
         }
 
-        var collection = GameServer.Instance.GetComponent<DBComponent>().GetCollection(collectionName);
+        var collection = self.GetCollection(collectionName);
         _ = await collection.ReplaceOneAsync(d => d.Id == state.Id, state, new ReplaceOptions {IsUpsert = true});
-        await self.ResumeActorThread();
     }
 
     //ulong删除
-    static public async Task<long> Remove<T>(this CallComponent self, ulong id, string collection = null)
+    static public async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await self.Remove<T>(id.ToString(), collection);
     }
 
     //按照string删除
-    static public async Task<long> Remove<T>(this CallComponent self, string id, string collection = null)
+    static public async Task<long> Remove<T>(this DBComponent self, string id, string collection = null)
         where T : BaseState
     {
-        DeleteResult result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        DeleteResult result = await self.GetCollection<T>(collection)
             .DeleteOneAsync(d => d.Id == id);
-        await self.ResumeActorThread();
         return result.DeletedCount;
     }
 
     //按条件删除多个
-    public static async Task<long> Remove<T>(this CallComponent self, Expression<Func<T, bool>> filter,
+    public static async Task<long> Remove<T>(this DBComponent self, Expression<Func<T, bool>> filter,
         string collection = null) where T : BaseState
     {
-        DeleteResult result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        DeleteResult result = await self.GetCollection<T>(collection)
             .DeleteManyAsync(filter);
-        await self.ResumeActorThread();
         return result.DeletedCount;
     }
 }

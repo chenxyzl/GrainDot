@@ -8,29 +8,18 @@ using Base.Helper;
 using Base.Serialize;
 using Common;
 using Message;
+using Share.Model.Component;
 
-namespace Share.Component;
+namespace Share.Hotfix.Service;
 
 static public class CallComponentService
 {
-    static public SenderMessage GetCallback(this CallComponent self, ulong requestId)
-    {
-        return self.RequestCallbackDic[requestId];
-    }
-    
-    static private ulong addRequestCallBack(this CallComponent self, SenderMessage senderMessage)
-    {
-        var rid = self.NextRequestId();
-        self.RequestCallbackDic[rid] = senderMessage;
-        return rid;
-    }
-
     static public async ETTask<IResponse> Call(this CallComponent self, IActorRef other, IRequest request)
     {
         //request转id
         var tcs = ETTask<IResponse>.Create(true);
         var opcode = RpcManager.Instance.GetRequestOpcode(request.GetType());
-        var rid = self.NextRequestId();
+        var rid = self.NextId();
         self.RequestCallbackDic[rid] = new SenderMessage(TimeHelper.Now(), tcs, opcode);
         //
         var innerRequest = new InnerRequest {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
@@ -45,7 +34,23 @@ static public class CallComponentService
         //
         return response;
     }
+    
+    static public async ETTask ResumeActorThread(this CallComponent self)
+    {
+        //request转id
+        var tcs = ETTask.Create(true);
+        var rid = self.NextId();
+        self.SyncCallbackDic[rid] = new SyncActorMessage(TimeHelper.Now(), tcs, rid);
 
+        //
+        var beginTime = TimeHelper.Now();
+        await tcs;
+        var cost = TimeHelper.Now() - beginTime;
+        //
+        if (cost >= 100) GlobalLog.Warning($"sync cost time:{cost} too long");
+        //
+    }
+    
     static public void Send(this CallComponent self, IActorRef other, IRequest request)
     {
         var innerRequest = new InnerRequest {Opcode = 1, Content = request.ToBinary(), Sn = 0};
@@ -68,6 +73,18 @@ static public class CallComponentService
                 $"rpc opcode:{first.Value.Opcode} time out, please check"));
         }
 
+        while (true)
+        {
+            if (self.SyncCallbackDic.Count == 0) break;
+
+            var first = self.SyncCallbackDic.First();
+            if (now - first.Value.CreateTime < GlobalParam.RPC_TIMEOUT_TIME) break;
+
+            self.SyncCallbackDic.Remove(first.Key);
+            first.Value.Tcs.SetException(new CodeException(Code.Error,
+                $"sync time out, please check"));
+        }
+        
         return Task.CompletedTask;
     }
 }
