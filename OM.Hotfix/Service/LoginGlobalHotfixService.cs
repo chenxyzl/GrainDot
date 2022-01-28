@@ -1,23 +1,19 @@
 ﻿using System.Threading.Tasks;
 using Base;
 using Base.CustomAttribute.GlobalLife;
-using Share.Hotfix.Service;
-using Share.Model.Component;
+using Base.Network.Http;
 
-namespace World.Hotfix.Service;
+namespace OM.Hotfix.Service;
 
 [GlobalService]
-public class WorldGlobalHotfixService : IGlobalHotfixLife
+public class LoginGlobalHotfixService : IGlobalHotfixLife
 {
     public void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
     }
 
-    public Task Load()
+    public async Task Load()
     {
-        GameServer.Instance.GetComponent<DBComponent>().Load();
-        return Task.CompletedTask;
     }
 
     public Task Start()

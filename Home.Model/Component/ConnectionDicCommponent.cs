@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Base;
 using Base.Network;
 
@@ -9,7 +8,6 @@ public class ConnectionDicCommponent : IGlobalComponent
 {
     private readonly Dictionary<string, IBaseSocketConnection> connects = new();
     private readonly object lockObj = new();
-
 #nullable enable
     public IBaseSocketConnection? GetConnection(string connectId)
     {

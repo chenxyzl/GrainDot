@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Base;
-using Base.State;
 using Message;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
@@ -16,5 +15,4 @@ public class BagState : IPlayerState
     public BagState(ulong playerId) : base(playerId)
     {
     }
-    
 }

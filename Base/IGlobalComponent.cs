@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-
-namespace Base;
+﻿namespace Base;
 
 public interface IGlobalComponent
 {
-    
 }

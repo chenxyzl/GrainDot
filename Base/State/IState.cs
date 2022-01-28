@@ -13,13 +13,13 @@ public abstract class BaseState : ISupportInitialize
 {
     [BsonId] public readonly string Id;
 
+    //挂载的组建
+    [IgnoreDataMember] [BsonIgnore] private IActorComponent _component;
+
     public BaseState(string id)
     {
         Id = id;
     }
-
-    //挂载的组建
-    [IgnoreDataMember] [BsonIgnore] private IActorComponent _component;
 
     //是否需要保存
     [IgnoreDataMember] [BsonIgnore] public abstract bool NeedSave { get; protected set; }

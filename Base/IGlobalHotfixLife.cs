@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Akka.Actor;
 
 namespace Base;
 
@@ -7,7 +6,7 @@ public interface IGlobalHotfixLife
 {
     //添加组件
     public void RegisterComponent();
-    
+
     //启动 加载db数据 ~只能处理序列化相关不要有业务逻辑
     public Task Load();
 

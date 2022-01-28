@@ -1,12 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Akka.Actor;
 using Base;
-using Base.ET;
-using Base.Helper;
 using Base.Serialize;
-using Common;
 using Message;
 
 namespace Share.Model.Component;
@@ -15,12 +9,12 @@ public class CallComponent : IActorComponent
 {
     private ulong _incId;
 
-    public SortedDictionary<ulong, SenderMessage> RequestCallbackDic { get; } = new();
-    public SortedDictionary<ulong, SyncActorMessage> SyncCallbackDic { get; } = new();
-
     public CallComponent(BaseActor node) : base(node)
     {
     }
+
+    public SortedDictionary<ulong, SenderMessage> RequestCallbackDic { get; } = new();
+    public SortedDictionary<ulong, SyncActorMessage> SyncCallbackDic { get; } = new();
 
     public ulong NextId()
     {

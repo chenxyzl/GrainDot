@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using Akka.Actor;
 using Base;
-using Base.ET;
-using Base.Helper;
-using Base.Serialize;
 using Base.State;
-using Common;
-using Message;
 using MongoDB.Driver;
 using Share.Model.Component;
 
@@ -19,36 +11,36 @@ namespace Share.Hotfix.Service;
 
 public static class DBService
 {
-    static public Task Load(this DBComponent self)
+    public static Task Load(this DBComponent self)
     {
         self._mongoClient = new MongoClient(self.Url);
         self._database = self._mongoClient.GetDatabase("iw");
         return Task.CompletedTask;
     }
 
-    static public IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
+    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
         where T : BaseState
     {
         return self._database.GetCollection<T>(collection ?? typeof(T).Name);
     }
 
-    static public IMongoCollection<BaseState> GetCollection(this DBComponent self, string name)
+    public static IMongoCollection<BaseState> GetCollection(this DBComponent self, string name)
     {
         return self._database.GetCollection<BaseState>(name);
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this CallComponent self, ulong id, string collection = null)
+    public static async Task<T> Query<T>(this CallComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await Query<T>(self, id.ToString(), collection);
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this CallComponent self, string id, string collection = null)
+    public static async Task<T> Query<T>(this CallComponent self, string id, string collection = null)
         where T : BaseState
     {
-        IAsyncCursor<T> cursor =
+        var cursor =
             await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
                 .FindAsync(d => d.Id == id);
 
@@ -62,7 +54,7 @@ public static class DBService
         string collection = null)
         where T : BaseState
     {
-        IAsyncCursor<T> cursor = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        var cursor = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
             .FindAsync(filter);
         var result = await cursor.ToListAsync();
         await self.ResumeActorThread();
@@ -70,7 +62,7 @@ public static class DBService
     }
 
     //保存1个
-    static public async Task Save<T>(this CallComponent self, T state, string collectionName = null) where T : BaseState
+    public static async Task Save<T>(this CallComponent self, T state, string collectionName = null) where T : BaseState
     {
         if (state == null)
         {
@@ -78,10 +70,7 @@ public static class DBService
             return;
         }
 
-        if (collectionName == null)
-        {
-            collectionName = state.GetType().Name;
-        }
+        if (collectionName == null) collectionName = state.GetType().Name;
 
         var collection = GameServer.Instance.GetComponent<DBComponent>().GetCollection(collectionName);
         _ = await collection.ReplaceOneAsync(d => d.Id == state.Id, state, new ReplaceOptions {IsUpsert = true});
@@ -89,17 +78,17 @@ public static class DBService
     }
 
     //ulong删除
-    static public async Task<long> Remove<T>(this CallComponent self, ulong id, string collection = null)
+    public static async Task<long> Remove<T>(this CallComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await self.Remove<T>(id.ToString(), collection);
     }
 
     //按照string删除
-    static public async Task<long> Remove<T>(this CallComponent self, string id, string collection = null)
+    public static async Task<long> Remove<T>(this CallComponent self, string id, string collection = null)
         where T : BaseState
     {
-        DeleteResult result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        var result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
             .DeleteOneAsync(d => d.Id == id);
         await self.ResumeActorThread();
         return result.DeletedCount;
@@ -109,7 +98,7 @@ public static class DBService
     public static async Task<long> Remove<T>(this CallComponent self, Expression<Func<T, bool>> filter,
         string collection = null) where T : BaseState
     {
-        DeleteResult result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
+        var result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
             .DeleteManyAsync(filter);
         await self.ResumeActorThread();
         return result.DeletedCount;

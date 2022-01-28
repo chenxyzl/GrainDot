@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Akka.Actor;
 using Base;
-using Base.CustomAttribute.GameLife;
 using Base.CustomAttribute.GlobalLife;
 using Home.Model.Component;
 using Share.Hotfix.Service;
@@ -27,7 +25,7 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
         GameServer.Instance.GetComponent<DBComponent>().Load();
         return Task.CompletedTask;
     }
-    
+
     public Task Start()
     {
         return Task.CompletedTask;

@@ -68,6 +68,7 @@ public abstract class GameServer
 
     protected virtual async Task BeforCreate()
     {
+        GlobalHotfixManager.Instance.Hotfix.RegisterComponent();
         //拦截退出
         WatchQuit();
         //加载配置
@@ -206,9 +207,10 @@ public abstract class GameServer
         //结束游戏
         await Instance.StopSystem();
     }
-    
+
 
     #region 全局组件
+
     //所有model
     protected Dictionary<Type, IGlobalComponent> _components = new();
 

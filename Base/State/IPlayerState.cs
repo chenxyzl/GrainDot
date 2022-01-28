@@ -5,15 +5,11 @@ namespace Home.Model.State;
 
 public class IPlayerState : BaseState
 {
-    [BsonIgnore]
-    public ulong PlayerId
-    {
-        get { return UInt64.Parse(Id); }
-    }
-
     public IPlayerState(ulong playerId) : base(playerId.ToString())
     {
     }
+
+    [BsonIgnore] public ulong PlayerId => ulong.Parse(Id);
 
     public override bool NeedSave { get; protected set; } = true;
 }

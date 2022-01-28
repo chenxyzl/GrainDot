@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using Akka.Actor;
 using Base;
-using Base.ET;
-using Base.Helper;
-using Base.Serialize;
 using Base.State;
-using Common;
-using Message;
 using MongoDB.Driver;
 using Share.Model.Component;
 
@@ -19,36 +11,36 @@ namespace Share.Hotfix.Service;
 
 public static class GlobalDBService
 {
-    static public Task Load(this DBComponent self)
+    public static Task Load(this DBComponent self)
     {
         self._mongoClient = new MongoClient(self.Url);
         self._database = self._mongoClient.GetDatabase("iw");
         return Task.CompletedTask;
     }
 
-    static public IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
+    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
         where T : BaseState
     {
         return self._database.GetCollection<T>(collection ?? typeof(T).Name);
     }
 
-    static public IMongoCollection<BaseState> GetCollection(this DBComponent self, string name)
+    public static IMongoCollection<BaseState> GetCollection(this DBComponent self, string name)
     {
         return self._database.GetCollection<BaseState>(name);
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
+    public static async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await Query<T>(self, id.ToString(), collection);
     }
 
     //查询1个
-    static public async Task<T> Query<T>(this DBComponent self, string id, string collection = null)
+    public static async Task<T> Query<T>(this DBComponent self, string id, string collection = null)
         where T : BaseState
     {
-        IAsyncCursor<T> cursor =
+        var cursor =
             await self.GetCollection<T>(collection)
                 .FindAsync(d => d.Id == id);
 
@@ -61,14 +53,14 @@ public static class GlobalDBService
         string collection = null)
         where T : BaseState
     {
-        IAsyncCursor<T> cursor = await self.GetCollection<T>(collection)
+        var cursor = await self.GetCollection<T>(collection)
             .FindAsync(filter);
         var result = await cursor.ToListAsync();
         return result;
     }
 
     //保存1个
-    static public async Task Save<T>(this DBComponent self, T state, string collectionName = null) where T : BaseState
+    public static async Task Save<T>(this DBComponent self, T state, string collectionName = null) where T : BaseState
     {
         if (state == null)
         {
@@ -76,27 +68,24 @@ public static class GlobalDBService
             return;
         }
 
-        if (collectionName == null)
-        {
-            collectionName = state.GetType().Name;
-        }
+        if (collectionName == null) collectionName = state.GetType().Name;
 
         var collection = self.GetCollection(collectionName);
         _ = await collection.ReplaceOneAsync(d => d.Id == state.Id, state, new ReplaceOptions {IsUpsert = true});
     }
 
     //ulong删除
-    static public async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
+    public static async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         return await self.Remove<T>(id.ToString(), collection);
     }
 
     //按照string删除
-    static public async Task<long> Remove<T>(this DBComponent self, string id, string collection = null)
+    public static async Task<long> Remove<T>(this DBComponent self, string id, string collection = null)
         where T : BaseState
     {
-        DeleteResult result = await self.GetCollection<T>(collection)
+        var result = await self.GetCollection<T>(collection)
             .DeleteOneAsync(d => d.Id == id);
         return result.DeletedCount;
     }
@@ -105,7 +94,7 @@ public static class GlobalDBService
     public static async Task<long> Remove<T>(this DBComponent self, Expression<Func<T, bool>> filter,
         string collection = null) where T : BaseState
     {
-        DeleteResult result = await self.GetCollection<T>(collection)
+        var result = await self.GetCollection<T>(collection)
             .DeleteManyAsync(filter);
         return result.DeletedCount;
     }

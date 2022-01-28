@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
 using Base;
@@ -12,9 +11,9 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
-static public class CallComponentService
+public static class CallComponentService
 {
-    static public async ETTask<IResponse> Call(this CallComponent self, IActorRef other, IRequest request)
+    public static async ETTask<IResponse> Call(this CallComponent self, IActorRef other, IRequest request)
     {
         //request转id
         var tcs = ETTask<IResponse>.Create(true);
@@ -34,8 +33,8 @@ static public class CallComponentService
         //
         return response;
     }
-    
-    static public async ETTask ResumeActorThread(this CallComponent self)
+
+    public static async ETTask ResumeActorThread(this CallComponent self)
     {
         //request转id
         var tcs = ETTask.Create(true);
@@ -50,15 +49,15 @@ static public class CallComponentService
         if (cost >= 100) GlobalLog.Warning($"sync cost time:{cost} too long");
         //
     }
-    
-    static public void Send(this CallComponent self, IActorRef other, IRequest request)
+
+    public static void Send(this CallComponent self, IActorRef other, IRequest request)
     {
         var innerRequest = new InnerRequest {Opcode = 1, Content = request.ToBinary(), Sn = 0};
         other.Tell(innerRequest);
     }
 
 
-    static public Task Tick(this CallComponent self, long dt)
+    public static Task Tick(this CallComponent self, long dt)
     {
         var now = TimeHelper.Now();
         while (true)
@@ -82,9 +81,9 @@ static public class CallComponentService
 
             self.SyncCallbackDic.Remove(first.Key);
             first.Value.Tcs.SetException(new CodeException(Code.Error,
-                $"sync time out, please check"));
+                "sync time out, please check"));
         }
-        
+
         return Task.CompletedTask;
     }
 }

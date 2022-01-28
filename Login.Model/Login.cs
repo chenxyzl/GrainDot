@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Base;
-using Base.Network.Http;
 using Common;
 
 namespace Login.Model;
