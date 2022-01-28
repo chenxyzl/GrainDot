@@ -13,16 +13,6 @@ public class Home : GameServer
     {
     }
 
-    public override void RegisterGlobalComponent()
-    {
-        AddComponent<TcpComponent>();
-        AddComponent<WsComponent>();
-        AddComponent<ConnectionDicCommponent>();
-        var a = new IdGenerater(1).GenerateId();
-        var b = new ObjectId(1.ToString());
-        var c = b.ToString();
-    }
-
     public IActorRef GetLocalPlayerActorRef(ulong playerId)
     {
         //todo 拼路径

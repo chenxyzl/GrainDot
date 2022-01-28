@@ -20,7 +20,6 @@ public delegate Task GameOnline(BaseActor player, long lastLogoutTime);
 //下线
 public delegate Task GameOffline(BaseActor player);
 
-//tick
 public delegate Task GameTick(long dt);
 
 [AttributeUsage(AttributeTargets.Class)]

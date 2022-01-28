@@ -8,8 +8,4 @@ public class World : GameServer
     public World() : base(RoleType.World)
     {
     }
-
-    public override void RegisterGlobalComponent()
-    {
-    }
 }

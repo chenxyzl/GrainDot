@@ -36,6 +36,8 @@ public abstract class GameServer
         Logger = new NLogAdapter(role.ToString());
     }
 
+    public Akka.Configuration.Config SystemConfig => _systemConfig;
+
     //根系统
     public ActorSystem system { get; protected set; }
 
@@ -70,37 +72,35 @@ public abstract class GameServer
         WatchQuit();
         //加载配置
         LoadConfig();
-        //注册组建
-        RegisterGlobalComponent();
         //全局触发load
-        foreach (var x in _componentsList) await x.Load();
+        await GlobalHotfixManager.Instance.Hotfix.Load();
     }
 
     protected virtual async Task AfterCreate()
     {
-        //全局触发AfterLoad
-        foreach (var x in _componentsList) await x.Start();
         //触发挤时间
         Instance.lastTime = TimeHelper.Now();
+        //全局触发AfterLoad
+        await GlobalHotfixManager.Instance.Hotfix.Start();
     }
 
 
     protected virtual async Task Tick()
     {
         //全局触发PreStop
-        foreach (var x in _componentsList) await x.Tick();
+        await GlobalHotfixManager.Instance.Hotfix.Tick();
     }
 
     protected virtual async Task PreStop()
     {
         //全局触发PreStop
-        foreach (var x in _componentsList) await x.PreStop();
+        await GlobalHotfixManager.Instance.Hotfix.PreStop();
     }
 
     protected virtual async Task Stop()
     {
         //全局触发PreStop
-        foreach (var x in _componentsList) await x.Stop();
+        await GlobalHotfixManager.Instance.Hotfix.Stop();
     }
 
     protected virtual async Task StartSystem(string typeName, Props p, HashCodeMessageExtractor extractor)
@@ -206,15 +206,9 @@ public abstract class GameServer
         //结束游戏
         await Instance.StopSystem();
     }
-
-
-    /// <summary>
-    ///     注册全局组件
-    /// </summary>
-    public abstract void RegisterGlobalComponent();
+    
 
     #region 全局组件
-
     //所有model
     protected Dictionary<Type, IGlobalComponent> _components = new();
 
@@ -232,7 +226,7 @@ public abstract class GameServer
         return (K) component;
     }
 
-    protected void AddComponent<K>(params object[] args) where K : class, IGlobalComponent
+    public void AddComponent<K>(params object[] args) where K : class, IGlobalComponent
     {
         var t = typeof(K);
         if (_components.TryGetValue(t, out var _)) A.Abort(Code.Error, $"game component:{t.Name} repeated");

@@ -7,7 +7,7 @@ using Base.Network;
 using Base.Serialize;
 using Home.Model.Component;
 using Message;
-using Share.Model.Component;
+using Share.Component;
 
 namespace Home.Model;
 

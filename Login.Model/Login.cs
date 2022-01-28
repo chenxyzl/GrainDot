@@ -11,11 +11,6 @@ public class Login : GameServer
     {
     }
 
-    public override void RegisterGlobalComponent()
-    {
-        AddComponent<HttpComponent>(":20001");
-    }
-
     protected override async Task AfterCreate()
     {
         await base.AfterCreate();

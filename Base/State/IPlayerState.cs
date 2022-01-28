@@ -1,4 +1,3 @@
-using Base;
 using Base.State;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -6,11 +5,14 @@ namespace Home.Model.State;
 
 public class IPlayerState : BaseState
 {
-    [BsonId] public readonly ulong PlayerId;
-
-    public IPlayerState(ulong playerId)
+    [BsonIgnore]
+    public ulong PlayerId
     {
-        PlayerId = playerId;
+        get { return UInt64.Parse(Id); }
+    }
+
+    public IPlayerState(ulong playerId) : base(playerId.ToString())
+    {
     }
 
     public override bool NeedSave { get; protected set; } = true;

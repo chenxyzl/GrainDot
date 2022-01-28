@@ -15,7 +15,15 @@
         <ProjectReference Include="..\Base\Base.csproj" />
         <ProjectReference Include="..\Common\Common.csproj" />
         <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
-        <ProjectReference Include="..\Share.Model\Share.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\Share\Commponent\CallComponent.cs">
+        <Link>Component\CallComponent.cs</Link>
+      </Compile>
+      <Compile Include="..\Share\Commponent\DBComponent.cs">
+        <Link>Component\DBComponent.cs</Link>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -8,8 +8,4 @@ public class OM : GameServer
     public OM() : base(RoleType.OM)
     {
     }
-
-    public override void RegisterGlobalComponent()
-    {
-    }
 }

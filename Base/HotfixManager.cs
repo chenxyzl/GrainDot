@@ -12,7 +12,7 @@ internal class HotfixManager : Single<HotfixManager>
     public void Reload()
     {
         var t = new UnOrderMultiMapSet<Type, Type>();
-        var asm = DllHelper.GetHotfixAssembly(GameServer.Instance.role);
+        var asm = DllHelper.GetHotfixAssembly(GameServer.Instance);
         foreach (var x in asm)
         foreach (var type in x.GetTypes())
         {
@@ -27,6 +27,7 @@ internal class HotfixManager : Single<HotfixManager>
         //新旧覆盖 ~~
         types = t;
 
+        GlobalHotfixManager.Instance.ReloadHandler();
         //重新加载配置
         ConfigManager.Instance.ReloadConfig();
         //重新加载Handler

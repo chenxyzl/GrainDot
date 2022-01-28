@@ -3,8 +3,8 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <ApplicationIcon/>
-        <StartupObject/>
+        <ApplicationIcon />
+        <StartupObject />
         <BaseOutputPath>../Bin</BaseOutputPath>
     </PropertyGroup>
 
@@ -14,17 +14,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Handler\**"/>
-        <EmbeddedResource Remove="Handler\**"/>
-        <None Remove="Handler\**"/>
+        <Compile Remove="Handler\**" />
+        <EmbeddedResource Remove="Handler\**" />
+        <None Remove="Handler\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\World.Model\World.Model.csproj"/>
+        <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
+        <ProjectReference Include="..\World.Model\World.Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Service\"/>
+        <Folder Include="Service\" />
     </ItemGroup>
 
 </Project>

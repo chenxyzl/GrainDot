@@ -11,6 +11,13 @@ namespace Base.State;
 /// </summary>
 public abstract class BaseState : ISupportInitialize
 {
+    [BsonId] public readonly string Id;
+
+    public BaseState(string id)
+    {
+        Id = id;
+    }
+
     //挂载的组建
     [IgnoreDataMember] [BsonIgnore] private IActorComponent _component;
 
