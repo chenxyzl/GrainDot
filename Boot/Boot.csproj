@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <BaseOutputPath>../Bin</BaseOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>../Bin/</OutputPath>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\Base\Base.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
+        <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
+        <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
+        <ProjectReference Include="..\World.Model\World.Model.csproj" />
+        <ProjectReference Include="..\Login.Model\Login.Model.csproj" />
+        <ProjectReference Include="..\OM.Model\OM.Model.csproj" />
+    </ItemGroup>
+    
+</Project>
