@@ -48,6 +48,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Share" />
+      <Content Include="..\Share\**">
+        <Link>Share\%(RecursiveDir)\**</Link>
+      </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\Conf\**">
+            <Link>Resource\Conf\%(RecursiveDir)\**</Link>
+        </Content>
+        <Content Include="..\Config\**">
+            <Link>Resource\Config\%(RecursiveDir)\**</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resource" />
     </ItemGroup>
 </Project>
