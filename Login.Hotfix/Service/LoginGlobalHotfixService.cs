@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Base;
 using Base.CustomAttribute.GlobalLife;
-using Base.Network.Http;
 using Share.Hotfix.Service;
 using Share.Model.Component;
 
@@ -21,14 +20,14 @@ public class LoginGlobalHotfixService : IGlobalHotfixLife
         await GameServer.Instance.GetComponent<DBComponent>().Load();
     }
 
-    public Task Start()
+    public async Task Start()
     {
-        return Task.CompletedTask;
+        await GameServer.Instance.GetComponent<HttpComponent>().Start();
     }
 
-    public Task PreStop()
+    public async Task PreStop()
     {
-        return Task.CompletedTask;
+        await GameServer.Instance.GetComponent<HttpComponent>().PreStop();
     }
 
     public Task Stop()

@@ -23,6 +23,9 @@
         <Compile Include="..\Share\Commponent\DBComponent.cs">
             <Link>Component\DBComponent.cs</Link>
         </Compile>
+        <Compile Include="..\Share\Commponent\HttpComponent.cs">
+            <Link>Component\HttpComponent.cs</Link>
+        </Compile>
     </ItemGroup>
 
 </Project>

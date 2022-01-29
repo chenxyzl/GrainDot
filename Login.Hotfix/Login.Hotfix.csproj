@@ -21,6 +21,9 @@
         <Compile Include="..\Share\HotfixService\GlobalDBService.cs">
             <Link>Service\GlobalDBService.cs</Link>
         </Compile>
+        <Compile Include="..\Share\HotfixService\HttpService.cs">
+            <Link>Service\HttpService.cs</Link>
+        </Compile>
     </ItemGroup>
 
 </Project>

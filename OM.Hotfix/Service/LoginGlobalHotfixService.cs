@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Base;
 using Base.CustomAttribute.GlobalLife;
-using Base.Network.Http;
 
 namespace OM.Hotfix.Service;
 
 [GlobalService]
-public class LoginGlobalHotfixService : IGlobalHotfixLife
+public class OMGlobalHotfixService : IGlobalHotfixLife
 {
     public void RegisterComponent()
     {
