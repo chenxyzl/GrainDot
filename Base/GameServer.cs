@@ -7,6 +7,7 @@ using Akka.Actor;
 using Akka.Cluster.Sharding;
 using Akka.Cluster.Tools.Client;
 using Akka.Configuration;
+using Base.Alg;
 using Base.Helper;
 using Common;
 using Message;
@@ -148,6 +149,7 @@ public abstract class GameServer
     protected virtual void Reload()
     {
         GlobalLog.Warning($"---{role}加载中---");
+        ConfigManager.Instance.ReloadConfig();
         HotfixManager.Instance.Reload();
         GlobalLog.Warning($"---{role}加载完成---");
     }
@@ -157,9 +159,10 @@ public abstract class GameServer
         GlobalLog.Warning($"---{role}开启loop---");
         while (!_quitFlag)
         {
+            GlobalThreadSynchronizationContext.Instance.Update();
             Thread.Sleep(1);
-            var now = TimeHelper.Now();
             //1000毫秒tick一次
+            var now = TimeHelper.Now();
             if (now - lastTime < 1000) continue;
             lastTime += 1000;
             _ = Tick();
@@ -177,6 +180,7 @@ public abstract class GameServer
     //有actor的启动
     public static async Task Run(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
     {
+        SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         //before
         BeforeRun();
         //创建

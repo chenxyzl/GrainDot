@@ -30,6 +30,15 @@
         <Compile Include="..\Share\HotfixService\DBService.cs">
             <Link>Service\DBService.cs</Link>
         </Compile>
+        <Compile Include="..\Share\HotfixService\ConsoleService.cs">
+            <Link>Service\ConsoleService.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\HotfixService\ReplService.cs">
+            <Link>Service\ReplService.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\HotfixService\EtcdService.cs">
+            <Link>Service\EtcdService.cs</Link>
+        </Compile>
     </ItemGroup>
 
 </Project>

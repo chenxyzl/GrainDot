@@ -26,6 +26,15 @@
         <Compile Include="..\Share\Commponent\HttpComponent.cs">
             <Link>Component\HttpComponent.cs</Link>
         </Compile>
+        <Compile Include="..\Share\Commponent\ConsoleComponent.cs">
+            <Link>Component\ConsoleComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\Commponent\ReplComponent.cs">
+            <Link>Component\ReplComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\Commponent\EtcdComponent.cs">
+            <Link>Component\EtcdComponent.cs</Link>
+        </Compile>
     </ItemGroup>
 
 </Project>

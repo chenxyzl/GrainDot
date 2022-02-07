@@ -1,0 +1,13 @@
+# 该Yaml文件改编自DockerHub中的配置文件
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest #根据需要选择自己的镜像
+    restart: always
+    ports:
+     - 27017:27017 #对外暴露停供服务的端口，正式生产的时候理论不用暴露。
+    volumes:
+     - /data/mongodb/db:/data/db # 挂载数据目录
+     - /data/mongodb/log:/var/log/mongodb  # 挂载日志目录
+     - /root/docker-componse/mongod.conf:/etc/mongod.conf  # 挂载配置目录
+    command: ["-f", "/etc/mongod.conf"]

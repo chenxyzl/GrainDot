@@ -26,10 +26,8 @@ internal class HotfixManager : Single<HotfixManager>
 
         //新旧覆盖 ~~
         types = t;
-
+        //
         GlobalHotfixManager.Instance.ReloadHandler();
-        //重新加载配置
-        ConfigManager.Instance.ReloadConfig();
         //重新加载Handler
         RpcManager.Instance.ReloadHanlder();
         //

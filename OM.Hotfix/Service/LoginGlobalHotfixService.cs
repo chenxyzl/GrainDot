@@ -11,8 +11,9 @@ public class OMGlobalHotfixService : IGlobalHotfixLife
     {
     }
 
-    public async Task Load()
+    public Task Load()
     {
+        return  Task.CompletedTask;
     }
 
     public Task Start()
