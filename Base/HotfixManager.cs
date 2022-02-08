@@ -4,7 +4,7 @@ using Base.Helper;
 
 namespace Base;
 
-internal class HotfixManager : Single<HotfixManager>
+public class HotfixManager : Single<HotfixManager>
 {
     private UnOrderMultiMapSet<Type, Type> types = new();
 

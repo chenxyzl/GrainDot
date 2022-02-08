@@ -10,6 +10,7 @@ public enum ConsoleMode
 
 public class ConsoleComponent: IGlobalComponent
 {
+    public bool stopWatch = false;
     public ConsoleMode Mode = ConsoleMode.free;
     public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
 }

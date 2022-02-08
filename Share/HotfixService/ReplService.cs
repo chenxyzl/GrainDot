@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Base;
 using Base.State;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using MongoDB.Driver;
 using Share.Model.Component;
 
@@ -18,7 +19,16 @@ public static class ReplService
         return Task.CompletedTask;
     }
 
-    public static Task<bool> Run(this ReplComponent self, string line, CancellationToken cancellationToken)
+    public static void EnterRepl(this ReplComponent self)
+    {
+        self.ScriptOptions = ScriptOptions.Default
+            .WithMetadataResolver(ScriptMetadataResolver.Default.WithBaseDirectory(Environment.CurrentDirectory))
+            .AddReferences(typeof(ReplComponent).Assembly)
+            .AddImports("System");
+    }
+
+    //todo 注意 这里需要切换到global的主线程
+    public static async Task<bool> Run(this ReplComponent self, string line, CancellationToken cancellationToken)
     {
         switch (line)
         {
@@ -26,12 +36,12 @@ public static class ReplService
             {
                 self.ScriptOptions = null;
                 self.ScriptState = null;
-                return Task.FromResult(true);
+                return true;
             }
             case "reset":
             {
                 self.ScriptState = null;
-                return Task.FromResult(false);
+                return false;
             }
             default:
             {
@@ -39,11 +49,13 @@ public static class ReplService
                 {
                     if (self.ScriptState == null)
                     {
-                        self.ScriptState = await CSharpScript.RunAsync(line, self.ScriptOptions, cancellationToken: cancellationToken);
+                        self.ScriptState = await CSharpScript.RunAsync(line, self.ScriptOptions,
+                            cancellationToken: cancellationToken);
                     }
                     else
                     {
-                        self.ScriptState = await self.ScriptState.ContinueWithAsync(line, cancellationToken: cancellationToken);
+                        self.ScriptState =
+                            await self.ScriptState.ContinueWithAsync(line, cancellationToken: cancellationToken);
                     }
                 }
                 catch (Exception e)
@@ -51,12 +63,12 @@ public static class ReplService
                     Console.WriteLine(e);
                 }
 
-                return Task.FromResult(false);
+                return false;
             }
         }
     }
 
-    public static Task PreStop(this ReplComponent self)
+    public static void PreStop(this ReplComponent self)
     {
         self.ScriptOptions = null;
         self.ScriptState = null;
