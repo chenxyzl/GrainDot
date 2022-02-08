@@ -156,6 +156,8 @@ public abstract class GameServer
     protected virtual void Loop()
     {
         GlobalLog.Warning($"---{role}开启loop---");
+        //异步时间回调到主线程
+        SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         while (!_quitFlag)
         {
             GlobalThreadSynchronizationContext.Instance.Update();
@@ -179,7 +181,6 @@ public abstract class GameServer
     //有actor的启动
     public static async Task Run(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
     {
-        SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         //before
         BeforeRun();
         //创建

@@ -91,10 +91,10 @@ public static class EtcdService
             await self.PutTemp("/ ", k);
             Thread.Sleep(1000);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             self.WatchCancellation[k]?.Cancel();
-            throw e;
+            throw;
         }
     }
 
@@ -111,7 +111,7 @@ public static class EtcdService
                 self.etcdClient.WatchRange(k, a =>
                 {
                     foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
-
+            
                     ;
                 }, null, null, t.Token);
             });
@@ -120,7 +120,7 @@ public static class EtcdService
             await self.PutTemp("/WatchPrefixWait", k);
             Thread.Sleep(1000);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             self.WatchCancellation[k]?.Cancel();
             throw;

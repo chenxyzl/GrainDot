@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Base;
@@ -11,10 +12,10 @@ public class EtcdComponent : IGlobalComponent
 {
     private readonly string addrs;
 
-    //new string[] { "http://127.0.0.1:2379" }
-    public EtcdComponent(string[] addresses)
+    //"http://127.0.0.1:2379,http://127.0.0.1:2479"
+    public EtcdComponent(string addresses)
     {
-        addrs = string.Join(",", addresses);
+        addrs = "http://10.7.69.254:12379";
     }
 
     public EtcdClient etcdClient { private set; get; }
@@ -28,8 +29,18 @@ public class EtcdComponent : IGlobalComponent
     public async Task ConnectEtcd()
     {
         etcdClient = new EtcdClient(addrs);
-        var res = await etcdClient.LeaseGrantAsync(new LeaseGrantRequest {TTL = 30});
-        LeaseId = res.ID;
-        _ = Task.Run(() => etcdClient.LeaseKeepAlive(LeaseId, CancellationKeepLive.Token));
+        try
+        {
+            var res = await etcdClient.LeaseGrantAsync(new LeaseGrantRequest {TTL = 30});
+            LeaseId = res.ID;
+        }
+        catch (Exception e)
+        {
+            GlobalLog.Error(e);
+            throw;
+        }
+
+        _ = etcdClient.LeaseKeepAlive(LeaseId, CancellationKeepLive.Token);
+        GlobalLog.Debug("etcd init success");
     }
 }
