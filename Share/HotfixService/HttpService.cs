@@ -12,7 +12,7 @@ namespace Share.Hotfix.Service;
 
 public static class HttpService
 {
-    static public async Task Start(this HttpComponent self)
+    public static async Task Start(this HttpComponent self)
     {
         var a = self.Addr.Split(":");
         var ip = a.Length > 1 && a[0] != "" ? IPAddress.Parse(a[0]) : IPAddress.Any;
@@ -24,12 +24,12 @@ public static class HttpService
         await self.Host.StartAsync();
     }
 
-    static public async Task PreStop(this HttpComponent self)
+    public static async Task PreStop(this HttpComponent self)
     {
         await self.Host.StopAsync();
     }
 
-    static private async Task ProcessAsync(this HttpComponent self, HttpContext context)
+    private static async Task ProcessAsync(this HttpComponent self, HttpContext context)
     {
         try
         {

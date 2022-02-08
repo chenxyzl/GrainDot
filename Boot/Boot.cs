@@ -12,10 +12,7 @@ internal class Program
 {
     private static async Task Main(string[] args)
     {
-        if (args.Length == 0)
-        {
-            throw new Exception("参数里需要有启动类型");
-        }
+        if (args.Length == 0) throw new Exception("参数里需要有启动类型");
 
         var roleType = EnumHelper.FromString<RoleType>(args[0]);
         switch (roleType)

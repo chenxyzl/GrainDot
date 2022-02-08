@@ -13,7 +13,7 @@ public class OMGlobalHotfixService : IGlobalHotfixLife
 
     public Task Load()
     {
-        return  Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
     public Task Start()

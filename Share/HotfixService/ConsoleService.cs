@@ -13,13 +13,10 @@ public static class ConsoleService
         {
             try
             {
-                string line = await Task.Factory.StartNew(() => Console.In.ReadLine(),
+                var line = await Task.Factory.StartNew(() => Console.In.ReadLine(),
                     self.CancellationTokenSource.Token);
 
-                if (line == null)
-                {
-                    break;
-                }
+                if (line == null) break;
 
                 line = line.Trim();
 
@@ -32,7 +29,7 @@ public static class ConsoleService
                         var isExited = true;
                         try
                         {
-                            ReplComponent replComponent = GameServer.Instance.GetComponent<ReplComponent>();
+                            var replComponent = GameServer.Instance.GetComponent<ReplComponent>();
                             isExited = await replComponent.Run(line, self.CancellationTokenSource.Token);
                         }
                         catch (Exception e)
@@ -40,10 +37,7 @@ public static class ConsoleService
                             Console.WriteLine(e);
                         }
 
-                        if (isExited)
-                        {
-                            self.Mode = ConsoleMode.free;
-                        }
+                        if (isExited) self.Mode = ConsoleMode.free;
 
                         break;
                     default:

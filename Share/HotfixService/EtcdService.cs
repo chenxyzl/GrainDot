@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Base;
-using Base.State;
 using dotnet_etcd;
 using Etcdserverpb;
+using Google.Protobuf;
 using Message;
-using MongoDB.Driver;
 using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
@@ -32,7 +30,7 @@ public static class EtcdService
     {
         await self.etcdClient.PutAsync(new PutRequest
         {
-            Key = Google.Protobuf.ByteString.CopyFromUtf8(k), Value = Google.Protobuf.ByteString.CopyFromUtf8(v),
+            Key = ByteString.CopyFromUtf8(k), Value = ByteString.CopyFromUtf8(v),
             Lease = self.LeaseId
         });
     }
@@ -41,7 +39,7 @@ public static class EtcdService
     public static async Task PutPersistent(this EtcdComponent self, string k, string v)
     {
         await self.etcdClient.PutAsync(new PutRequest
-            {Key = Google.Protobuf.ByteString.CopyFromUtf8(k), Value = Google.Protobuf.ByteString.CopyFromUtf8(v)});
+            {Key = ByteString.CopyFromUtf8(k), Value = ByteString.CopyFromUtf8(v)});
     }
 
     public static async Task Delete(this EtcdComponent self, string k)
@@ -60,13 +58,8 @@ public static class EtcdService
         if (result.Kvs.Count == 0)
         {
             if (noException)
-            {
                 return "";
-            }
-            else
-            {
-                throw new CodeException(Code.Error, $"get key:{k} value is empty");
-            }
+            throw new CodeException(Code.Error, $"get key:{k} value is empty");
         }
 
         return result.Kvs[0].Value.ToStringUtf8();
@@ -76,10 +69,7 @@ public static class EtcdService
     {
         var r = new List<string>();
         var result = await self.etcdClient.GetRangeAsync(k);
-        foreach (var a in result.Kvs)
-        {
-            r.Add(a.Value.ToStringUtf8());
-        }
+        foreach (var a in result.Kvs) r.Add(a.Value.ToStringUtf8());
 
         return r;
     }
@@ -92,12 +82,9 @@ public static class EtcdService
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
             EtcdComponent.LockAdd.Release();
-            self.etcdClient.Watch(k, (WatchEvent[] a) =>
+            self.etcdClient.Watch(k, a =>
             {
-                foreach (var v in a)
-                {
-                    GlobalThreadSynchronizationContext.Instance.Post((object state) => { func(v); }, v);
-                }
+                foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
             }, null, null, t.Token);
             self.WatchCancellation[k] = t;
             EtcdComponent.LockAdd.Wait();
@@ -121,12 +108,9 @@ public static class EtcdService
             _ = Task.Run(() =>
             {
                 EtcdComponent.LockAdd.Release();
-                self.etcdClient.WatchRange(k, (WatchEvent[] a) =>
+                self.etcdClient.WatchRange(k, a =>
                 {
-                    foreach (var v in a)
-                    {
-                        GlobalThreadSynchronizationContext.Instance.Post((object state) => { func(v); }, v);
-                    }
+                    foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
 
                     ;
                 }, null, null, t.Token);
@@ -146,10 +130,7 @@ public static class EtcdService
     private static void CancelSub(this EtcdComponent self)
     {
         self.CancellationKeepLive.Cancel();
-        foreach (var t in self.WatchCancellation)
-        {
-            t.Value.Cancel();
-        }
+        foreach (var t in self.WatchCancellation) t.Value.Cancel();
 
         self.WatchCancellation.Clear();
     }

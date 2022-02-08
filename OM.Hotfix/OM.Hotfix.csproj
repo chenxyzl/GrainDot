@@ -12,8 +12,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Base\Base.csproj" />
-      <ProjectReference Include="..\OM.Model\OM.Model.csproj" />
+        <ProjectReference Include="..\Base\Base.csproj"/>
+        <ProjectReference Include="..\OM.Model\OM.Model.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="..\Share\HotfixService\ConsoleService.cs">

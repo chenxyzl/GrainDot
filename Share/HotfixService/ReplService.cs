@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Base;
-using Base.State;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using MongoDB.Driver;
 using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
@@ -48,15 +43,11 @@ public static class ReplService
                 try
                 {
                     if (self.ScriptState == null)
-                    {
                         self.ScriptState = await CSharpScript.RunAsync(line, self.ScriptOptions,
                             cancellationToken: cancellationToken);
-                    }
                     else
-                    {
                         self.ScriptState =
                             await self.ScriptState.ContinueWithAsync(line, cancellationToken: cancellationToken);
-                    }
                 }
                 catch (Exception e)
                 {

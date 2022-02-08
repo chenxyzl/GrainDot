@@ -1,11 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Base;
-using Microsoft.AspNetCore.Builder;
+﻿using Base;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 
 namespace Share.Model.Component;
 
