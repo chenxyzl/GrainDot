@@ -111,7 +111,7 @@ public static class EtcdService
                 self.etcdClient.WatchRange(k, a =>
                 {
                     foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
-            
+
                     ;
                 }, null, null, t.Token);
             });

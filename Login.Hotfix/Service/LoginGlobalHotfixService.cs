@@ -11,7 +11,7 @@ public class LoginGlobalHotfixService : IGlobalHotfixLife
 {
     public void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
+        GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.214:27017");
         GameServer.Instance.AddComponent<HttpComponent>(":20001");
     }
 

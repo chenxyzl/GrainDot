@@ -14,7 +14,7 @@ public static class DBService
     public static Task Load(this DBComponent self)
     {
         self._mongoClient = new MongoClient(self.Url);
-        self._database = self._mongoClient.GetDatabase("iw");
+        self._database = self._mongoClient.GetDatabase("foundation");
         return Task.CompletedTask;
     }
 
