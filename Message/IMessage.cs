@@ -12,12 +12,12 @@ public interface IResponse : IMessage //根据sender直接返回的
 {
 }
 
-public interface IRequestPlayer : IMessage //从代理发送给玩家的
+public interface IRequestPlayer : IRequest //从代理发送给玩家的
 {
     ulong PlayerId { get; }
 }
 
-public interface IRequestWorld : IMessage //从代理发送给world
+public interface IRequestWorld : IRequest //从代理发送给world
 {
     ulong WorldId { get; }
 }

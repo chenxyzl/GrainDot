@@ -8,7 +8,7 @@ namespace Home.Hotfix.Handler;
 
 public partial class HomeInnerHandlerDispatcher
 {
-    public async Task<IResponse> DispatcherWithResult(BaseActor actor, InnerRequest message)
+    public async Task<IResponse> DispatcherWithResult(BaseActor actor, RequestPlayer message)
     {
         var player = actor as PlayerActor;
         switch (message.Opcode)
@@ -22,7 +22,7 @@ public partial class HomeInnerHandlerDispatcher
         return null;
     }
 
-    public async Task DispatcherNoResult(BaseActor actor, InnerRequest message)
+    public async Task DispatcherNoResult(BaseActor actor, RequestPlayer message)
     {
         var player = actor as PlayerActor;
         switch (message.Opcode)

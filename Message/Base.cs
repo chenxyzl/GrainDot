@@ -1,40 +1,56 @@
 using ProtoBuf;
-
-namespace Message;
-
-// tcp
-[ProtoContract]
-public class Request : IMessage
+using System.Collections.Generic;
+namespace Message
 {
-    [ProtoMember(1)] public uint Opcode { get; set; }
+// 客户端请求服务器的消息体
+	[ProtoContract]
+	public partial class Request: IRequest
+	{
+		[ProtoMember(1)]
+		public uint Opcode { get; set; }
 
-    [ProtoMember(2)] public uint Sn { get; set; }
+		[ProtoMember(2)]
+		public uint Sn { get; set; }
 
-    [ProtoMember(3)] public byte[] Content { get; set; }
+		[ProtoMember(3)]
+		public byte[] Content { get; set; }
 
-    [ProtoMember(4)] public string Sign { get; set; }
-}
+		[ProtoMember(4)]
+		public string Sign { get; set; }
 
-// tcp
-[ProtoContract]
-public class Response : IMessage
-{
-    [ProtoMember(1)] public uint Opcode { get; set; }
+	}
 
-    [ProtoMember(2)] public uint Sn { get; set; }
+// 服务器返回客户端的消息体
+	[ProtoContract]
+	public partial class Response: IResponse
+	{
+		[ProtoMember(1)]
+		public uint Opcode { get; set; }
 
-    [ProtoMember(3)] public byte[] Content { get; set; }
+		[ProtoMember(2)]
+		public uint Sn { get; set; }
 
-    [ProtoMember(4)] public Code Code { get; set; }
-}
+		[ProtoMember(3)]
+		public byte[] Content { get; set; }
 
-// http
-[ProtoContract]
-public class ApiResult : IMessage
-{
-    [ProtoMember(1)] public Code Code { get; set; }
+		[ProtoMember(4)]
+		public Code Code { get; set; }
 
-    [ProtoMember(2)] public string Msg { get; set; }
+	}
 
-    [ProtoMember(3)] public byte[] Content { get; set; }
+// http请求的返回值
+	[ProtoContract]
+	public partial class ApiResult: IMessage
+	{
+		[ProtoMember(1)]
+		public Code Code { get; set; }
+
+		[ProtoMember(2)]
+		public string Msg { get; set; }
+
+		[ProtoMember(3)]
+		public byte[] Content { get; set; }
+
+	}
+
 }

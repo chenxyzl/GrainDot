@@ -9,8 +9,9 @@ namespace Home.Hotfix.Handler;
 [InnerRpc]
 public partial class HomeInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
-    public async void Dispatcher(BaseActor actor, InnerRequest message)
+    public async void Dispatcher(BaseActor actor, IRequest request)
     {
+        var message = request as RequestPlayer;
         var sender = actor.GetSender();
         var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
             $"inner opcode:{message.Opcode} not exit", true);

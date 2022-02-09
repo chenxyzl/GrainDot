@@ -44,6 +44,14 @@ public abstract class GameServer
     //角色类型
     public RoleType role { get; }
 
+    //玩家代理
+    private IActorRef _playerShardProxy;
+    public IActorRef PlayerShardProxy => A.RequireNotNull(_playerShardProxy, Code.Error, "need StartPlayerProxy");
+
+    //世界代理
+    private IActorRef _worldShardProxy;
+    public IActorRef WorldShardProxy => A.RequireNotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
+
     //退出标记监听
     protected virtual void WatchQuit()
     {
@@ -104,15 +112,16 @@ public abstract class GameServer
         await GlobalHotfixManager.Instance.Hotfix.Stop();
     }
 
-    protected virtual async Task StartSystem(string typeName, Props p, HashCodeMessageExtractor extractor)
+    protected virtual async Task StartSystem(RoleType roleType, GameSharedType sharedType, Props p,
+        HashCodeMessageExtractor extractor)
     {
         await BeforCreate();
         system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
         var sharding = ClusterSharding.Get(system);
         var shardRegion = await sharding.StartAsync(
-            typeName,
+            sharedType.ToString(),
             p,
-            ClusterShardingSettings.Create(system),
+            ClusterShardingSettings.Create(system).WithRole(roleType.ToString()),
             extractor
         );
         ClusterClientReceptionist.Get(system).RegisterService(shardRegion);
@@ -157,7 +166,7 @@ public abstract class GameServer
     {
         GlobalLog.Warning($"---{role}开启loop---");
         //异步时间回调到主线程
-        SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
+        // SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         while (!_quitFlag)
         {
             GlobalThreadSynchronizationContext.Instance.Update();
@@ -179,7 +188,8 @@ public abstract class GameServer
     }
 
     //有actor的启动
-    public static async Task Run(Type gsType, string typeName, Props p, HashCodeMessageExtractor extractor)
+    public static async Task Run(Type gsType, GameSharedType sharedType, Props p,
+        HashCodeMessageExtractor extractor)
     {
         //before
         BeforeRun();
@@ -188,7 +198,7 @@ public abstract class GameServer
         //准备
         Instance.Reload();
         //开始游戏
-        await Instance.StartSystem(typeName, p, extractor);
+        await Instance.StartSystem(Instance.role, sharedType, p, extractor);
         //开启无限循环
         Instance.Loop();
         //结束游戏
@@ -249,14 +259,18 @@ public abstract class GameServer
 
     protected virtual void StartPlayerShardProxy()
     {
-        ClusterSharding.Get(system).StartProxy(GameSharedRole.Player.ToString(), role.ToString(),
+        ClusterSharding.Get(system).StartProxy(GameSharedType.Player.ToString(), role.ToString(),
             MessageExtractor.PlayerMessageExtractor);
+        _playerShardProxy = ClusterSharding.Get(system)
+            .ShardRegion(GameSharedType.Player.ToString());
     }
 
     protected virtual void StartWorldShardProxy()
     {
-        ClusterSharding.Get(system).StartProxy(GameSharedRole.World.ToString(), role.ToString(),
+        ClusterSharding.Get(system).StartProxy(GameSharedType.World.ToString(), role.ToString(),
             MessageExtractor.WorldMessageExtractor);
+        _worldShardProxy = ClusterSharding.Get(system)
+            .ShardRegion(GameSharedType.World.ToString());
     }
 
     #endregion

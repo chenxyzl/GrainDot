@@ -64,7 +64,7 @@ public class WorldActor : BaseActor
                 ElegantStop();
                 break;
             }
-            case InnerRequest request:
+            case RequestWorld request:
             {
                 RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
                 break;

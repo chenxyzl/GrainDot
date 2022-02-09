@@ -93,7 +93,7 @@ public class PlayerActor : BaseActor
 
                 break;
             }
-            case InnerRequest request:
+            case RequestPlayer request:
             {
                 try
                 {
@@ -112,8 +112,9 @@ public class PlayerActor : BaseActor
                 GetComponent<CallComponent>().RunResponse(response);
                 break;
             }
-
-            case SyncActorMessage msg:
+            
+            //转线程
+            case SyncActorMessage:
             {
                 break;
             }

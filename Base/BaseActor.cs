@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Akka.Actor;
 using Message;
 
@@ -82,7 +83,7 @@ public abstract class BaseActor : UntypedActor
         var t = typeof(K);
         if (_components.TryGetValue(t, out component)) A.Abort(Code.Error, $"actor component:{t.Name} repeated");
 
-        var allArgs = new List<object>();
+        var allArgs = new List<object> {this};
         foreach (var a in args) allArgs.Add(a);
         var obj = Activator.CreateInstance(t, allArgs.ToArray()) as K;
         _components.Add(t, obj);

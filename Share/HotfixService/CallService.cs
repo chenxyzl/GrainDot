@@ -13,7 +13,8 @@ namespace Share.Hotfix.Service;
 
 public static class CallComponentService
 {
-    public static async ETTask<IResponse> Call(this CallComponent self, IActorRef other, IRequest request)
+    public static async ETTask<IResponse> AskPlayer(this CallComponent self, IRequestPlayer request,
+        IActorRef? target = null)
     {
         //request转id
         var tcs = ETTask<IResponse>.Create(true);
@@ -21,8 +22,46 @@ public static class CallComponentService
         var rid = self.NextId();
         self.RequestCallbackDic[rid] = new SenderMessage(TimeHelper.Now(), tcs, opcode);
         //
-        var innerRequest = new InnerRequest {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
-        other.Tell(innerRequest);
+        var msg = new RequestPlayer {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
+        if (target != null)
+        {
+            target.Tell(msg);
+        }
+        else
+        {
+            GameServer.Instance.PlayerShardProxy.Tell(msg);
+        }
+
+        //
+        var beginTime = TimeHelper.Now();
+        var response = await tcs;
+        var cost = TimeHelper.Now() - beginTime;
+        //
+        if (cost >= 100) self.Node.Logger.Warning($"call cost time:{cost} too long");
+
+        //
+        return response;
+    }
+
+    public static async ETTask<IResponse> AskWorld(this CallComponent self, IRequestWorld request,
+        IActorRef? target = null)
+    {
+        //request转id
+        var tcs = ETTask<IResponse>.Create(true);
+        var opcode = RpcManager.Instance.GetRequestOpcode(request.GetType());
+        var rid = self.NextId();
+        self.RequestCallbackDic[rid] = new SenderMessage(TimeHelper.Now(), tcs, opcode);
+        //
+        var msg = new RequestWorld {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
+        if (target != null)
+        {
+            target.Tell(msg);
+        }
+        else
+        {
+            GameServer.Instance.WorldShardProxy.Tell(msg);
+        }
+
         //
         var beginTime = TimeHelper.Now();
         var response = await tcs;
@@ -49,13 +88,6 @@ public static class CallComponentService
         if (cost >= 100) GlobalLog.Warning($"sync cost time:{cost} too long");
         //
     }
-
-    public static void Send(this CallComponent self, IActorRef other, IRequest request)
-    {
-        var innerRequest = new InnerRequest {Opcode = 1, Content = request.ToBinary(), Sn = 0};
-        other.Tell(innerRequest);
-    }
-
 
     public static Task Tick(this CallComponent self, long dt)
     {

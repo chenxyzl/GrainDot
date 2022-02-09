@@ -13,10 +13,10 @@ public abstract class HttpHandler<REQ, RSP> : IHttpHandler where REQ : class, IR
 {
     public async Task<byte[]> Handle(byte[] data)
     {
-        var msg = SerializeHelper.FromBinary<RSP>(data);
+        var msg = SerializeHelper.FromBinary<REQ>(data);
         var ret = await Run(msg);
         return ret.ToBinary();
     }
 
-    protected abstract Task<REQ> Run(RSP data);
+    protected abstract Task<RSP> Run(REQ data);
 }

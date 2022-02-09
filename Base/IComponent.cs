@@ -4,7 +4,7 @@ namespace Base;
 
 public interface IInnerHandlerDispatcher
 {
-    public void Dispatcher(BaseActor actor, InnerRequest message)
+    public void Dispatcher(BaseActor actor, IRequest message)
     {
     }
 }

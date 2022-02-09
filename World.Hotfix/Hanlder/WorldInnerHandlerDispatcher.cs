@@ -10,8 +10,9 @@ namespace Home.Hotfix.Handler;
 [InnerRpc]
 public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
-    public async void Dispatcher(WorldSession session, InnerRequest message)
+    public async void Dispatcher(WorldSession session, IRequest request)
     {
+        var message = request as RequestWorld;
         var sender = session.World.GetSender();
         var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
             $"inner opcode:{message.Opcode} not exit", true);

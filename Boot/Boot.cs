@@ -19,24 +19,19 @@ internal class Program
         {
             case RoleType.Home:
             {
-                await GameServer.Run(typeof(Home.Model.Home), GameSharedRole.Player.ToString(), PlayerActor.P,
+                await GameServer.Run(typeof(Home.Model.Home), GameSharedType.Player, PlayerActor.P,
                     MessageExtractor.PlayerMessageExtractor);
                 break;
             }
             case RoleType.World:
             {
-                await GameServer.Run(typeof(World.Model.World), GameSharedRole.World.ToString(), WorldActor.P,
+                await GameServer.Run(typeof(World.Model.World), GameSharedType.World, WorldActor.P,
                     MessageExtractor.WorldMessageExtractor);
                 break;
             }
             case RoleType.Login:
             {
                 await GameServer.Run(typeof(Login.Model.Login));
-                break;
-            }
-            case RoleType.OM:
-            {
-                await GameServer.Run(typeof(OM.Model.OM));
                 break;
             }
             default:

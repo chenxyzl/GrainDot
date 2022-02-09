@@ -3,6 +3,9 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Base;
+using Base.Helper;
+using Base.Serialize;
+using Message;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +23,7 @@ public static class HttpService
         self.Host = new WebHostBuilder().UseKestrel(options => { options.Listen(ip, port, listenOptions => { }); })
             .Configure(app => { app.Run(self.ProcessAsync); }).Build();
 
-        Console.WriteLine("http begin at:1988");
+        GlobalLog.Debug($"http begin at:{ip}:{port}");
         await self.Host.StartAsync();
     }
 
@@ -33,17 +36,39 @@ public static class HttpService
     {
         try
         {
+            var a = new C2ALogin().ToBinary();
+            var b = Convert.ToBase64String(a);
             var reader = new StreamReader(context.Request.Body);
-            var base64 = reader.ReadToEnd().Replace("_", "=");
+            var base64 = (await reader.ReadToEndAsync()).Replace("_", "=");
             var data = Convert.FromBase64String(base64);
             var handler = HttpHotfixManager.Instance.GetHandler(context.Request.Path);
             var result = await handler.Handle(data);
-            var ret = Convert.ToBase64String(result);
+            var array = new ApiResult
+            {
+                Code = Code.Ok,
+                Content = result
+            }.ToBinary();
+            var ret = Convert.ToBase64String(array);
+            context.Response.StatusCode = 200;
+            context.Response.ContentType = "text/html";
+            context.Response.Headers.Add("Date", new DateTimeOffset().UtcDateTime.ToString());
             await context.Response.WriteAsync(ret);
+            await context.Response.Body.FlushAsync();
+        }
+        catch (CodeException e)
+        {
+            var array = new ApiResult
+            {
+                Code = e.Code,
+                Msg = e.Message
+            }.ToBinary();
+            var ret = Convert.ToBase64String(array);
+            await context.Response.WriteAsync(ret);
+            await context.Response.Body.FlushAsync();
         }
         catch (Exception e)
         {
-            await context.Response.WriteAsync($"hello:{context.Request.Path}: {e.ToString()}");
+            await context.Response.WriteAsync($"server inner error,{e}");
         }
     }
 }

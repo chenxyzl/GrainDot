@@ -18,6 +18,7 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
         GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.214:27017");
         GameServer.Instance.AddComponent<ConsoleComponent>();
         GameServer.Instance.AddComponent<ReplComponent>();
+        GameServer.Instance.AddComponent<LoginKeyComponent>();
         GameServer.Instance.AddComponent<EtcdComponent>(
             "http://10.7.69.254:12379,http://10.7.69.254:22379,http://10.7.69.254:32379");
     }
@@ -51,6 +52,7 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
 
     public Task Tick()
     {
+        GameServer.Instance.GetComponent<LoginKeyComponent>().Tick();
         return Task.CompletedTask;
     }
 }

@@ -1,30 +1,31 @@
-
 syntax = "proto3";
 import "Code.proto";
 import "Common.proto";
 package Message;
 
-message C2SPing {}  // IRequest
-message S2CPong {   // IResponse 同步服务器时间
+// 同步服务器时间
+message C2SPing {}   // IRequest
+message S2CPong {// IResponse
   int64 time = 1;   //服务器时间
 }
+// 通知测试
+message CNotifyTest {}   // IRequest
 
-message CNotifyTest {}  // IRequest 通知测试
+//  推送测试
+message SPushTest {}  // IResponse
 
-message SPushTest {}  // IMessage 推送测试
+// 登录游戏服务器 第一条消息 从这里开始
+message C2SLogin {// IRequest
 
-//游戏服务器的登录 第一条消息 从这里开始
-message C2SLogin  // IRequest 登录游戏服务器
-{
   uint64 playerId = 1; //选择的角色
   string key = 2;  //登录验证
   string unused = 3;
 }
-message S2CLogin {  // IResponse
+message S2CLogin {// IResponse
   Role role = 1;
 }
-
-message Role {              // IMessage 角色信息
+//  角色信息
+message Role {
   uint64 uid = 1;           //角色id
   uint32 tid = 2;           //模板id
   string name = 3;          //名
@@ -36,13 +37,13 @@ message Role {              // IMessage 角色信息
   repeated Hero heroBag = 9;           //武将背包
   repeated Equip equipBag = 10;         //装备背包
 }
-
-message SSyncReward {  // IMessage
+// 同步奖励
+message SSyncReward {// IResponse
   repeated Item adds = 1;
   repeated Item dels = 2;
 }
-
-message Mail {                 // IMessage 邮件详情
+//  邮件详情
+message Mail {
   uint64 uid = 1;              //唯一id
   uint32 tid = 2;              //模板id
   string customTitle = 3;      //自定义标题 覆盖默认
@@ -52,7 +53,8 @@ message Mail {                 // IMessage 邮件详情
   bool hasRead = 7;            //是否阅读
   bool hasGet = 8;             //是否领取
 }
-message C2SMails {}  // IRequest 获取邮件列表
-message S2SMails {   // IResponse
+// 获取邮件列表
+message C2SMails {} // IRequest
+message S2SMails {// IResponse
   repeated Mail mails = 1;
 }

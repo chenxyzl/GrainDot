@@ -19,7 +19,6 @@
         <ProjectReference Include="..\Home.Model\Home.Model.csproj"/>
         <ProjectReference Include="..\World.Model\World.Model.csproj"/>
         <ProjectReference Include="..\Login.Model\Login.Model.csproj"/>
-        <ProjectReference Include="..\OM.Model\OM.Model.csproj"/>
     </ItemGroup>
 
 </Project>

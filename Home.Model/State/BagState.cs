@@ -10,7 +10,7 @@ namespace Home.Model.State;
 public class BagState : IPlayerState
 {
     [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-    private Dictionary<ulong, Item> Bag;
+    private Dictionary<ulong, Item> Bag = new();
 
     public BagState(ulong playerId) : base(playerId)
     {

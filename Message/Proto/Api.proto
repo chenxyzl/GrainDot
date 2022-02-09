@@ -24,12 +24,12 @@ message A2CLogin {               // IResponse
 }
 
 //角色登录验证
-message A2CRoleLogin {  // IRequest
+message C2ARoleLogin {  // IRequest
   uint64 uid = 1;       //登录的角色id
   string token = 2;     // sdk返回的token
 }
 
-message C2ARoleLogin {  // IResponse
+message A2CRoleLogin {  // IResponse
   string addr = 1;      // tcp的地址
   string key = 2;       //后台登录这个角色需要用的key
 }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Base;
 using Base.Helper;
+using Home.Hotfix.Service;
 using Home.Model;
 using Home.Model.Component;
 using Message;

@@ -7,7 +7,7 @@ namespace Home.Hotfix.Handler;
 
 public partial class WorldInnerHandlerDispatcher
 {
-    public async Task<IResponse> DispatcherWithResult(WorldSession player, InnerRequest message)
+    public async Task<IResponse> DispatcherWithResult(WorldSession player, RequestWorld message)
     {
         switch (message.Opcode)
         {
@@ -17,7 +17,7 @@ public partial class WorldInnerHandlerDispatcher
         return null;
     }
 
-    public async Task DispatcherNoResult(WorldSession player, InnerRequest message)
+    public async Task DispatcherNoResult(WorldSession player, RequestWorld message)
     {
         switch (message.Opcode)
         {
