@@ -72,4 +72,14 @@ namespace Message
 
 	}
 
+	[ProtoContract]
+	public partial class C2APerformanceTest: IRequest
+	{
+	}
+
+	[ProtoContract]
+	public partial class A2CPerformanceTest: IResponse
+	{
+	}
+
 }

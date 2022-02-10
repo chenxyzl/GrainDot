@@ -56,4 +56,16 @@ namespace Message
 
 	}
 
+//actor线程恢复
+	[ProtoContract]
+	public partial class ResumeActor: IRequestPlayer
+	{
+		[ProtoMember(1)]
+		public ulong Sn { get; set; }
+
+		[ProtoMember(2)]
+		public ulong PlayerId { get; set; }
+
+	}
+
 }

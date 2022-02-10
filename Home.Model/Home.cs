@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using System.Threading.Tasks;
+using Akka.Actor;
 using Base;
 using Common;
 
@@ -15,6 +16,12 @@ public class Home : GameServer
         //todo 拼路径
         var path = playerId.ToString();
         return GetChild(path);
+    }
+
+    protected override async Task AfterCreate()
+    {
+        await base.AfterCreate();
+        StartPlayerShardProxy();
     }
 }
 

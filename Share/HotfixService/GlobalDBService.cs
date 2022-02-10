@@ -30,14 +30,14 @@ public static class GlobalDBService
     }
 
     //查询1个
-    public static async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
-        where T : BaseState
-    {
-        return await Query<T>(self, id.ToString(), collection);
-    }
+    // public static async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
+    //     where T : BaseState
+    // {
+    //     return await Query<T>(self, id.ToString(), collection);
+    // }
 
     //查询1个
-    public static async Task<T> Query<T>(this DBComponent self, string id, string collection = null)
+    public static async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         var cursor =
@@ -75,14 +75,14 @@ public static class GlobalDBService
     }
 
     //ulong删除
-    public static async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
-        where T : BaseState
-    {
-        return await self.Remove<T>(id.ToString(), collection);
-    }
+    // public static async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
+    //     where T : BaseState
+    // {
+    //     return await self.Remove<T>(id.ToString(), collection);
+    // }
 
     //按照string删除
-    public static async Task<long> Remove<T>(this DBComponent self, string id, string collection = null)
+    public static async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
         where T : BaseState
     {
         var result = await self.GetCollection<T>(collection)

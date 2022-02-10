@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Base;
-using Base.Helper;
 using Base.Serialize;
 using Message;
 using Microsoft.AspNetCore.Builder;

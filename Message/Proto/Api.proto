@@ -4,7 +4,7 @@ import "Common.proto";
 import "Code.proto";
 
 //角色简单信息
-message SimpleRole {        // IMessage 角色简单信息
+message SimpleRole {// IMessage 角色简单信息
   uint64 uid = 1;           //角色id
   uint32 tid = 2;           //模板id
   string name = 3;          //名
@@ -14,22 +14,28 @@ message SimpleRole {        // IMessage 角色简单信息
 }
 
 //登录选角色界面
-message C2ALogin {  // IRequest
+message C2ALogin {// IRequest
   int32 mobileType = 1;
   string deviceId = 2;
   string token = 3;  // sdk返回的token
 }
-message A2CLogin {               // IResponse
+message A2CLogin {// IResponse
   repeated SimpleRole rols = 1;  //角色列表
 }
 
 //角色登录验证
-message C2ARoleLogin {  // IRequest
+message C2ARoleLogin {// IRequest
   uint64 uid = 1;       //登录的角色id
   string token = 2;     // sdk返回的token
 }
-
-message A2CRoleLogin {  // IResponse
+message A2CRoleLogin {// IResponse
   string addr = 1;      // tcp的地址
   string key = 2;       //后台登录这个角色需要用的key
+}
+
+//性能测试
+message C2APerformanceTest{// IRequest
+}
+message A2CPerformanceTest{// IResponse
+
 }

@@ -8,10 +8,10 @@ using Message;
 
 namespace Login.Hotfix.Handler;
 
-[HttpHandler("/api/login")]
-public class Login : HttpHandler<C2ARoleLogin, A2CRoleLogin>
+[HttpHandler("/api/p0")]
+public class PerformanceTest : HttpHandler<C2APerformanceTest, A2CPerformanceTest>
 {
-    protected override async Task<A2CRoleLogin> Run(C2ARoleLogin data)
+    protected override async Task<A2CPerformanceTest> Run(C2APerformanceTest data)
     {
         var ask = new RequestPlayer
         {
@@ -22,8 +22,8 @@ public class Login : HttpHandler<C2ARoleLogin, A2CRoleLogin>
         };
         var ans = await GameServer.Instance.PlayerShardProxy.Ask<InnerResponse>(ask, TimeSpan.FromSeconds(3));
         if (ans.Code != Code.Ok) throw new CodeException(ans.Code, ans.Code.ToString());
-
-        var ret = SerializeHelper.FromBinary<A2CRoleLogin>(ans.Content);
-        return ret;
+        var ret = SerializeHelper.FromBinary<A2CLogin>(ans.Content);
+        
+        return new A2CPerformanceTest();
     }
 }

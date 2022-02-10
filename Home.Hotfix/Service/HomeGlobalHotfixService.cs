@@ -15,7 +15,7 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
         GameServer.Instance.AddComponent<TcpComponent>();
         GameServer.Instance.AddComponent<WsComponent>();
         GameServer.Instance.AddComponent<ConnectionDicCommponent>();
-        GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.214:27017");
+        GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.254:27017");
         GameServer.Instance.AddComponent<ConsoleComponent>();
         GameServer.Instance.AddComponent<ReplComponent>();
         GameServer.Instance.AddComponent<LoginKeyComponent>();

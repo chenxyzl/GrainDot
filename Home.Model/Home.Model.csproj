@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <ApplicationIcon/>
+        <ApplicationIcon />
         <BaseOutputPath>../Bin</BaseOutputPath>
     </PropertyGroup>
 
@@ -12,9 +12,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Base\Base.csproj"/>
-        <ProjectReference Include="..\Common\Common.csproj"/>
-        <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj"/>
+        <ProjectReference Include="..\Base\Base.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
+        <ProjectReference Include="..\Third\ExcelMapper\ExcelMapper.csproj" />
     </ItemGroup>
 
     <ItemGroup>

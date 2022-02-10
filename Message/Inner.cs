@@ -53,4 +53,24 @@ namespace Message
 	{
 	}
 
+	[ProtoContract]
+	public partial class AHPerformanceTest1: IRequest
+	{
+	}
+
+	[ProtoContract]
+	public partial class HAPerformanceTest1: IResponse
+	{
+	}
+
+	[ProtoContract]
+	public partial class HHPerformanceTest2Ask: IRequest
+	{
+	}
+
+	[ProtoContract]
+	public partial class HHPerformanceTest2Ans: IResponse
+	{
+	}
+
 }

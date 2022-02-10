@@ -23,3 +23,9 @@ message HWPlayerOfflineAsk {// IRequest
   int64 offlineTime = 2;
 }
 message WHPlayerOfflineAns {}  // IResponse
+
+message AHPerformanceTest1{} //IRequest
+message HAPerformanceTest1{} //IResponse
+
+message HHPerformanceTest2Ask{} //IRequest
+message HHPerformanceTest2Ans{} //IResponse

@@ -24,13 +24,9 @@ public static class CallComponentService
         //
         var msg = new RequestPlayer {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
         if (target != null)
-        {
             target.Tell(msg);
-        }
         else
-        {
             GameServer.Instance.PlayerShardProxy.Tell(msg);
-        }
 
         //
         var beginTime = TimeHelper.Now();
@@ -54,13 +50,9 @@ public static class CallComponentService
         //
         var msg = new RequestWorld {Opcode = opcode, Content = request.ToBinary(), Sn = rid};
         if (target != null)
-        {
             target.Tell(msg);
-        }
         else
-        {
             GameServer.Instance.WorldShardProxy.Tell(msg);
-        }
 
         //
         var beginTime = TimeHelper.Now();
@@ -75,12 +67,20 @@ public static class CallComponentService
 
     public static async ETTask ResumeActorThread(this CallComponent self)
     {
+        if (!self.Node.LoadComplete)
+        {
+            return;
+        }
+
         //request转id
         var tcs = ETTask.Create(true);
         var rid = self.NextId();
         self.SyncCallbackDic[rid] = new SyncActorMessage(TimeHelper.Now(), tcs, rid);
-
+        // GameServer.Instance.PlayerShardProxy.Tell(new ResumeActor {Sn = rid, PlayerId = self.Node.uid});
+        // var _actor = GameServer.Instance.GetChild(self.Node.uid.ToString());
+        // _actor.Tell(new ResumeActor {Sn = rid, PlayerId = self.Node.uid});
         //
+        self.Node.GetSelf().Tell(new ResumeActor {Sn = rid, PlayerId = self.Node.uid});
         var beginTime = TimeHelper.Now();
         await tcs;
         var cost = TimeHelper.Now() - beginTime;

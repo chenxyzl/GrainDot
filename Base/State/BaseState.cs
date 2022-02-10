@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Common;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base.State;
@@ -11,15 +12,12 @@ namespace Base.State;
 /// </summary>
 public abstract class BaseState : ISupportInitialize
 {
-    [BsonId] public readonly string Id;
+    [BsonElement] [BsonId] public ulong Id;
+
+    public DBVersion Version = DBVersion.Null;
 
     //挂载的组建
     [IgnoreDataMember] [BsonIgnore] private IActorComponent _component;
-
-    public BaseState(string id)
-    {
-        Id = id;
-    }
 
     //是否需要保存
     [IgnoreDataMember] [BsonIgnore] public abstract bool NeedSave { get; protected set; }

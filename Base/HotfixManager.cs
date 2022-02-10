@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Base.Alg;
 using Base.Helper;
+using Base.State;
 
 namespace Base;
 
@@ -17,7 +18,6 @@ public class HotfixManager : Single<HotfixManager>
         foreach (var type in x.GetTypes())
         {
             if (type.IsAbstract) continue;
-
             var objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
             if (objects.Length == 0) continue;
 

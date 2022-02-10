@@ -22,11 +22,17 @@ public abstract class GameServer
     //日志
     public readonly ILog Logger;
 
+    //玩家代理
+    private IActorRef _playerShardProxy;
+
     //退出标记
     private bool _quitFlag;
 
     //配置
     protected Akka.Configuration.Config _systemConfig;
+
+    //世界代理
+    private IActorRef _worldShardProxy;
     private long lastTime;
 
     //
@@ -43,13 +49,7 @@ public abstract class GameServer
 
     //角色类型
     public RoleType role { get; }
-
-    //玩家代理
-    private IActorRef _playerShardProxy;
     public IActorRef PlayerShardProxy => A.RequireNotNull(_playerShardProxy, Code.Error, "need StartPlayerProxy");
-
-    //世界代理
-    private IActorRef _worldShardProxy;
     public IActorRef WorldShardProxy => A.RequireNotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
 
     //退出标记监听
@@ -81,6 +81,8 @@ public abstract class GameServer
         WatchQuit();
         //加载配置
         LoadConfig();
+        //注册mongo的State
+        MongoHelper.Init();
         //全局触发load
         await GlobalHotfixManager.Instance.Hotfix.Load();
     }
@@ -169,7 +171,7 @@ public abstract class GameServer
         // SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         while (!_quitFlag)
         {
-            GlobalThreadSynchronizationContext.Instance.Update();
+            // GlobalThreadSynchronizationContext.Instance.Update();
             Thread.Sleep(1);
             //1000毫秒tick一次
             var now = TimeHelper.Now();

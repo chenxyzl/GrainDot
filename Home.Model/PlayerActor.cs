@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Akka.Actor;
+using Akka.Dispatch;
 using Base;
 using Base.Helper;
 using Base.Network;
@@ -15,14 +18,17 @@ public class PlayerActor : BaseActor
 {
     public static readonly Props P = Props.Create<PlayerActor>();
     private ILog _log;
-    public ulong PlayerId;
+    public ulong PlayerId => uid;
     private IBaseSocketConnection session;
+    private ulong loadWaitingIdx = 0;
 
     public IActorRef worldShardProxy;
 
+    // path = akka://Z/system/sharding/Player/8714/4505283499219672065
     public PlayerActor()
     {
-        PlayerId = 0; //todo 从自己的地址中分析出来
+        var a = Self.Path.ToString().Split("/").Last();
+        uid = ulong.Parse(a);
         PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
     }
 
@@ -31,25 +37,34 @@ public class PlayerActor : BaseActor
         get
         {
             if (_log == null) _log = new NLogAdapter($"player:{PlayerId}");
-
             return _log;
         }
     }
 
     protected override async void PreStart()
     {
-        base.PreStart();
-        await PlayerHotfixManager.Instance.Hotfix.Load(this);
-        await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
-        EnterUpState();
+        ActorTaskScheduler.RunTask(
+            async () =>
+            {
+                await PlayerHotfixManager.Instance.Hotfix.Load(this);
+                await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
+                base.PreStart();
+                EnterUpState();
+            }
+        );
     }
 
 
     protected override async void PostStop()
     {
-        await PlayerHotfixManager.Instance.Hotfix.PreStop(this);
-        await PlayerHotfixManager.Instance.Hotfix.Stop(this);
-        base.PostStop();
+        ActorTaskScheduler.RunTask(
+            async () =>
+            {
+                await PlayerHotfixManager.Instance.Hotfix.PreStop(this);
+                await PlayerHotfixManager.Instance.Hotfix.Stop(this);
+                base.PostStop();
+            }
+        );
     }
 
     protected override void OnReceive(object message)
@@ -97,6 +112,7 @@ public class PlayerActor : BaseActor
             {
                 try
                 {
+                    uid = request.PlayerId;
                     RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
                 }
                 catch (Exception e)
@@ -112,10 +128,11 @@ public class PlayerActor : BaseActor
                 GetComponent<CallComponent>().RunResponse(response);
                 break;
             }
-            
+
             //转线程
-            case SyncActorMessage:
+            case ResumeActor msg:
             {
+                GetComponent<CallComponent>().ResumeActor(msg);
                 break;
             }
         }

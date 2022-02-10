@@ -8,6 +8,7 @@ namespace Share.Model.Component;
 public class CallComponent : IActorComponent
 {
     private ulong _incId;
+    private object lockInc = new();
 
     public CallComponent(BaseActor node) : base(node)
     {
@@ -18,7 +19,10 @@ public class CallComponent : IActorComponent
 
     public ulong NextId()
     {
-        return ++_incId;
+        lock (lockInc)
+        {
+            return ++_incId;
+        }
     }
 
     public void RunResponse(InnerResponse respone)
@@ -41,5 +45,18 @@ public class CallComponent : IActorComponent
             var ret = SerializeHelper.FromBinary(retType, respone.Content) as IResponse;
             senderMessage.Tcs.SetResult(ret);
         }
+    }
+
+    public void ResumeActor(ResumeActor msg)
+    {
+        if (!SyncCallbackDic.TryGetValue(msg.Sn, out var senderMessage))
+        {
+            Node.Logger.Warning(
+                $"resume message callback:{msg.Sn} not found; maybe time out");
+            return;
+        }
+
+        SyncCallbackDic.Remove(msg.Sn);
+        senderMessage.Tcs.SetResult();
     }
 }

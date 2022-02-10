@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Akka.Actor;
 using Message;
 
 namespace Base;
 
-public abstract class BaseActor : UntypedActor
+public abstract class BaseActor : UntypedActor, IWithTimers
 {
+    public ulong uid;
+
+    public bool LoadComplete { get; private set; }
+    public ITimerScheduler Timers { get; set; }
+
     private ICancelable _cancel;
 
     public abstract ILog Logger { get; }
-
     public IActorRef GetSelf()
     {
         return Self;
@@ -19,6 +22,11 @@ public abstract class BaseActor : UntypedActor
     public IActorRef GetSender()
     {
         return Sender;
+    }
+
+    protected override void PreStart()
+    {
+        base.PreStart();
     }
 
     protected override void PostStop()
@@ -34,7 +42,9 @@ public abstract class BaseActor : UntypedActor
     {
         if (_cancel == null)
             _cancel = Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
-                TimeSpan.FromMilliseconds(1), Self, new TickT(), Self);
+                TimeSpan.FromSeconds(30), Self, new TickT(), Self);
+        LoadComplete = true;
+        // Timers.StartSingleTimer(1, message, TimeSpan.FromSeconds(600));
     }
 
     public void ElegantStop()

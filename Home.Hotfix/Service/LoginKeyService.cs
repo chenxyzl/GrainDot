@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
@@ -12,7 +13,7 @@ public static class LoginKeyService
     {
         return Task.CompletedTask;
     }
-    
+
     public static Task Tick(this LoginKeyComponent self)
     {
         while (true)
@@ -38,28 +39,31 @@ public static class LoginKeyService
         return Task.CompletedTask;
     }
 #nullable enable
-    public static IActorRef? KeyToPlayerRefAndRemove(this LoginKeyComponent self ,string key)
+    public static IActorRef? KeyToPlayerRefAndRemove(this LoginKeyComponent self, string key)
     {
         lock (self.lockObj)
         {
-            var playerRef = self.loginKeys[key];
-            self.loginKeys.Remove(key);
-            self.loginRefs.Remove(playerRef);
+            if (self.loginKeys.TryGetValue(key, out var playerRef))
+            {
+                self.loginKeys.Remove(key);
+                self.loginRefs.Remove(playerRef);
+            }
+
             return playerRef;
         }
     }
 
-    public static string AddPlayerRef(this LoginKeyComponent self,IActorRef playerRef)
+    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef playerRef)
     {
         lock (self.lockObj)
         {
             while (true)
             {
                 var key = self.random.RandUInt64().ToString();
-                if (self.loginKeys[key] != null) continue;
+                if (self.loginKeys.ContainsKey(key)) continue;
 
                 //删除老的
-                var old = self.loginRefs[playerRef];
+                self.loginRefs.TryGetValue(playerRef, out var old);
                 if (old != null)
                 {
                     self.loginKeys.Remove(old);
@@ -67,9 +71,9 @@ public static class LoginKeyService
                 }
 
                 //更新
-                self.loginKeys[key] = playerRef;
-                self.loginRefs[playerRef] = key;
-                self.timeKeys[TimeHelper.NowSeconds()] = key;
+                self.loginKeys.TryAdd(key, playerRef);
+                self.loginRefs.TryAdd(playerRef, key);
+                self.timeKeys.TryAdd(TimeHelper.NowSeconds(), key);
                 return key;
             }
         }
