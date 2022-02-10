@@ -6,14 +6,14 @@ namespace Base;
 
 public abstract class BaseActor : UntypedActor, IWithTimers
 {
+    private ICancelable _cancel;
     public ulong uid;
 
     public bool LoadComplete { get; private set; }
-    public ITimerScheduler Timers { get; set; }
-
-    private ICancelable _cancel;
 
     public abstract ILog Logger { get; }
+    public ITimerScheduler Timers { get; set; }
+
     public IActorRef GetSelf()
     {
         return Self;

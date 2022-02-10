@@ -3,9 +3,9 @@ using Home.Model.State;
 
 namespace Home.Model.Component;
 
-public class PlayerComponent : IPlayerComponent<PlayerState>
+public class PlayerComponent : IPlayerComponent<PlayerState, PlayerActor>
 {
-    public PlayerComponent(BaseActor a) : base(a)
+    public PlayerComponent(PlayerActor a) : base(a)
     {
     }
 }

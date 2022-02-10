@@ -23,7 +23,7 @@ public class PerformanceTest : HttpHandler<C2APerformanceTest, A2CPerformanceTes
         var ans = await GameServer.Instance.PlayerShardProxy.Ask<InnerResponse>(ask, TimeSpan.FromSeconds(3));
         if (ans.Code != Code.Ok) throw new CodeException(ans.Code, ans.Code.ToString());
         var ret = SerializeHelper.FromBinary<A2CLogin>(ans.Content);
-        
+
         return new A2CPerformanceTest();
     }
 }

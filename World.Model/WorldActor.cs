@@ -72,11 +72,3 @@ public class WorldActor : BaseActor
         }
     }
 }
-
-public static class ComponentExt
-{
-    public static WorldActor World(this IActorComponent self)
-    {
-        return self.Node as WorldActor;
-    }
-}

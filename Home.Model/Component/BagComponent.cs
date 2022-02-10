@@ -3,9 +3,9 @@ using Home.Model.State;
 
 namespace Home.Model.Component;
 
-public class BagComponent : IPlayerComponent<BagState>
+public class BagComponent : IPlayerComponent<BagState, PlayerActor>
 {
-    public BagComponent(BaseActor a) : base(a)
+    public BagComponent(PlayerActor a) : base(a)
     {
     }
 }

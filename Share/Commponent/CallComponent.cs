@@ -5,10 +5,10 @@ using Message;
 
 namespace Share.Model.Component;
 
-public class CallComponent : IActorComponent
+public class CallComponent : IActorComponent<BaseActor>
 {
+    private readonly object lockInc = new();
     private ulong _incId;
-    private object lockInc = new();
 
     public CallComponent(BaseActor node) : base(node)
     {

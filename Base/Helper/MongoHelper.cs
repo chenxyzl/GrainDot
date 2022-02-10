@@ -1,13 +1,6 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
-using System.Reflection;
 using Base.State;
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Base.Helper;
 
@@ -17,7 +10,7 @@ public static class MongoHelper
     {
         // 自动注册IgnoreExtraElements
 
-        ConventionPack conventionPack = new ConventionPack {new IgnoreExtraElementsConvention(true)};
+        var conventionPack = new ConventionPack {new IgnoreExtraElementsConvention(true)};
 
         ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
@@ -28,10 +21,7 @@ public static class MongoHelper
         foreach (var x in asm)
         foreach (var type in x.GetTypes())
         {
-            if (!baseState.IsAssignableFrom(type))
-            {
-                continue;
-            }
+            if (!baseState.IsAssignableFrom(type)) continue;
 
             try
             {

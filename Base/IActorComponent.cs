@@ -1,13 +1,10 @@
-﻿using System.Runtime.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
+﻿namespace Base;
 
-namespace Base;
-
-public abstract class IActorComponent : IComponent
+public abstract class IActorComponent<T> : IComponent where T : BaseActor
 {
-    public BaseActor Node;
+    public T Node;
 
-    public IActorComponent(BaseActor a)
+    public IActorComponent(T a)
     {
         Node = a;
     }

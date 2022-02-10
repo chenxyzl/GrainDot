@@ -67,10 +67,7 @@ public static class CallComponentService
 
     public static async ETTask ResumeActorThread(this CallComponent self)
     {
-        if (!self.Node.LoadComplete)
-        {
-            return;
-        }
+        if (!self.Node.LoadComplete) return;
 
         //request转id
         var tcs = ETTask.Create(true);

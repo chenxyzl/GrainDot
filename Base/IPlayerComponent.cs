@@ -2,12 +2,12 @@
 
 namespace Base;
 
-public abstract class IPlayerComponent<T> : IActorComponent where T : BaseState
+public abstract class IPlayerComponent<T, A> : IActorComponent<A> where T : BaseState where A : BaseActor
 {
     //数据
     public T State;
 
-    public IPlayerComponent(BaseActor a) : base(a)
+    public IPlayerComponent(A a) : base(a)
     {
     }
 

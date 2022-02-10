@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using Akka.Actor;
 using Akka.Dispatch;
 using Base;
@@ -18,9 +17,8 @@ public class PlayerActor : BaseActor
 {
     public static readonly Props P = Props.Create<PlayerActor>();
     private ILog _log;
-    public ulong PlayerId => uid;
-    private IBaseSocketConnection session;
     private ulong loadWaitingIdx = 0;
+    private IBaseSocketConnection session;
 
     public IActorRef worldShardProxy;
 
@@ -31,6 +29,8 @@ public class PlayerActor : BaseActor
         uid = ulong.Parse(a);
         PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
     }
+
+    public ulong PlayerId => uid;
 
     public override ILog Logger
     {
@@ -160,8 +160,8 @@ public class PlayerActor : BaseActor
 
 public static class ComponentExt
 {
-    public static PlayerActor Player(this IActorComponent self)
+    public static PlayerActor Player(this IActorComponent<PlayerActor> self)
     {
-        return self.Node as PlayerActor;
+        return self.Node;
     }
 }

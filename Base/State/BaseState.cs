@@ -16,9 +16,6 @@ public abstract class BaseState : ISupportInitialize
 
     public DBVersion Version = DBVersion.Null;
 
-    //挂载的组建
-    [IgnoreDataMember] [BsonIgnore] private IActorComponent _component;
-
     //是否需要保存
     [IgnoreDataMember] [BsonIgnore] public abstract bool NeedSave { get; protected set; }
 
@@ -41,15 +38,5 @@ public abstract class BaseState : ISupportInitialize
     public void MarkDirty()
     {
         Dirty = true;
-    }
-
-    public void BindComponent(IActorComponent actorComponent)
-    {
-        _component = actorComponent;
-    }
-
-    public T GetComponent<T>() where T : IActorComponent
-    {
-        return _component as T;
     }
 }

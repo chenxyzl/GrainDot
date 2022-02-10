@@ -5,11 +5,11 @@ using Message;
 
 namespace World.Model.Component;
 
-public class WorldSessionComponent : IActorComponent
+public class WorldSessionComponent : IActorComponent<WorldActor>
 {
     private readonly Dictionary<ulong, WorldSession> sessionManager = new();
 
-    public WorldSessionComponent(BaseActor actor) : base(actor)
+    public WorldSessionComponent(WorldActor actor) : base(actor)
     {
     }
 
@@ -20,7 +20,7 @@ public class WorldSessionComponent : IActorComponent
 
     public WorldSession AddOrUpdateWorldSession(ulong playerId, IActorRef player)
     {
-        var session = new WorldSession(this.World(), player, playerId);
+        var session = new WorldSession(Node, player, playerId);
         sessionManager[playerId] = session;
         return session;
     }

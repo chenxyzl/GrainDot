@@ -1,8 +1,13 @@
-﻿namespace Base;
+﻿using Base.State;
 
-public abstract class IGameComponent : IActorComponent
+namespace Base;
+
+public abstract class IGameComponent<T, A> : IActorComponent<A> where T : BaseState where A : BaseActor
 {
-    public IGameComponent(BaseActor a) : base(a)
+    //数据
+    public T State;
+
+    public IGameComponent(A a) : base(a)
     {
     }
 }
