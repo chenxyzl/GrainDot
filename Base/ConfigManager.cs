@@ -20,7 +20,7 @@ public class ConfigManager : Single<ConfigManager>
 
             iCategory.BeginInit();
             iCategory.EndInit();
-            newDic[iCategory.ConfigType] = iCategory;
+            newDic[iCategory.GetType()] = iCategory;
         }
 
         (configs, newDic) = (newDic, configs);

@@ -67,6 +67,8 @@ public static class CallComponentService
 
     public static async ETTask ResumeActorThread(this CallComponent self)
     {
+        //同步的远离是通过发送actor消息，在onrecive里切换线程。此时才是同步的切actor是激活的
+        //load过程中不需要，因为ActorTaskScheduler.RunTask保证了actor的激活，只要保证load里只有db加载逻辑就不会出问题
         if (!self.Node.LoadComplete) return;
 
         //request转id

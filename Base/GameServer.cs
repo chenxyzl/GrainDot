@@ -156,11 +156,12 @@ public abstract class GameServer
     }
 
     //加载程序集合
-    protected virtual void Reload()
+    protected virtual void Load(uint nodeId)
     {
         GlobalLog.Warning($"---{role}加载中---");
-        ConfigManager.Instance.ReloadConfig();
+        IdGenerater.GlobalInit(nodeId);
         HotfixManager.Instance.Reload();
+        ConfigManager.Instance.ReloadConfig();
         GlobalLog.Warning($"---{role}加载完成---");
     }
 
@@ -191,14 +192,14 @@ public abstract class GameServer
 
     //有actor的启动
     public static async Task Run(Type gsType, GameSharedType sharedType, Props p,
-        HashCodeMessageExtractor extractor)
+        HashCodeMessageExtractor extractor, uint nodeId)
     {
         //before
         BeforeRun();
         //创建
         Instance = Activator.CreateInstance(gsType) as GameServer;
         //准备
-        Instance.Reload();
+        Instance.Load(nodeId);
         //开始游戏
         await Instance.StartSystem(Instance.role, sharedType, p, extractor);
         //开启无限循环
@@ -208,14 +209,14 @@ public abstract class GameServer
     }
 
     //无actor的启动
-    public static async Task Run(Type gsType)
+    public static async Task Run(Type gsType, uint nodeId)
     {
         //before；
         BeforeRun();
         //创建
         Instance = Activator.CreateInstance(gsType) as GameServer;
         //准备
-        Instance.Reload();
+        Instance.Load(nodeId);
         //开始游戏
         await Instance.StartSystem();
         //开启无限循环

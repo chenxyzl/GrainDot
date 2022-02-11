@@ -10,5 +10,5 @@ namespace Home.Model.State;
 public class BagState : IPlayerState
 {
     [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-    private Dictionary<ulong, Item> Bag = new();
+    public Dictionary<ulong, Item> Bag = new();
 }

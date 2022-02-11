@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Base;
+using Base.Config;
+using Base.Helper;
 using Common;
 using Home.Model.Component;
 using Home.Model.State;
@@ -12,9 +16,17 @@ public static class PlayerService
     public static async Task Load(this PlayerComponent self)
     {
         self.State = await self.Node.GetComponent<CallComponent>().Query<PlayerState>(self.Node.uid);
-        if (self.State.Version == DBVersion.Null)
+        if (self.State == null)
         {
+            var state = new PlayerState
+            {
+                Id = self.Node.PlayerId,
+                Exp = 0,
+                Name = Base62Helper.EncodeUInt64(self.Node.PlayerId),
+                TId = ConfigManager.Instance.Get<HeroConfigCategory>().GetAll().First().Value.Id
+            };
             //todo 初始化代码
+            await self.Node.GetComponent<CallComponent>().Save(state);
         }
     }
 

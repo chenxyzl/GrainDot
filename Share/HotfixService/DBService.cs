@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Base;
+using Base.Helper;
 using Base.State;
 using MongoDB.Driver;
 using Share.Model.Component;
@@ -41,12 +42,15 @@ public static class DBService
     public static async Task<T> Query<T>(this CallComponent self, ulong id, string collection = null)
         where T : BaseState
     {
+        var beginTime = TimeHelper.Now();
         var cursor =
             await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
                 .FindAsync(d => d.Id == id);
 
         var result = await cursor.FirstOrDefaultAsync();
         await self.ResumeActorThread();
+        var cost = TimeHelper.Now() - beginTime;
+        if (cost >= 100) GlobalLog.Warning($"query cost time:{cost} too long");
         return result;
     }
 
