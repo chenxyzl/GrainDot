@@ -8,16 +8,22 @@ namespace Home.Model.Component;
 public class WsComponent : IGlobalComponent
 {
     private IWebSocketServer _server;
+    private ushort port;
 
-    public Task Load()
+    public WsComponent(ushort _port)
     {
-        return Task.CompletedTask;
+        port = _port;
+    }
+
+    public async Task Load()
+    {
+        await StartWsServer<WsPlayerChannel>(port);
     }
 
 
-    public async Task Start()
+    public Task Start()
     {
-        await StartWsServer<WsPlayerChannel>(15001);
+        return Task.CompletedTask;
     }
 
     public Task PreStop()

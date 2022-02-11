@@ -14,6 +14,7 @@ public abstract class BaseState : ISupportInitialize
 {
     [BsonElement] [BsonId] public ulong Id;
 
+    //todo 之后要实现更新DBVersion来升级db数据
     public DBVersion Version = DBVersion.Null;
 
     //是否需要保存
