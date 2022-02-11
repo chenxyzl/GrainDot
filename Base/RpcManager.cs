@@ -26,12 +26,14 @@ public class RpcManager : Single<RpcManager>
 
     public uint GetRequestOpcode(Type t)
     {
-        return A.RequireNotNull(requestOpcodeDic[t], Code.Error, $"request type:{t.Name} to code not found");
+        requestOpcodeDic.TryGetValue(t, out var v);
+        return A.RequireNotNull(v, Code.Error, $"request type:{t.Name} to code not found");
     }
 
     public Type GetResponseOpcode(uint opcode)
     {
-        return A.RequireNotNull(opcodeResponseDic[opcode], Code.Error,
+        opcodeResponseDic.TryGetValue(opcode, out var v);
+        return A.RequireNotNull(v, Code.Error,
             $"response opcode:{opcode} to code not found");
     }
 

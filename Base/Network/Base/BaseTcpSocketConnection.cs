@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Base.Helper;
 using DotNetty.Transport.Channels;
 
 namespace Base.Network;
@@ -31,6 +32,8 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
         _server = server;
         _channel = channel;
         _serverEvent = serverEvent;
+        time = TimeHelper.Now();
+        authed = false;
     }
 
     #endregion
@@ -52,8 +55,6 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
     /// </summary>
     protected TcpSocketServerEvent<TTcpSocketServer, TConnection, TData> _serverEvent { get; }
 
-    private string _connectionName { get; set; } = Guid.NewGuid().ToString();
-
     #endregion
 
     #region 外部接口
@@ -64,24 +65,12 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
     public string ConnectionId => _channel.Id.AsShortText();
 
     /// <summary>
-    ///     链接名字
-    /// </summary>
-    public string ConnectionName
-    {
-        get => _connectionName;
-        set
-        {
-            var oldName = _connectionName;
-            var newName = value;
-            _server.SetConnectionName(this as TConnection, oldName, newName);
-            _connectionName = newName;
-        }
-    }
-
-    /// <summary>
     ///     客户端地址
     /// </summary>
     public IPEndPoint ClientAddress => _channel.RemoteAddress as IPEndPoint;
+
+    public long time { get; }
+    public bool authed { get; }
 
     /// <summary>
     ///     关闭链接

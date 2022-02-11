@@ -31,14 +31,13 @@ public static class LoginKeyService
                 self.timeKeys.Remove(item.Key);
                 var playerRef = self.loginKeys[item.Value];
                 self.loginKeys.Remove(item.Value);
-                self.loginRefs.Remove(playerRef);
             }
         }
 
         //检查长时间未连接的
         return Task.CompletedTask;
     }
-#nullable enable
+    
     public static IActorRef? KeyToPlayerRefAndRemove(this LoginKeyComponent self, string key)
     {
         lock (self.lockObj)
@@ -46,7 +45,7 @@ public static class LoginKeyService
             if (self.loginKeys.TryGetValue(key, out var playerRef))
             {
                 self.loginKeys.Remove(key);
-                self.loginRefs.Remove(playerRef);
+                self.playerRefs.Remove(playerRef);
             }
 
             return playerRef;
@@ -61,18 +60,20 @@ public static class LoginKeyService
             {
                 var key = self.random.RandUInt64().ToString();
                 if (self.loginKeys.ContainsKey(key)) continue;
+                
+                
 
                 //删除老的
-                self.loginRefs.TryGetValue(playerRef, out var old);
+                self.playerRefs.TryGetValue(playerRef, out var old);
                 if (old != null)
                 {
                     self.loginKeys.Remove(old);
-                    self.loginRefs.Remove(playerRef);
+                    self.playerRefs.Remove(playerRef);
                 }
 
                 //更新
                 self.loginKeys.TryAdd(key, playerRef);
-                self.loginRefs.TryAdd(playerRef, key);
+                self.playerRefs.TryAdd(playerRef, key);
                 self.timeKeys.TryAdd(TimeHelper.NowSeconds(), key);
                 return key;
             }

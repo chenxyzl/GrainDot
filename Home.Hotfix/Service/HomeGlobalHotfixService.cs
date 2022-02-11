@@ -53,6 +53,7 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
     public Task Tick()
     {
         GameServer.Instance.GetComponent<LoginKeyComponent>().Tick();
+        GameServer.Instance.GetComponent<ConnectionDicCommponent>().Tick();
         return Task.CompletedTask;
     }
 }

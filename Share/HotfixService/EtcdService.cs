@@ -79,6 +79,11 @@ public static class EtcdService
     {
         try
         {
+            if (self.WatchCancellation.TryGetValue(k, out _))
+            {
+                A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
+            }
+
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
             EtcdComponent.LockAdd.Release();
@@ -86,14 +91,18 @@ public static class EtcdService
             {
                 foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
             }, null, null, t.Token);
-            self.WatchCancellation[k] = t;
+            self.WatchCancellation.TryAdd(k, t);
             EtcdComponent.LockAdd.Wait();
             await self.PutTemp("/ ", k);
             Thread.Sleep(1000);
         }
         catch (Exception)
         {
-            self.WatchCancellation[k]?.Cancel();
+            if (self.WatchCancellation.TryGetValue(k, out var v))
+            {
+                v.Cancel();
+            }
+
             throw;
         }
     }
@@ -103,6 +112,11 @@ public static class EtcdService
     {
         try
         {
+            if (self.WatchCancellation.TryGetValue(k, out _))
+            {
+                A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
+            }
+
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
             _ = Task.Run(() =>
@@ -115,14 +129,18 @@ public static class EtcdService
                     ;
                 }, null, null, t.Token);
             });
-            self.WatchCancellation[k] = t;
+            self.WatchCancellation.TryAdd(k, t);
             EtcdComponent.LockAdd.Wait();
             await self.PutTemp("/WatchPrefixWait", k);
             Thread.Sleep(1000);
         }
         catch (Exception)
         {
-            self.WatchCancellation[k]?.Cancel();
+            if (self.WatchCancellation.TryGetValue(k, out var v))
+            {
+                v.Cancel();
+            }
+
             throw;
         }
     }

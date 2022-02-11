@@ -15,13 +15,20 @@ public class WorldSessionComponent : IActorComponent<WorldActor>
 
     public WorldSession GetWorldSession(ulong playerId)
     {
-        return A.RequireNotNull(sessionManager[playerId], Code.PlayerNotOnline);
+        sessionManager.TryGetValue(playerId, out var sess);
+        return A.RequireNotNull(sess, Code.PlayerNotOnline);
     }
 
     public WorldSession AddOrUpdateWorldSession(ulong playerId, IActorRef player)
     {
         var session = new WorldSession(Node, player, playerId);
-        sessionManager[playerId] = session;
+        if (sessionManager.TryGetValue(playerId, out var sess))
+        {
+            this.Node.Logger.Warning($"sess{playerId} repeated add");
+            sessionManager.Remove(playerId);
+        }
+
+        sessionManager.TryAdd(playerId, session);
         return session;
     }
 

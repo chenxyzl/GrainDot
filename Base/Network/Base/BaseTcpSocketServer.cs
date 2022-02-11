@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using DotNetty.Transport.Channels;
+using Message;
 
 namespace Base.Network;
 
@@ -20,19 +22,24 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
 
     private ConcurrentDictionary<string, TConnection> _idMapConnections { get; } = new();
 
-    private ConcurrentDictionary<string, string> _nameMapId { get; } = new();
-
     protected IChannel _serverChannel { get; set; }
 
     protected void AddConnection(TConnection theConnection)
     {
+        if (_idMapConnections.TryRemove(theConnection.ConnectionId, out var conn))
+        {
+            A.Abort(Code.Error, $"connectionId {theConnection.ConnectionId} repeated");
+            conn?.Close();
+        }
+
         _idMapConnections[theConnection.ConnectionId] = theConnection;
-        _nameMapId[theConnection.ConnectionName] = theConnection.ConnectionId;
     }
 
     protected TConnection GetConnection(IChannel clientChannel)
     {
-        return _idMapConnections[clientChannel.Id.AsShortText()];
+        var id = clientChannel.Id.AsShortText();
+        _idMapConnections.TryGetValue(clientChannel.Id.AsShortText(), out var conn);
+        return A.RequireNotNull(conn, Code.Error, $"conn:{id} not found");
     }
 
     protected void PackException(Action action)
@@ -97,17 +104,8 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
 
     public TConnection GetConnectionById(string connectionId)
     {
-        return _idMapConnections[connectionId];
-    }
-
-    public TConnection GetConnectionByName(string connectionName)
-    {
-        return _idMapConnections[_nameMapId[connectionName]];
-    }
-
-    public List<string> GetAllConnectionNames()
-    {
-        return _nameMapId.Keys.ToList();
+        _idMapConnections.TryGetValue(connectionId, out var conn);
+        return A.RequireNotNull(conn, Code.Error, $"conn:{connectionId} not found");
     }
 
     public int GetConnectionCount()
@@ -118,13 +116,6 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     public void RemoveConnection(TConnection theConnection)
     {
         _idMapConnections.TryRemove(theConnection.ConnectionId, out _);
-        _nameMapId.TryRemove(theConnection.ConnectionName, out _);
-    }
-
-    public void SetConnectionName(TConnection theConnection, string oldConnectionName, string newConnectionName)
-    {
-        _nameMapId.TryRemove(oldConnectionName, out _);
-        _nameMapId[newConnectionName] = theConnection.ConnectionId;
     }
 
     public void CloseConnection(TConnection theConnection)

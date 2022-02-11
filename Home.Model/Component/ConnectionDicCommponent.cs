@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Akka.Util;
 using Base;
+using Base.Helper;
 using Base.Network;
 
 namespace Home.Model.Component;
@@ -7,13 +10,15 @@ namespace Home.Model.Component;
 public class ConnectionDicCommponent : IGlobalComponent
 {
     private readonly Dictionary<string, IBaseSocketConnection> connects = new();
+    private readonly SortedDictionary<long, string> waitAuthed = new();
     private readonly object lockObj = new();
 #nullable enable
     public IBaseSocketConnection? GetConnection(string connectId)
     {
         lock (lockObj)
         {
-            return connects[connectId];
+            connects.TryGetValue(connectId, out var v);
+            return v;
         }
     }
 
@@ -22,28 +27,56 @@ public class ConnectionDicCommponent : IGlobalComponent
         lock (lockObj)
         {
             var connectId = connection.ConnectionId;
-            if (connects[connectId] != null)
+            if (connects.TryGetValue(connectId, out var conn))
             {
                 GlobalLog.Error($"connectId:{connectId} repeated, close old!");
-                connects[connectId].Close();
+                conn.Close();
+                connects.Remove(connectId);
             }
 
-            connects[connectId] = connection;
+            connects.TryAdd(connectId, connection);
         }
     }
 
-    public void RemoveConnection(string connectId)
+    public bool RemoveConnection(string connectId)
     {
         lock (lockObj)
         {
-            if (connects[connectId] == null)
+            if (connects.TryGetValue(connectId, out var conn))
             {
                 //actor 消毁时候是会再次断开链接
                 //GlobalLog.Error($"connectId:{connectId} not found!");
-            }
-            else
-            {
                 connects.Remove(connectId);
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    //长时间未验证成功的链接需要断开
+    public void Tick()
+    {
+        var now = TimeHelper.Now();
+        while (true)
+        {
+            if (waitAuthed.Count == 0)
+            {
+                break;
+            }
+
+            var first = waitAuthed.First();
+            if (first.Key + 60_000 > now)
+            {
+                break;
+            }
+
+            waitAuthed.Remove(first.Key);
+            var connection = GetConnection(first.Value);
+            if (connection != null && !connection.authed)
+            {
+                //close 会触发删除，所以这里不用管
+                connection.Close();
             }
         }
     }

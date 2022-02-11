@@ -17,20 +17,22 @@ public interface IBaseSocketConnection : IClose, ISendBytes, ISendString
     string ConnectionId { get; }
 
     /// <summary>
-    ///     连接名,可更改
-    /// </summary>
-    /// <value>
-    ///     The name of the connection.
-    /// </value>
-    string ConnectionName { get; set; }
-
-    /// <summary>
     ///     客户端地址
     /// </summary>
     /// <value>
     ///     The client address.
     /// </value>
     IPEndPoint ClientAddress { get; }
+
+    /// <summary>
+    /// 链接时间
+    /// </summary>
+    long time { get; }
+
+    /// <summary>
+    /// 是否授权
+    /// </summary>
+    bool authed { get; }
 
     /// <summary>
     ///     新连接
