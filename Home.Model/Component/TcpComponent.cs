@@ -9,7 +9,7 @@ public class TcpComponent : IGlobalComponent
 {
     private ITcpSocketServer _server;
 
-    private ushort port;
+    private readonly ushort port;
 
     public TcpComponent(ushort _port)
     {
@@ -18,11 +18,12 @@ public class TcpComponent : IGlobalComponent
 
     public async Task Load()
     {
-        await StartTcpServer<PlayerChannel>(port);
+        await StartTcpServer<TcpChannel<PlayerChannel>>(port);
     }
 
-    public async Task Start()
+    public Task Start()
     {
+        return Task.CompletedTask;
     }
 
 

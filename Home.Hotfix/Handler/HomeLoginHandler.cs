@@ -26,4 +26,9 @@ public static class HomeLoginHandler
         var key = loginKeyComponent.AddPlayerRef(player.GetSelf());
         return Task.FromResult(new HAPlayerLoginKeyAns {PlayerKey = key});
     }
+
+    public static Task<S2CLogin> Login(PlayerActor playerActor, C2SLogin msg)
+    {
+        return Task.FromResult(new S2CLogin());
+    }
 }

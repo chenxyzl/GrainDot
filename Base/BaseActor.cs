@@ -16,7 +16,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
     public IActorRef GetSelf()
     {
-        return Self;
+        return Context.Self;
     }
 
     public IActorRef GetSender()

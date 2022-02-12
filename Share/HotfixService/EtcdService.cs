@@ -13,10 +13,9 @@ namespace Share.Hotfix.Service;
 
 public static class EtcdService
 {
-    public static Task Load(this EtcdComponent self)
+    public static async Task Load(this EtcdComponent self)
     {
-        self.ConnectEtcd();
-        return Task.CompletedTask;
+        await self.ConnectEtcd();
     }
 
     public static Task PreStop(this EtcdComponent self)
@@ -79,10 +78,7 @@ public static class EtcdService
     {
         try
         {
-            if (self.WatchCancellation.TryGetValue(k, out _))
-            {
-                A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
-            }
+            if (self.WatchCancellation.TryGetValue(k, out _)) A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
 
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
@@ -98,10 +94,7 @@ public static class EtcdService
         }
         catch (Exception)
         {
-            if (self.WatchCancellation.TryGetValue(k, out var v))
-            {
-                v.Cancel();
-            }
+            if (self.WatchCancellation.TryGetValue(k, out var v)) v.Cancel();
 
             throw;
         }
@@ -112,10 +105,7 @@ public static class EtcdService
     {
         try
         {
-            if (self.WatchCancellation.TryGetValue(k, out _))
-            {
-                A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
-            }
+            if (self.WatchCancellation.TryGetValue(k, out _)) A.Abort(Code.Error, "暂未实现list来保存对同一个k的多次监听");
 
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
@@ -136,10 +126,7 @@ public static class EtcdService
         }
         catch (Exception)
         {
-            if (self.WatchCancellation.TryGetValue(k, out var v))
-            {
-                v.Cancel();
-            }
+            if (self.WatchCancellation.TryGetValue(k, out var v)) v.Cancel();
 
             throw;
         }

@@ -23,15 +23,14 @@ public class HomeGlobalHotfixService : IGlobalHotfixLife
             "http://10.7.69.254:12379,http://10.7.69.254:22379,http://10.7.69.254:32379");
     }
 
-    public Task Load()
+    public async Task Load()
     {
-        GameServer.Instance.GetComponent<TcpComponent>().Load();
-        GameServer.Instance.GetComponent<WsComponent>().Load();
-        GameServer.Instance.GetComponent<DBComponent>().Load();
-        GameServer.Instance.GetComponent<ConsoleComponent>().Load();
-        GameServer.Instance.GetComponent<ReplComponent>().Load();
-        GameServer.Instance.GetComponent<EtcdComponent>().Load();
-        return Task.CompletedTask;
+        await GameServer.Instance.GetComponent<TcpComponent>().Load();
+        await GameServer.Instance.GetComponent<WsComponent>().Load();
+        await GameServer.Instance.GetComponent<DBComponent>().Load();
+        await GameServer.Instance.GetComponent<ConsoleComponent>().Load();
+        await GameServer.Instance.GetComponent<ReplComponent>().Load();
+        await GameServer.Instance.GetComponent<EtcdComponent>().Load();
     }
 
     public Task Start()

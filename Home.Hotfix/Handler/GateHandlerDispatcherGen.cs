@@ -14,6 +14,8 @@ public partial class GateHandlerDispatcher
         {
             case 200000:
                 return await HomeLoginHandler.Ping(player, SerializeHelper.FromBinary<C2SPing>(message.Content));
+            case 200003:
+                return await HomeLoginHandler.Login(player, SerializeHelper.FromBinary<C2SLogin>(message.Content));
         }
 
         A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);

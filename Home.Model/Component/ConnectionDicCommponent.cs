@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Akka.Util;
 using Base;
 using Base.Helper;
 using Base.Network;
@@ -10,8 +9,8 @@ namespace Home.Model.Component;
 public class ConnectionDicCommponent : IGlobalComponent
 {
     private readonly Dictionary<string, IBaseSocketConnection> connects = new();
-    private readonly SortedDictionary<long, string> waitAuthed = new();
     private readonly object lockObj = new();
+    private readonly SortedDictionary<long, string> waitAuthed = new();
 #nullable enable
     public IBaseSocketConnection? GetConnection(string connectId)
     {
@@ -60,24 +59,16 @@ public class ConnectionDicCommponent : IGlobalComponent
         var now = TimeHelper.Now();
         while (true)
         {
-            if (waitAuthed.Count == 0)
-            {
-                break;
-            }
+            if (waitAuthed.Count == 0) break;
 
             var first = waitAuthed.First();
-            if (first.Key + 60_000 > now)
-            {
-                break;
-            }
+            if (first.Key + 60_000 > now) break;
 
             waitAuthed.Remove(first.Key);
             var connection = GetConnection(first.Value);
             if (connection != null && !connection.authed)
-            {
                 //close 会触发删除，所以这里不用管
                 connection.Close();
-            }
         }
     }
 }

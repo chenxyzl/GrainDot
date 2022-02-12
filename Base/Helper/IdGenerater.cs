@@ -29,13 +29,27 @@ public class IdGenerater
         _ins = new IdGenerater(node);
     }
 
-
-    public static Tuple<uint, ulong, uint> Parase(ulong id)
+    //解析id 时间 自增id
+    public static Tuple<uint, ulong, uint> Parse(ulong id)
     {
         var node = id >> (_timeFlag + _incFlag);
         var time = (id << _nodeFlag) >> (_nodeFlag + _incFlag);
         var value = (id << (_nodeFlag + _timeFlag)) >> (_nodeFlag + _timeFlag);
         return new Tuple<uint, ulong, uint>((uint) node, time, (uint) value);
+    }
+
+    //解析id
+    public static uint ParseId(ulong id)
+    {
+        var node = id >> (_timeFlag + _incFlag);
+        return (uint) node;
+    }
+
+    //解析时间
+    public static ulong ParseTime(ulong id)
+    {
+        var time = (id << _nodeFlag) >> (_nodeFlag + _incFlag);
+        return time;
     }
 
 

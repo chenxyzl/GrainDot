@@ -4,29 +4,19 @@ using Base;
 using Base.Helper;
 using Base.Network;
 using Base.Serialize;
-using DotNetty.Transport.Channels;
 using Message;
 
 namespace Home.Model;
 
-public class PlayerChannel : TcpSocketConnection
+public class PlayerChannel : ICustomChannel
 {
     private readonly ILog _logger;
-    private IActorRef _actor;
+    private IActorRef? _actor;
 
-    public PlayerChannel(ITcpSocketServer server, IChannel channel,
-        TcpSocketServerEvent<ITcpSocketServer, ITcpSocketConnection, byte[]> serverEvent) : base(server, channel,
-        serverEvent)
+    public PlayerChannel(IBaseSocketConnection conn) : base(conn)
     {
-        _logger = new NLogAdapter(ConnectionId);
+        _logger = new NLogAdapter(conn.ConnectionId);
     }
-
-    public override void OnClose()
-    {
-        //通知actor下线
-        _actor = null;
-    }
-
 
     public override void OnConnected()
     {
@@ -53,7 +43,7 @@ public class PlayerChannel : TcpSocketConnection
         {
             ret.Code = Code.Ok;
             ret.Content = new S2CPong {Time = TimeHelper.Now()}.ToBinary();
-            await Send(ret.ToBinary());
+            await _conn.Send(ret.ToBinary());
             return;
         }
 
@@ -74,7 +64,7 @@ public class PlayerChannel : TcpSocketConnection
             else
             {
                 ret.Code = e.Code;
-                _ = Send(ret.ToBinary());
+                _ = _conn.Send(ret.ToBinary());
             }
         }
         catch (Exception e) //不可预料的断开客户端链接
@@ -82,6 +72,13 @@ public class PlayerChannel : TcpSocketConnection
             _logger.Warning(e.Message);
             Close();
         }
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        _actor = null;
+        //todo 通知actor下线
     }
 
     public async void BindPlayerActor(Request message)
@@ -96,7 +93,7 @@ public class PlayerChannel : TcpSocketConnection
         A.RequireNotNull(_actor, Code.Error, "player actor not found, login api may be overdue， please relogin",
             true);
         //填充链接id
-        login.Unused = ConnectionId;
+        login.Unused = _conn.ConnectionId;
         message.Content = login.ToBinary();
         //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)
         var a = await _actor.Ask<Request>(1, TimeSpan.FromSeconds(3));
@@ -107,43 +104,5 @@ public class PlayerChannel : TcpSocketConnection
     {
         A.RequireNotNull(_actor, Code.Error, "must bind first", true);
         _actor.Tell(message);
-    }
-}
-
-internal class WsPlayerChannel : WebSocketConnection
-{
-    private IActorRef actor;
-
-    public WsPlayerChannel(IWebSocketServer server, IChannel channel,
-        TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> serverEvent) : base(server, channel,
-        serverEvent)
-    {
-    }
-
-    public override void OnClose()
-    {
-        //通知actor下线
-    }
-
-    public override void OnConnected()
-    {
-    }
-
-    public override void OnRecieve(byte[] bytes)
-    {
-        //第一个消息一定是bind actor
-        if (actor == null)
-        {
-            BindPlayerActor();
-            return;
-        }
-
-        //解析其他消息 tell给actor
-        throw new NotImplementedException();
-    }
-
-    public void BindPlayerActor()
-    {
-        GameServer.Instance.GetChild("xx");
     }
 }

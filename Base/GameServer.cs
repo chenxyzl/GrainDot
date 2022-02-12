@@ -76,7 +76,9 @@ public abstract class GameServer
 
     protected virtual async Task BeforCreate()
     {
+        Logger.Info("Register begin!!!");
         GlobalHotfixManager.Instance.Hotfix.RegisterComponent();
+        Logger.Info("Register success!!!");
         //拦截退出
         WatchQuit();
         //加载配置
@@ -84,15 +86,19 @@ public abstract class GameServer
         //注册mongo的State
         MongoHelper.Init();
         //全局触发load
+        Logger.Info("Load begin!!!");
         await GlobalHotfixManager.Instance.Hotfix.Load();
+        Logger.Info("Load success!!!");
     }
 
     protected virtual async Task AfterCreate()
     {
         //触发挤时间
         Instance.lastTime = TimeHelper.Now();
+        Logger.Info("Start begin!!!");
         //全局触发AfterLoad
         await GlobalHotfixManager.Instance.Hotfix.Start();
+        Logger.Info("Start success!!!");
     }
 
 
@@ -104,14 +110,18 @@ public abstract class GameServer
 
     protected virtual async Task PreStop()
     {
+        Logger.Info("preStoop begin!!!");
         //全局触发PreStop
         await GlobalHotfixManager.Instance.Hotfix.PreStop();
+        Logger.Info("preStoop success!!!");
     }
 
     protected virtual async Task Stop()
     {
+        Logger.Info("Stop begin!!!");
         //全局触发PreStop
         await GlobalHotfixManager.Instance.Hotfix.Stop();
+        Logger.Info("Stop success!!!");
     }
 
     protected virtual async Task StartSystem(RoleType roleType, GameSharedType sharedType, Props p,

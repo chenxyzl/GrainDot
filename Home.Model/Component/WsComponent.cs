@@ -8,7 +8,7 @@ namespace Home.Model.Component;
 public class WsComponent : IGlobalComponent
 {
     private IWebSocketServer _server;
-    private ushort port;
+    private readonly ushort port;
 
     public WsComponent(ushort _port)
     {
@@ -17,7 +17,7 @@ public class WsComponent : IGlobalComponent
 
     public async Task Load()
     {
-        await StartWsServer<WsPlayerChannel>(port);
+        await StartWsServer<WebSocketChannel<PlayerChannel>>(port);
     }
 
 

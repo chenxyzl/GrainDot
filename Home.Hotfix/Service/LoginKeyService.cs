@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
+using Base;
 using Base.Helper;
 using Home.Model.Component;
 
@@ -22,7 +23,8 @@ public static class LoginKeyService
 
             var item = self.timeKeys.First();
             var now = TimeHelper.Now();
-            if (item.Key - now < 15000) break;
+            var t = IdGenerater.ParseTime(item.Key);
+            if ((long) t - now < 15_000) break;
 
             //因为正在登录中人数一定不多。所以这里lock写在while里。
             lock (self.lockObj)
@@ -37,47 +39,37 @@ public static class LoginKeyService
         //检查长时间未连接的
         return Task.CompletedTask;
     }
-    
-    public static IActorRef? KeyToPlayerRefAndRemove(this LoginKeyComponent self, string key)
+
+    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef actor)
     {
         lock (self.lockObj)
         {
-            if (self.loginKeys.TryGetValue(key, out var playerRef))
-            {
-                self.loginKeys.Remove(key);
-                self.playerRefs.Remove(playerRef);
-            }
-
-            return playerRef;
-        }
-    }
-
-    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef playerRef)
-    {
-        lock (self.lockObj)
-        {
+            var playerRef = GameServer.Instance.system.ActorSelection(actor.Path.ToString());
             while (true)
             {
                 var key = self.random.RandUInt64().ToString();
                 if (self.loginKeys.ContainsKey(key)) continue;
-                
-                
-
-                //删除老的
-                self.playerRefs.TryGetValue(playerRef, out var old);
-                if (old != null)
-                {
-                    self.loginKeys.Remove(old);
-                    self.playerRefs.Remove(playerRef);
-                }
-
-                //更新
+                //不用去除老得key。因为会因为过期自动删除
                 self.loginKeys.TryAdd(key, playerRef);
-                self.playerRefs.TryAdd(playerRef, key);
-                self.timeKeys.TryAdd(TimeHelper.NowSeconds(), key);
+                //用id生成是避免重复，保留来时间信息,自增排序
+                self.timeKeys.TryAdd(IdGenerater.GenerateId(), key);
                 return key;
             }
         }
     }
-    //不需要再要删除接口了。因为获取不到player就认为不可以登录
+
+    public static ActorSelection? RemoveLoginKey(this LoginKeyComponent self, string key)
+    {
+        lock (self.lockObj)
+        {
+            if (self.loginKeys.TryGetValue(key, out var v))
+            {
+                self.loginKeys.Remove(key);
+                return v;
+            }
+
+            return null;
+            //不用删除timeKeys，等待tick删除即可
+        }
+    }
 }

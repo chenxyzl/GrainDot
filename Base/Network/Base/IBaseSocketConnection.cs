@@ -25,12 +25,12 @@ public interface IBaseSocketConnection : IClose, ISendBytes, ISendString
     IPEndPoint ClientAddress { get; }
 
     /// <summary>
-    /// 链接时间
+    ///     链接时间
     /// </summary>
     long time { get; }
 
     /// <summary>
-    /// 是否授权
+    ///     是否授权
     /// </summary>
     bool authed { get; }
 

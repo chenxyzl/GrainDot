@@ -24,7 +24,7 @@ public class WorldSessionComponent : IActorComponent<WorldActor>
         var session = new WorldSession(Node, player, playerId);
         if (sessionManager.TryGetValue(playerId, out var sess))
         {
-            this.Node.Logger.Warning($"sess{playerId} repeated add");
+            Node.Logger.Warning($"sess{playerId} repeated add");
             sessionManager.Remove(playerId);
         }
 

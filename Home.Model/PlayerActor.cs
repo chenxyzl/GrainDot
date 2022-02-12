@@ -17,7 +17,6 @@ public class PlayerActor : BaseActor
 {
     public static readonly Props P = Props.Create<PlayerActor>();
     private ILog _log;
-    private ulong loadWaitingIdx = 0;
     private IBaseSocketConnection session;
 
     public IActorRef worldShardProxy;
@@ -41,7 +40,7 @@ public class PlayerActor : BaseActor
         }
     }
 
-    protected override async void PreStart()
+    protected override void PreStart()
     {
         ActorTaskScheduler.RunTask(
             async () =>
@@ -55,7 +54,7 @@ public class PlayerActor : BaseActor
     }
 
 
-    protected override async void PostStop()
+    protected override void PostStop()
     {
         ActorTaskScheduler.RunTask(
             async () =>

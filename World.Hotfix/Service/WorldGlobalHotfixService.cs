@@ -14,10 +14,9 @@ public class WorldGlobalHotfixService : IGlobalHotfixLife
         GameServer.Instance.AddComponent<DBComponent>("mongodb://admin:Qwert123!@10.7.69.214:27017");
     }
 
-    public Task Load()
+    public async Task Load()
     {
-        GameServer.Instance.GetComponent<DBComponent>().Load();
-        return Task.CompletedTask;
+        await GameServer.Instance.GetComponent<DBComponent>().Load();
     }
 
     public Task Start()

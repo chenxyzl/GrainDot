@@ -22,7 +22,7 @@ public partial class HomeInnerHandlerDispatcher
         return null;
     }
 
-    public async Task DispatcherNoResult(BaseActor actor, RequestPlayer message)
+    public Task DispatcherNoResult(BaseActor actor, RequestPlayer message)
     {
         var player = actor as PlayerActor;
         switch (message.Opcode)
@@ -30,5 +30,6 @@ public partial class HomeInnerHandlerDispatcher
         }
 
         A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
+        return Task.CompletedTask;
     }
 }
