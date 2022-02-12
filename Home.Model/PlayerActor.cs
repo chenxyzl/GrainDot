@@ -17,7 +17,7 @@ public class PlayerActor : BaseActor
 {
     public static readonly Props P = Props.Create<PlayerActor>();
     private ILog _log;
-    private IBaseSocketConnection session;
+    private ICustomChannel? _session;
 
     public IActorRef worldShardProxy;
 
@@ -94,8 +94,8 @@ public class PlayerActor : BaseActor
                     //严重错误直接踢下线
                     if (e.Serious)
                     {
-                        session.Close();
-                        session = null;
+                        _session.Close();
+                        _session = null;
                     }
 
                     Logger.Warning(e.ToString());
@@ -144,7 +144,11 @@ public class PlayerActor : BaseActor
 
     public async Task Send(Response message)
     {
-        await session?.Send(message.ToBinary());
+        //下线了就断开链接
+        if (_session != null)
+        {
+            await _session.Send(message.ToBinary());
+        }
     }
 
     public void LoginPreDeal(Request request)
@@ -153,7 +157,7 @@ public class PlayerActor : BaseActor
         var connectionId = c2sLogin.Unused;
         var connect = GameServer.Instance.GetHome().GetComponent<ConnectionDicCommponent>()
             .GetConnection(connectionId);
-        session = connect;
+        _session = connect;
     }
 }
 

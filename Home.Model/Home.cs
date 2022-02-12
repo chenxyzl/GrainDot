@@ -11,13 +11,6 @@ public class Home : GameServer
     {
     }
 
-    public IActorRef GetLocalPlayerActorRef(ulong playerId)
-    {
-        //todo 拼路径
-        var path = playerId.ToString();
-        return GetChild(path);
-    }
-
     protected override async Task AfterCreate()
     {
         await base.AfterCreate();

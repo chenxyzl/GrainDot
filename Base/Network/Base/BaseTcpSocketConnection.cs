@@ -33,7 +33,6 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
         _channel = channel;
         _serverEvent = serverEvent;
         time = TimeHelper.Now();
-        authed = false;
     }
 
     #endregion
@@ -70,7 +69,6 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
     public IPEndPoint ClientAddress => _channel.RemoteAddress as IPEndPoint;
 
     public long time { get; }
-    public bool authed { get; }
 
     /// <summary>
     ///     关闭链接

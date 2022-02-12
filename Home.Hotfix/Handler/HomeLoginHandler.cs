@@ -10,11 +10,6 @@ namespace Home.Hotfix.Handler;
 
 public static class HomeLoginHandler
 {
-    public static Task<S2CPong> Ping(PlayerActor player, C2SPing ping)
-    {
-        return Task.FromResult(new S2CPong {Time = TimeHelper.Now()});
-    }
-
     public static Task NotifyTest(PlayerActor player, CNotifyTest msg)
     {
         return Task.CompletedTask;

@@ -30,11 +30,6 @@ public interface IBaseSocketConnection : IClose, ISendBytes, ISendString
     long time { get; }
 
     /// <summary>
-    ///     是否授权
-    /// </summary>
-    bool authed { get; }
-
-    /// <summary>
     ///     新连接
     /// </summary>
     void OnConnected();

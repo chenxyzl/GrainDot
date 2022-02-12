@@ -8,11 +8,11 @@ namespace Home.Model.Component;
 
 public class ConnectionDicCommponent : IGlobalComponent
 {
-    private readonly Dictionary<string, IBaseSocketConnection> connects = new();
+    private readonly Dictionary<string, ICustomChannel> connects = new();
     private readonly object lockObj = new();
     private readonly SortedDictionary<long, string> waitAuthed = new();
 #nullable enable
-    public IBaseSocketConnection? GetConnection(string connectId)
+    public ICustomChannel? GetConnection(string connectId)
     {
         lock (lockObj)
         {
@@ -21,7 +21,7 @@ public class ConnectionDicCommponent : IGlobalComponent
         }
     }
 
-    public void AddConnection(IBaseSocketConnection connection)
+    public void AddConnection(ICustomChannel connection)
     {
         lock (lockObj)
         {

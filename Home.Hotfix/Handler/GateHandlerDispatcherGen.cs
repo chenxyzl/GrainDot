@@ -12,8 +12,6 @@ public partial class GateHandlerDispatcher
     {
         switch (message.Opcode)
         {
-            case 200000:
-                return await HomeLoginHandler.Ping(player, SerializeHelper.FromBinary<C2SPing>(message.Content));
             case 200003:
                 return await HomeLoginHandler.Login(player, SerializeHelper.FromBinary<C2SLogin>(message.Content));
         }
