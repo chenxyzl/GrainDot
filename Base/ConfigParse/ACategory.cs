@@ -119,8 +119,6 @@ public abstract class ACategory<K, T, V> : ACategory where T : ExcelClassMap<V> 
                     var president = sheet.ReadRows<V>().ToArray();
                     foreach (var v in president) dict[v.Id] = v;
                 }
-
-                Console.WriteLine(dict);
             }
         }
         catch (Exception e)

@@ -8,10 +8,10 @@ namespace Home.Model.Component;
 
 public class ConnectionDicCommponent : IGlobalComponent
 {
+    private readonly SortedDictionary<long, string> _waitAuthed = new();
     private readonly Dictionary<string, ICustomChannel> connects = new();
     private readonly object lockObj = new();
-    private readonly SortedDictionary<long, string> waitAuthed = new();
-#nullable enable
+
     public ICustomChannel? GetConnection(string connectId)
     {
         lock (lockObj)
@@ -59,12 +59,12 @@ public class ConnectionDicCommponent : IGlobalComponent
         var now = TimeHelper.Now();
         while (true)
         {
-            if (waitAuthed.Count == 0) break;
+            if (_waitAuthed.Count == 0) break;
 
-            var first = waitAuthed.First();
+            var first = _waitAuthed.First();
             if (first.Key + 60_000 > now) break;
 
-            waitAuthed.Remove(first.Key);
+            _waitAuthed.Remove(first.Key);
             var connection = GetConnection(first.Value);
             if (connection != null && !connection.authed)
                 //close 会触发删除，所以这里不用管

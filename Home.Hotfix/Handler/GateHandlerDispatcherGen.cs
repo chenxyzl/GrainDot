@@ -13,7 +13,11 @@ public partial class GateHandlerDispatcher
         switch (message.Opcode)
         {
             case 200003:
-                return await HomeLoginHandler.Login(player, SerializeHelper.FromBinary<C2SLogin>(message.Content));
+            {
+                var msg = SerializeHelper.FromBinary<C2SLogin>(message.Content);
+                player.LoginPreDeal(msg, message);
+                return await HomeLoginHandler.Login(player, msg);
+            }
         }
 
         A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);

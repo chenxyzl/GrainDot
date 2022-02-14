@@ -21,3 +21,11 @@ public interface IRequestWorld : IRequest //从代理发送给world
 {
     ulong WorldId { get; }
 }
+
+public interface IHttpRequest : IRequest //http请求
+{
+}
+
+public interface IHttpResponse : IResponse //http返回
+{
+}

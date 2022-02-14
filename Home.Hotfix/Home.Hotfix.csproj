@@ -3,8 +3,8 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <ApplicationIcon />
-        <StartupObject />
+        <ApplicationIcon/>
+        <StartupObject/>
         <BaseOutputPath>../</BaseOutputPath>
     </PropertyGroup>
 
@@ -14,10 +14,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Base\Base.csproj" />
-        <ProjectReference Include="..\Common\Common.csproj" />
-        <ProjectReference Include="..\Home.Model\Home.Model.csproj" />
-        <ProjectReference Include="..\Message\Message.csproj" />
+        <ProjectReference Include="..\Base\Base.csproj"/>
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\Home.Model\Home.Model.csproj"/>
+        <ProjectReference Include="..\Message\Message.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

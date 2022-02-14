@@ -16,20 +16,30 @@ namespace Home.Model;
 public class PlayerActor : BaseActor
 {
     public static readonly Props P = Props.Create<PlayerActor>();
-    private ILog _log;
-    private ICustomChannel? _session;
 
-    public IActorRef worldShardProxy;
+    //链接id
+    private string _connectionId;
+
+    private ILog _log;
+
+    //上次的登录key
+    public string LastLoginKey;
 
     // path = akka://Z/system/sharding/Player/8714/4505283499219672065
     public PlayerActor()
     {
-        var a = Self.Path.ToString().Split("/").Last();
-        uid = ulong.Parse(a);
+        uid = ulong.Parse(Self.Path.ToString().Split("/").Last());
         PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
     }
 
+    //获取channel
+    public ICustomChannel? channel =>
+        GameServer.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
+
     public ulong PlayerId => uid;
+
+    public uint lastPushSn { get; private set; }
+    public uint nextPushSn => ++lastPushSn;
 
     public override ILog Logger
     {
@@ -94,8 +104,8 @@ public class PlayerActor : BaseActor
                     //严重错误直接踢下线
                     if (e.Serious)
                     {
-                        _session.Close();
-                        _session = null;
+                        channel?.Close();
+                        _connectionId = null;
                     }
 
                     Logger.Warning(e.ToString());
@@ -142,29 +152,43 @@ public class PlayerActor : BaseActor
         await PlayerHotfixManager.Instance.Hotfix.Tick(this, now);
     }
 
-    public async Task Send(Response message)
+    public Task Send(Response message)
     {
-        //下线了就断开链接
-        if (_session != null)
+        //没必要等待 --等待还会切换线程，没必要
+        //channel存在则发送，不存在就算了
+        _ = channel?.Send(message.ToBinary());
+        return Task.CompletedTask;
+    }
+
+    public void Push(IMessage msg)
+    {
+        var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
+        _ = channel?.Send(
+            new Response {Opcode = opcode, Sn = nextPushSn, Code = Code.Ok, Content = msg.ToBinary()}.ToBinary());
+    }
+
+    private void KickOut()
+    {
+        var oldConn = channel;
+        if (oldConn != null)
         {
-            await _session.Send(message.ToBinary());
+            Push(new SLoginElsewhere());
+            oldConn.Close();
+            _connectionId = null;
         }
     }
 
-    public void LoginPreDeal(Request request)
+    public void LoginPreDeal(C2SLogin request, Request message)
     {
-        var c2sLogin = SerializeHelper.FromBinary<C2SLogin>(request.Content);
-        var connectionId = c2sLogin.Unused;
+        //清除老的链接
+        KickOut();
+        //检查新链接
         var connect = GameServer.Instance.GetHome().GetComponent<ConnectionDicCommponent>()
-            .GetConnection(connectionId);
-        _session = connect;
-    }
-}
-
-public static class ComponentExt
-{
-    public static PlayerActor Player(this IActorComponent<PlayerActor> self)
-    {
-        return self.Node;
+            .GetConnection(request.Unused);
+        A.RequireNotNull(connect, Code.Error, "connect not found", true);
+        _connectionId = request.Unused;
+        //每次重新登录重置id
+        lastPushSn = 0;
+        //todo 断线重连则在这里处理
     }
 }

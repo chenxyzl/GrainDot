@@ -80,7 +80,10 @@ namespace Proto
                 {
                     addL = true;
                     var idx = newline.IndexOf("{");
-                    newline = newline.Substring(0, idx) + newline.Substring(idx + 1);
+                    if (newline[idx - 1] != ' ')
+                        newline = newline.Substring(0, idx) + ' ' + newline.Substring(idx + 1);
+                    else
+                        newline = newline.Substring(0, idx) + newline.Substring(idx + 1);
                 }
 
                 var addR = false;
@@ -268,7 +271,7 @@ namespace Proto
             sb.Append($"\tpublic partial class {msgName}");
 
 
-            string[] msgTypes = {"IRequsetPlayer", "IRequsetWorld"};
+            string[] msgTypes = {"IRequsetPlayer", "IRequsetWorld", "IHttpRequest", "IHttpResponse"};
             if (msgTypes.ToList().IndexOf(parentClass) != -1)
                 sb.Append($": {parentClass}\n");
             else if (parentClass != "")

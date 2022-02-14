@@ -22,7 +22,7 @@ public class SimpleRole : IMessage
 
 //登录选角色界面
 [ProtoContract]
-public class C2ALogin : IRequest
+public class C2ALogin : IHttpRequest
 {
     [ProtoMember(1)] public int MobileType { get; set; }
 
@@ -32,14 +32,14 @@ public class C2ALogin : IRequest
 }
 
 [ProtoContract]
-public class A2CLogin : IResponse
+public class A2CLogin : IHttpResponse
 {
     [ProtoMember(1)] public List<SimpleRole> Rols = new();
 }
 
 //角色登录验证
 [ProtoContract]
-public class C2ARoleLogin : IRequest
+public class C2ARoleLogin : IHttpRequest
 {
     [ProtoMember(1)] public ulong Uid { get; set; }
 
@@ -47,19 +47,20 @@ public class C2ARoleLogin : IRequest
 }
 
 [ProtoContract]
-public class A2CRoleLogin : IResponse
+public class A2CRoleLogin : IHttpResponse
 {
     [ProtoMember(1)] public string Addr { get; set; }
 
     [ProtoMember(2)] public string Key { get; set; }
 }
 
+//性能测试
 [ProtoContract]
-public class C2APerformanceTest : IRequest
+public class C2APerformanceTest : IHttpRequest
 {
 }
 
 [ProtoContract]
-public class A2CPerformanceTest : IResponse
+public class A2CPerformanceTest : IHttpResponse
 {
 }

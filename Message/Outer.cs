@@ -3,6 +3,18 @@ using ProtoBuf;
 
 namespace Message;
 
+//通用空请求
+[ProtoContract]
+public class EmptyAsk : IRequest
+{
+}
+
+//通用返回ok
+[ProtoContract]
+public class OkAns : IResponse
+{
+}
+
 // 同步服务器时间
 [ProtoContract]
 public class C2SPing : IRequest
@@ -67,6 +79,12 @@ public class Role : IMessage
     [ProtoMember(5)] public long LastOfflineTime { get; set; }
 
     [ProtoMember(6)] public ulong Exp { get; set; }
+}
+
+//在其他地方登录
+[ProtoContract]
+public class SLoginElsewhere : IResponse
+{
 }
 
 // 同步奖励

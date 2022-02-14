@@ -13,6 +13,10 @@ public enum Code
 
     AccountIllegal = 3,
 
+    LoginElsewhere = 4,
+
+    NotLogin = 5,
+
     ItemNodEnough = 10000,
 
     ItemIdNotExist = 10001,

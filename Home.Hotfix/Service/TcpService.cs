@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Base;
 using Base.Network;
 using Home.Model;
 using Home.Model.Component;
@@ -41,7 +42,7 @@ public static class TcpService
         self._server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(port)
             .SetLengthFieldEncoder(2)
             .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
-            .OnException(ex => { Console.WriteLine($"{self.GetType().Name}:{port} 服务端异常:{ex.Message}"); })
+            .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name}:{port} 服务端异常:{ex.Message}"); })
             // .OnNewConnection((server, connection) =>
             // {
             //     GameServer.Instance.GetComponent<ConnectionDicCommponent>().AddConnection(connection);
@@ -52,6 +53,9 @@ public static class TcpService
             //         GameServer.Instance.GetComponent<ConnectionDicCommponent>()
             //             .RemoveConnection(connection.ConnectionId);
             //     })
-            .OnServerStarted(server => { Console.WriteLine($"{self.GetType().Name}:{port} 服务启动"); }).BuildAsync();
+            .OnServerStarted(server =>
+            {
+                GlobalLog.Warning($"{self.GetType().Name}:{port} 服务启动");
+            }).BuildAsync();
     }
 }

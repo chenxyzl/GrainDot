@@ -17,7 +17,7 @@ public static class A
     }
 
     //可预料的错误 会把错误码返回客户端
-    public static T RequireNotNull<T>(T t, Code code, string des = null, bool serious = false)
+    public static T RequireNotNull<T>(T? t, Code code, string des = null, bool serious = false)
     {
         if (t == null) throw new CodeException(code, des ?? code.ToString(), serious);
 

@@ -36,6 +36,7 @@ public static class PlayerService
 
     public static Task PreStop(this PlayerComponent self)
     {
+        GameServer.Instance.GetComponent<LoginKeyComponent>().RemoveLoginKey(self.Node.LastLoginKey);
         return Task.CompletedTask;
     }
 

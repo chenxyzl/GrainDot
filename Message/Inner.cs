@@ -43,23 +43,3 @@ public class HWPlayerOfflineAsk : IRequest
 public class WHPlayerOfflineAns : IResponse
 {
 }
-
-[ProtoContract]
-public class AHPerformanceTest1 : IRequest
-{
-}
-
-[ProtoContract]
-public class HAPerformanceTest1 : IResponse
-{
-}
-
-[ProtoContract]
-public class HHPerformanceTest2Ask : IRequest
-{
-}
-
-[ProtoContract]
-public class HHPerformanceTest2Ans : IResponse
-{
-}

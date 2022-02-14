@@ -80,7 +80,7 @@ internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocke
                 }
                 catch (WebSocketHandshakeException e)
                 {
-                    Console.WriteLine("WebSocket Client failed to connect");
+                    GlobalLog.Warning("WebSocket Client failed to connect");
                     completionSource.TrySetException(e);
                 }
 
@@ -103,11 +103,11 @@ internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocke
             }
             else if (msg is PongWebSocketFrame)
             {
-                Console.WriteLine("WebSocket Client received pong");
+                // Console.WriteLine("WebSocket Client received pong");
             }
             else if (msg is CloseWebSocketFrame)
             {
-                Console.WriteLine("WebSocket Client received closing");
+                // GlobalLog.Warning("WebSocket Client received closing");
                 ch.CloseAsync();
             }
         });

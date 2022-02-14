@@ -4,7 +4,7 @@ package Message;
 // api服务器获取玩家的登录的key
 message AHPlayerLoginKeyAsk {// IRequest
 }
-message HAPlayerLoginKeyAns {// IResponse
+message HAPlayerLoginKeyAns{// IResponse
   string playerKey = 1;
 }
 
@@ -23,9 +23,3 @@ message HWPlayerOfflineAsk {// IRequest
   int64 offlineTime = 2;
 }
 message WHPlayerOfflineAns {}  // IResponse
-
-message AHPerformanceTest1{} //IRequest
-message HAPerformanceTest1{} //IResponse
-
-message HHPerformanceTest2Ask{} //IRequest
-message HHPerformanceTest2Ans{} //IResponse

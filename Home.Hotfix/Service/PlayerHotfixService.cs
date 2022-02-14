@@ -29,9 +29,9 @@ public class PlayerHotfixService : IPlayerHotfixLife
         return Task.CompletedTask;
     }
 
-    public Task PreStop(BaseActor self)
+    public async Task PreStop(BaseActor self)
     {
-        return Task.CompletedTask;
+        await self.GetComponent<PlayerComponent>().PreStop();
     }
 
     public Task Stop(BaseActor self)

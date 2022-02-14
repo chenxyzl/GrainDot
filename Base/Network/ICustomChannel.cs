@@ -6,12 +6,13 @@ public abstract class ICustomChannel
 {
     protected IBaseSocketConnection _conn;
     public bool authed = false;
-    public string ConnectionId => _conn.ConnectionId;
 
     public ICustomChannel(IBaseSocketConnection conn)
     {
         _conn = conn;
     }
+
+    public string ConnectionId => _conn.ConnectionId;
 
     public abstract void OnConnected();
 

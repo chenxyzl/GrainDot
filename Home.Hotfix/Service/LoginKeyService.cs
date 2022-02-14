@@ -31,7 +31,6 @@ public static class LoginKeyService
             {
                 //让对应的loginKey失效
                 self.timeKeys.Remove(item.Key);
-                var playerRef = self.loginKeys[item.Value];
                 self.loginKeys.Remove(item.Value);
             }
         }
@@ -40,10 +39,12 @@ public static class LoginKeyService
         return Task.CompletedTask;
     }
 
-    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef actor)
+    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef actor, string lastLoginKey)
     {
         lock (self.lockObj)
         {
+            //删除老的loginKey
+            self.loginKeys.Remove(lastLoginKey);
             var playerRef = GameServer.Instance.system.ActorSelection(actor.Path.ToString());
             while (true)
             {
@@ -58,18 +59,25 @@ public static class LoginKeyService
         }
     }
 
-    public static ActorSelection? RemoveLoginKey(this LoginKeyComponent self, string key)
+    public static ulong GetUid(this ActorSelection self)
+    {
+        return ulong.Parse(self.PathString.Split("/").Last());
+    }
+
+    public static ActorSelection? CheckGetKey(this LoginKeyComponent self, string key)
     {
         lock (self.lockObj)
         {
-            if (self.loginKeys.TryGetValue(key, out var v))
-            {
-                self.loginKeys.Remove(key);
-                return v;
-            }
+            self.loginKeys.TryGetValue(key, out var v);
+            return v;
+        }
+    }
 
-            return null;
-            //不用删除timeKeys，等待tick删除即可
+    public static void RemoveLoginKey(this LoginKeyComponent self, string key)
+    {
+        lock (self.lockObj)
+        {
+            self.loginKeys.Remove(key);
         }
     }
 }

@@ -3,6 +3,11 @@ import "Code.proto";
 import "Common.proto";
 package Message;
 
+//通用空请求
+message EmptyAsk{} //IRequest
+//通用返回ok
+message OkAns{} //IResponse
+
 // 同步服务器时间
 message C2SPing {}   // IRequest
 message S2CPong {// IResponse
@@ -37,6 +42,12 @@ message Role {
   repeated Hero heroBag = 9;           //武将背包
   repeated Equip equipBag = 10;         //装备背包
 }
+
+//在其他地方登录
+  message SLoginElsewhere {//IResponse
+
+}
+
 // 同步奖励
 message SSyncReward {// IResponse
   repeated Item adds = 1;

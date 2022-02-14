@@ -1,5 +1,4 @@
 ﻿using System;
-using Akka.Actor;
 using Base;
 using Base.Helper;
 using Base.Network;
@@ -13,7 +12,7 @@ namespace Home.Model;
 public class PlayerChannel : ICustomChannel
 {
     private readonly ILog _logger;
-    private ActorSelection? _player;
+    private string? _playerKey;
 
     public PlayerChannel(IBaseSocketConnection conn) : base(conn)
     {
@@ -52,7 +51,7 @@ public class PlayerChannel : ICustomChannel
 
         try
         {
-            if (_player == null)
+            if (_playerKey == null)
                 BindPlayerActor(message);
             else
                 TellSelf(message);
@@ -60,14 +59,12 @@ public class PlayerChannel : ICustomChannel
         catch (CodeException e) //可预料的返回客户端错误码
         {
             _logger.Warning(e.Message);
+            
+            ret.Code = e.Code;
+            _ = _conn.Send(ret.ToBinary());
             if (e.Serious)
             {
                 Close();
-            }
-            else
-            {
-                ret.Code = e.Code;
-                _ = _conn.Send(ret.ToBinary());
             }
         }
         catch (Exception e) //不可预料的断开客户端链接
@@ -80,34 +77,37 @@ public class PlayerChannel : ICustomChannel
     public override void Close()
     {
         base.Close();
-        _player = null;
         GameServer.Instance.GetComponent<ConnectionDicCommponent>()
             .RemoveConnection(_conn.ConnectionId);
         //todo 通知actor下线
     }
 
-    public async void BindPlayerActor(Request message)
+    private void BindPlayerActor(Request message)
     {
         //第一条消息必须是登录
         A.Ensure(message.Opcode == 200003, Code.Error, "first message must login", true);
         var login = SerializeHelper.FromBinary<C2SLogin>(message.Content);
-        A.Ensure(_player == null, Code.Error, "player has bind", true);
+        A.Ensure(_playerKey == null, Code.Error, "player has bind", true);
         //获取actor
         //玩家没有获取到则断开链接让客户用重新走http登陆
-        _player = A.RequireNotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().RemoveLoginKey(login.Key),
-            Code.Error, "player actor not found, login api may be overdue， please login again",
+        var player = A.RequireNotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(login.Key),
+            Code.NotLogin, "player actor not found, login api may be overdue， please login again",
             true);
+        //保存key
+        _playerKey = login.Key;
         //填充链接id
         login.Unused = _conn.ConnectionId;
         message.Content = login.ToBinary();
         //为了高性能 只有登录消息 走Ask 其他消息都走Tell (因为需要超时)
-        var a = await _player.Ask<Request>(1, TimeSpan.FromSeconds(3));
-        _player.Tell(message);
+        // var a = await player.Ask<Request>(1, TimeSpan.FromSeconds(3));
+        player.Tell(message);
     }
 
-    public void TellSelf(Request message)
+    private void TellSelf(Request message)
     {
-        A.RequireNotNull(_player, Code.Error, "must bind first", true);
-        _player.Tell(message);
+        var player = A.RequireNotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(_playerKey),
+            Code.NotLogin, "player actor not found, may be free too long， please login again",
+            true);
+        player.Tell(message);
     }
 }
