@@ -15,6 +15,7 @@ namespace Proto
         private readonly CommandOption _nsOpcode;
         private readonly CommandOption _outerClass;
         private readonly CommandOption _outerFiles;
+        private readonly CommandOption _outputInnerFile;
 
         private readonly CommandOption _outputOuterFile;
         private readonly CommandOption _outputPath;
@@ -69,6 +70,11 @@ namespace Proto
                 "input class name of inner definitions.",
                 CommandOptionType.SingleValue);
 
+            _outputInnerFile = _commandLineApplication.Option(
+                "--outputinner",
+                "filename of inner cs file.",
+                CommandOptionType.SingleValue);
+
             _outputOuterFile = _commandLineApplication.Option(
                 "--outputouter",
                 "filename of outer cs file.",
@@ -78,8 +84,6 @@ namespace Proto
                 "--nsopcode",
                 "namespaceo of opcode class",
                 CommandOptionType.SingleValue);
-
-            _commandLineApplication.HelpOption("-? | -h | --help");
         }
 
         public static CommandHelper Instance { get; } = new();
@@ -92,11 +96,14 @@ namespace Proto
         public List<string> OuterFiles => _outerFiles.Values;
         public string InnerClass => _innerClass.Value();
         public string OuterClass => _outerClass.Value();
+        public string OuputInnerFile => _outputInnerFile.Value();
         public string OutputOuterFile => _outputOuterFile.Value();
         public string NamespaceOpcode => _nsOpcode.Value();
 
         public bool Parse(string[] args)
         {
+            _commandLineApplication.HelpOption("-? | -h | --help");
+
             _commandLineApplication.Execute(args);
 
             if (args.Length == 1 && (args[0] == "-?" || args[0] == "-h" || args[0] == "--help"))

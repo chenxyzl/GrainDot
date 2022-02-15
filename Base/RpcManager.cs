@@ -7,18 +7,18 @@ namespace Base;
 //管理rpc相关
 public class RpcManager : Single<RpcManager>
 {
-    private readonly Dictionary<uint, Type> opcodeResponseDic = new();
+    private readonly Dictionary<uint, Type> _opcodeResponseDic = new();
 
     //外部rpc调用派发
 
     //protobuf type to opCode
-    private readonly Dictionary<Type, uint> requestOpcodeDic = new();
+    private readonly Dictionary<Type, uint> _requestOpcodeDic = new();
 
-    private readonly Dictionary<uint, OpType> rpcTypeDic = new();
+    private readonly Dictionary<uint, OpType> _rpcTypeDic = new();
     //内部rpc调用派发
 
     //
-    private bool onlyFirst = true;
+    private bool _onlyFirst = true;
 
     public IInnerHandlerDispatcher? InnerHandlerDispatcher { get; private set; }
 
@@ -26,20 +26,20 @@ public class RpcManager : Single<RpcManager>
 
     public uint GetRequestOpcode(Type t)
     {
-        requestOpcodeDic.TryGetValue(t, out var v);
+        _requestOpcodeDic.TryGetValue(t, out var v);
         return A.NotNull(v, Code.Error, $"request type:{t.Name} to code not found");
     }
 
     public Type GetResponseOpcode(uint opcode)
     {
-        opcodeResponseDic.TryGetValue(opcode, out var v);
+        _opcodeResponseDic.TryGetValue(opcode, out var v);
         return A.NotNull(v, Code.Error,
             $"response opcode:{opcode} to code not found");
     }
 
     public OpType GetRpcType(uint opcode)
     {
-        return A.NotNull(rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
+        return A.NotNull(_rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
     }
 
     public void ReloadHanlder()
@@ -59,10 +59,10 @@ public class RpcManager : Single<RpcManager>
             OuterHandlerDispatcher = A.NotNull(Activator.CreateInstance(outerTypes.First()) as IGateHandlerDispatcher);
 
         //不会改变的，只需要Load一次
-        if (onlyFirst)
+        if (_onlyFirst)
         {
             ParaseRpcItems();
-            onlyFirst = false;
+            _onlyFirst = false;
         }
     }
 
@@ -73,25 +73,25 @@ public class RpcManager : Single<RpcManager>
             //请求类型->opcode
             if (item.OpType == OpType.CS || item.OpType == OpType.C)
             {
-                if (requestOpcodeDic.TryGetValue(item.InType, out var _))
+                if (_requestOpcodeDic.TryGetValue(item.InType, out _))
                     A.Abort(Code.Error, $"requestOpcodeDic:{item.InType} repeated", true);
 
-                requestOpcodeDic.Add(item.InType, item.Opcode);
+                _requestOpcodeDic.Add(item.InType, item.Opcode);
             }
 
             //opcode->返回类型
             if (item.OpType == OpType.CS || item.OpType == OpType.S)
             {
-                if (opcodeResponseDic.TryGetValue(item.Opcode, out var _))
+                if (_opcodeResponseDic.TryGetValue(item.Opcode, out _))
                     A.Abort(Code.Error, $"opcodeResponseDic:{item.Opcode} repeated", true);
 
-                opcodeResponseDic.Add(item.Opcode, item.OutType);
+                _opcodeResponseDic.Add(item.Opcode, item.OutType);
             }
 
-            if (rpcTypeDic.TryGetValue(item.Opcode, out var _))
+            if (_rpcTypeDic.TryGetValue(item.Opcode, out _))
                 A.Abort(Code.Error, $"rpcTypeDic:{item.Opcode} repeated", true);
 
-            rpcTypeDic.Add(item.Opcode, item.OpType);
+            _rpcTypeDic.Add(item.Opcode, item.OpType);
         }
     }
 
