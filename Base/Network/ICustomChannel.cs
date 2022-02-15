@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Base.Helper;
 
 namespace Base.Network;
 
@@ -6,10 +7,12 @@ public abstract class ICustomChannel
 {
     protected IBaseSocketConnection _conn;
     public bool authed = false;
+    public long ConnTime { get; private set; }
 
     public ICustomChannel(IBaseSocketConnection conn)
     {
         _conn = conn;
+        ConnTime = TimeHelper.Now();
     }
 
     public string ConnectionId => _conn.ConnectionId;

@@ -8,7 +8,7 @@ namespace Home.Model.Component;
 
 public class ConnectionDicCommponent : IGlobalComponent
 {
-    private readonly SortedDictionary<long, string> _waitAuthed = new();
+    private readonly SortedDictionary<ulong, string> _waitAuthed = new();
     private readonly Dictionary<string, ICustomChannel> connects = new();
     private readonly object lockObj = new();
 
@@ -34,6 +34,7 @@ public class ConnectionDicCommponent : IGlobalComponent
             }
 
             connects.TryAdd(connectId, connection);
+            _waitAuthed.TryAdd(IdGenerater.GenerateId(), connectId);
         }
     }
 
@@ -61,14 +62,18 @@ public class ConnectionDicCommponent : IGlobalComponent
         {
             if (_waitAuthed.Count == 0) break;
 
-            var first = _waitAuthed.First();
-            if (first.Key + 60_000 > now) break;
-
-            _waitAuthed.Remove(first.Key);
-            var connection = GetConnection(first.Value);
-            if (connection != null && !connection.authed)
-                //close 会触发删除，所以这里不用管
-                connection.Close();
+            //因为正在登录中人数一定不多。所以这里lock写在while里。
+            lock (lockObj)
+            {
+                var first = _waitAuthed.First();
+                if (IdGenerater.ParseTime(first.Key) + 60_000 > now) break;
+                //开始处理超时
+                _waitAuthed.Remove(first.Key);
+                var connection = GetConnection(first.Value);
+                if (connection != null && !connection.authed)
+                    //close 会触发删除，所以这里不用管
+                    connection.Close();
+            }
         }
     }
 }

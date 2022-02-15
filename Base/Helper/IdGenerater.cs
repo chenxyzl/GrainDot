@@ -46,10 +46,10 @@ public class IdGenerater
     }
 
     //解析时间
-    public static ulong ParseTime(ulong id)
+    public static long ParseTime(ulong id)
     {
         var time = (id << _nodeFlag) >> (_nodeFlag + _incFlag);
-        return time;
+        return (long)time;
     }
 
 

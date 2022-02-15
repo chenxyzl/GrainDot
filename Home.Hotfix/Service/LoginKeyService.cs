@@ -17,19 +17,18 @@ public static class LoginKeyService
 
     public static Task Tick(this LoginKeyComponent self)
     {
+        var now = TimeHelper.Now();
         while (true)
         {
             if (self.timeKeys.Count == 0) break;
 
-            var item = self.timeKeys.First();
-            var now = TimeHelper.Now();
-            var t = IdGenerater.ParseTime(item.Key);
-            if ((long) t - now < 15_000) break;
-
             //因为正在登录中人数一定不多。所以这里lock写在while里。
             lock (self.lockObj)
             {
-                //让对应的loginKey失效
+                var item = self.timeKeys.First();
+                var t = IdGenerater.ParseTime(item.Key);
+                if (t - now < 15_000) break;
+                //开始处理超时
                 self.timeKeys.Remove(item.Key);
                 self.loginKeys.Remove(item.Value);
             }
