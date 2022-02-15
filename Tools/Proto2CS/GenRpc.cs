@@ -26,12 +26,11 @@ namespace Proto
             var sb = new StringBuilder();
             sb.Append("using System.Collections.Generic;\n");
             sb.Append("\n");
-            sb.Append($"namespace {ns}\n");
+            sb.Append($"namespace {ns};\n");
+            sb.Append("public partial class RpcItemMessage\n");
             sb.Append("{\n");
-            sb.Append("\tpublic partial class RpcItemMessage\n");
+            sb.Append($"\tpublic static List<RpcItem> rpcItems{opcodeClassName} = new()\n");
             sb.Append("\t{\n");
-            sb.Append($"\t\tstatic public List<RpcItem> rpcItems{opcodeClassName} = new List<RpcItem>\n");
-            sb.Append("\t\t{\n");
             var i = -1;
             foreach (var line in s.Split('\n'))
             {
@@ -47,11 +46,10 @@ namespace Proto
 
                 var param = infoArr[2] == "" ? "null" : $"typeof({CommandHelper.Instance.Namespace}.{infoArr[2]})";
                 var ret = infoArr[3] == "" ? "null" : $"typeof({CommandHelper.Instance.Namespace}.{infoArr[3]})";
-                sb.Append($"\t\t\tnew RpcItem({infoArr[0]}, OpType.{infoArr[1]}, {param}, {ret}, \"{infoArr[4]}\"),\n");
+                sb.Append($"\t\tnew RpcItem({infoArr[0]}, OpType.{infoArr[1]}, {param}, {ret}, \"{infoArr[4]}\"),\n");
             }
 
-            sb.Append("\t\t};\n");
-            sb.Append("\t}\n");
+            sb.Append("\t};\n");
             sb.Append("}\n");
 
             File.WriteAllText(csPath, sb.ToString());

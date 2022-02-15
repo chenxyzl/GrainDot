@@ -33,12 +33,11 @@ namespace Proto
         public static void PraseImport(StringBuilder sb, string us, string ns)
         {
             //序列化的头
-            sb.Append("using ProtoBuf;\n");
             sb.Append("using System.Collections.Generic;\n");
+            sb.Append("using ProtoBuf;\n");
 
             //包名
-            sb.Append($"namespace {ns}\n");
-            sb.Append("{\n");
+            sb.Append($"namespace {ns};\n");
         }
 
         public static void Proto2CS(string ns, string protoName, string outputPath)
@@ -157,8 +156,6 @@ namespace Proto
                 }
             }
 
-            sb.Append("}\n");
-
             File.WriteAllText(csPath, sb.ToString());
         }
 
@@ -267,8 +264,8 @@ namespace Proto
             }
 
             //sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
-            sb.Append("\t[ProtoContract]\n");
-            sb.Append($"\tpublic partial class {msgName}");
+            sb.Append("[ProtoContract]\n");
+            sb.Append($"public partial class {msgName}");
 
 
             string[] msgTypes = {"IRequsetPlayer", "IRequsetWorld", "IHttpRequest", "IHttpResponse"};
@@ -284,13 +281,13 @@ namespace Proto
         {
             if (newline == "{")
             {
-                sb.Append("\t{\n");
+                sb.Append("{\n");
                 return false;
             }
 
             if (newline == "}")
             {
-                sb.Append("\t}\n\n");
+                sb.Append("}\n\n");
                 return true;
             }
 
@@ -316,8 +313,8 @@ namespace Proto
                 var n = int.Parse(ss[3]);
                 var typeCs = ConvertType(type);
 
-                sb.Append($"\t\t[ProtoMember({n})]\n");
-                sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
+                sb.Append($"\t[ProtoMember({n})]\n");
+                sb.Append($"\tpublic {typeCs} {name} {{ get; set; }}\n\n");
             }
             catch (Exception e)
             {
@@ -330,21 +327,21 @@ namespace Proto
             var msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
             var ss = newline.Split(new[] {"//"}, StringSplitOptions.RemoveEmptyEntries);
             //sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n"); //用csv来生成rpc的id。各灵活可控一些
-            sb.Append("\t[ProtoContract]\n");
-            sb.Append($"\tpublic enum {msgName}\n");
+            sb.Append("[ProtoContract]\n");
+            sb.Append($"public enum {msgName}\n");
         }
 
         private static bool PraseEnumBody(string protoName, string newline, StringBuilder sb)
         {
             if (newline == "{")
             {
-                sb.Append("\t{\n");
+                sb.Append("{\n");
                 return false;
             }
 
             if (newline == "}")
             {
-                sb.Append("\t}\n\n");
+                sb.Append("}\n\n");
                 return true;
             }
 
@@ -361,8 +358,8 @@ namespace Proto
             {
                 var name = ToUpperFirst(ss[0]);
                 var n = int.Parse(ss[2]);
-                //sb.Append($"\t\t[ProtoEnum]\n"); //v3版本不需要了
-                sb.Append($"\t\t{name} = {n},\n\n");
+                //sb.Append($"\t[ProtoEnum]\n"); //v3版本不需要了
+                sb.Append($"\t{name} = {n},\n\n");
             }
             catch (Exception e)
             {
