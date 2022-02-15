@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using System;
+using Akka.Actor;
 using Base;
 using Base.Serialize;
 using Message;
@@ -10,6 +11,12 @@ namespace Home.Hotfix.Handler;
 [InnerRpc]
 public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
+    public void Dispatcher(BaseActor actor, IRequest message)
+    {
+        //todo 把消息转成对应的玩家的session
+        throw new NotImplementedException();
+    }
+
     public async void Dispatcher(WorldSession session, IRequest request)
     {
         var message = A.NotNull(request as RequestWorld);
@@ -32,11 +39,5 @@ public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
             await DispatcherNoResult(session, message);
         else
             A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
-    }
-
-    public void Dispatcher(BaseActor actor, IRequest message)
-    {
-        //todo 把消息转成对应的玩家的session
-        throw new System.NotImplementedException();
     }
 }

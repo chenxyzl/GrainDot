@@ -6,7 +6,6 @@ namespace Home.Model;
 
 public static class ActorRefExt
 {
-#nullable enable
     public static ulong GetPlayerId(this IActorRef self)
     {
         var player = self as PlayerActor;
@@ -16,4 +15,5 @@ public static class ActorRefExt
         var playerId = ulong.Parse(self.Path.Name);
         return playerId;
     }
+#nullable enable
 }

@@ -4,7 +4,6 @@ using DotNetty.Buffers;
 using DotNetty.Codecs.Http;
 using DotNetty.Codecs.Http.WebSockets;
 using DotNetty.Transport.Channels;
-using Message;
 
 namespace Base.Network;
 
@@ -26,7 +25,7 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
     protected override IWebSocketConnection BuildConnection(IChannel clientChannel)
     {
         var arg = new object[] {this, clientChannel, _eventHandle};
-        return A.NotNull(Activator.CreateInstance(typeof(T), arg) as T, Code.Error);
+        return A.NotNull(Activator.CreateInstance(typeof(T), arg) as T);
     }
 
     public override void OnChannelReceive(IChannelHandlerContext ctx, object msg)

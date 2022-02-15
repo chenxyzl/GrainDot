@@ -21,6 +21,6 @@ public class PlayerHotfixManager : Single<PlayerHotfixManager>
 
         if (types.Count > 1) A.Abort(Code.Error, $"PlayerLife.ServiceAttribute Count:{types.Count} Error");
 
-        hotfix = A.NotNull(Activator.CreateInstance(types.First()) as IPlayerHotfixLife, Code.Error);
+        hotfix = A.NotNull(Activator.CreateInstance(types.First()) as IPlayerHotfixLife);
     }
 }

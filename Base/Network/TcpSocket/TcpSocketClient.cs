@@ -34,7 +34,7 @@ internal class TcpSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocke
     {
         PackException(() =>
         {
-            var bytes = (A.NotNull(msg as IByteBuffer)).ToArray();
+            var bytes = A.NotNull(msg as IByteBuffer).ToArray();
             _clientEvent.OnRecieve?.Invoke(this, bytes);
         });
     }

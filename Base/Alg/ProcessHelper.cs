@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Message;
 
 namespace Base.Alg;
 
@@ -39,7 +38,7 @@ public static class ProcessHelper
                 RedirectStandardError = redirectStandardError
             };
 
-            var process = A.NotNull(Process.Start(info), Code.Error);
+            var process = A.NotNull(Process.Start(info));
 
             if (waitExit)
             {

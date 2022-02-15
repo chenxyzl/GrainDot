@@ -16,12 +16,12 @@ public static class SerializeHelper
     public static T FromBinary<T>(byte[] bytes) where T : class, IMessage
     {
         using var stream = new MemoryStream(bytes);
-        return A.NotNull(Serializer.Deserialize(typeof(T), stream) as T, Code.Error);
+        return A.NotNull(Serializer.Deserialize(typeof(T), stream) as T);
     }
 
     public static IMessage FromBinary(Type type, byte[] bytes)
     {
         using var stream = new MemoryStream(bytes);
-        return A.NotNull(Serializer.Deserialize(type, stream) as IMessage, Code.Error);
+        return A.NotNull(Serializer.Deserialize(type, stream) as IMessage);
     }
 }

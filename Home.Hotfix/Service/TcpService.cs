@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Base;
 using Base.Network;
@@ -53,9 +52,6 @@ public static class TcpService
             //         GameServer.Instance.GetComponent<ConnectionDicCommponent>()
             //             .RemoveConnection(connection.ConnectionId);
             //     })
-            .OnServerStarted(server =>
-            {
-                GlobalLog.Warning($"{self.GetType().Name}:{port} 服务启动");
-            }).BuildAsync();
+            .OnServerStarted(server => { GlobalLog.Warning($"{self.GetType().Name}:{port} 服务启动"); }).BuildAsync();
     }
 }

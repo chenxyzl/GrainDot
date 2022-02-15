@@ -4,9 +4,9 @@ namespace Base.Helper;
 
 public class CommandHelper
 {
-    private CommandLineApplication _commandLineApplication;
-    private CommandOption _idOption;
-    private CommandOption _typeOption;
+    private readonly CommandLineApplication _commandLineApplication;
+    private readonly CommandOption _idOption;
+    private readonly CommandOption _typeOption;
 
     private CommandHelper()
     {

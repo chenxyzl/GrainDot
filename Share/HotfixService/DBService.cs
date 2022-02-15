@@ -67,7 +67,8 @@ public static class DBService
     }
 
     //保存1个
-    public static async Task Save<T>(this CallComponent self, T state, string? collectionName = null) where T : BaseState
+    public static async Task Save<T>(this CallComponent self, T state, string? collectionName = null)
+        where T : BaseState
     {
         if (state == null)
         {

@@ -6,7 +6,7 @@ namespace Proto
 {
     public static class GenClient
     {
-        private static StringBuilder _cs = new();
+        private static readonly StringBuilder _cs = new();
         private static StringBuilder _sc = new();
 
         internal static void Proto2CS()

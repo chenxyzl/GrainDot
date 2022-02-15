@@ -17,7 +17,7 @@ internal class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSo
     {
         PackException(() =>
         {
-            var bytes = (A.NotNull(msg as IByteBuffer)).ToArray();
+            var bytes = A.NotNull(msg as IByteBuffer).ToArray();
             var theConnection = GetConnection(ctx.Channel);
             _eventHandle.OnRecieve?.Invoke(this, theConnection, bytes);
             theConnection.OnRecieve(bytes);

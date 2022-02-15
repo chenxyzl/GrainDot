@@ -17,9 +17,7 @@ namespace Base;
 public abstract class GameServer
 {
     //
-    protected static GameServer? _ins = null;
-    public static GameServer Instance => A.NotNull(_ins);
-    public static GameServer Instance1<T>() where T : GameServer => A.NotNull(Instance as T);
+    protected static GameServer? _ins;
 
     //日志
     public readonly ILog Logger;
@@ -27,16 +25,25 @@ public abstract class GameServer
     //玩家代理
     private IActorRef? _playerShardProxy;
 
-    //世界代理
-    private IActorRef? _worldShardProxy;
-
     //退出标记
     private bool _quitFlag;
 
     //配置
     protected Akka.Configuration.Config _systemConfig = null!;
 
+    //世界代理
+    private IActorRef? _worldShardProxy;
+
     private long lastTime;
+
+    //
+    public GameServer(RoleType r)
+    {
+        role = r;
+        Logger = new NLogAdapter(role.ToString());
+    }
+
+    public static GameServer Instance => A.NotNull(_ins);
 
     //角色类型
     public RoleType role { get; }
@@ -47,14 +54,12 @@ public abstract class GameServer
 
     public IActorRef WorldShardProxy => A.NotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
 
-    //
-    public GameServer(RoleType r)
-    {
-        role = r;
-        Logger = new NLogAdapter(role.ToString());
-    }
-
     public Akka.Configuration.Config SystemConfig => _systemConfig;
+
+    public static GameServer Instance1<T>() where T : GameServer
+    {
+        return A.NotNull(Instance as T);
+    }
 
 
     //退出标记监听

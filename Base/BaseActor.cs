@@ -88,7 +88,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
         var allArgs = new List<object> {this};
         foreach (var a in args) allArgs.Add(a);
-        var obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as K, Code.Error);
+        var obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as K);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }

@@ -62,10 +62,7 @@ public class PlayerChannel : ICustomChannel
 
             ret.Code = e.Code;
             _ = _conn.Send(ret.ToBinary());
-            if (e.Serious)
-            {
-                Close();
-            }
+            if (e.Serious) Close();
         }
         catch (Exception e) //不可预料的断开客户端链接
         {
