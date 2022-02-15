@@ -38,12 +38,13 @@ public static class LoginKeyService
         return Task.CompletedTask;
     }
 
-    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef actor, string lastLoginKey)
+    public static string AddPlayerRef(this LoginKeyComponent self, IActorRef actor, string? lastLoginKey)
     {
         lock (self.lockObj)
         {
             //删除老的loginKey
-            self.loginKeys.Remove(lastLoginKey);
+            if (lastLoginKey != null)
+                self.loginKeys.Remove(lastLoginKey);
             var playerRef = GameServer.Instance.system.ActorSelection(actor.Path.ToString());
             while (true)
             {

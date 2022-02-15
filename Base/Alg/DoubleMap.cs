@@ -2,7 +2,7 @@
 
 namespace Base.Alg;
 
-public class DoubleMap<K, V>
+public class DoubleMap<K, V> where K : notnull where V : notnull
 {
     private readonly Dictionary<K, V> kv = new();
     private readonly Dictionary<V, K> vk = new();
@@ -37,14 +37,14 @@ public class DoubleMap<K, V>
         vk.Add(value, key);
     }
 
-    public V GetValueByKey(K key)
+    public V? GetValueByKey(K key)
     {
         if (key != null && kv.ContainsKey(key)) return kv[key];
 
         return default;
     }
 
-    public K GetKeyByValue(V value)
+    public K? GetKeyByValue(V value)
     {
         if (value != null && vk.ContainsKey(value)) return vk[value];
 
@@ -55,8 +55,7 @@ public class DoubleMap<K, V>
     {
         if (key == null) return;
 
-        V value;
-        if (!kv.TryGetValue(key, out value)) return;
+        if (!kv.TryGetValue(key, out var value)) return;
 
         kv.Remove(key);
         vk.Remove(value);
@@ -66,8 +65,7 @@ public class DoubleMap<K, V>
     {
         if (value == null) return;
 
-        K key;
-        if (!vk.TryGetValue(value, out key)) return;
+        if (!vk.TryGetValue(value, out var key)) return;
 
         kv.Remove(key);
         vk.Remove(value);

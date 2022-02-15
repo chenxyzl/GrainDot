@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
@@ -18,12 +19,12 @@ public class PlayerActor : BaseActor
     public static readonly Props P = Props.Create<PlayerActor>();
 
     //链接id
-    private string _connectionId;
+    private string? _connectionId;
 
-    private ILog _log;
+    private ILog? _log;
 
     //上次的登录key
-    public string LastLoginKey;
+    public string? LastLoginKey;
 
     // path = akka://Z/system/sharding/Player/8714/4505283499219672065
     public PlayerActor()
@@ -33,8 +34,15 @@ public class PlayerActor : BaseActor
     }
 
     //获取channel
-    public ICustomChannel? channel =>
-        GameServer.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
+    public ICustomChannel? channel
+    {
+        get
+        {
+            if (_connectionId == null) return null;
+
+            return Home.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
+        }
+    }
 
     public ulong PlayerId => uid;
 
@@ -97,7 +105,7 @@ public class PlayerActor : BaseActor
                 //
                 try
                 {
-                    RpcManager.Instance.OuterHandlerDispatcher.Dispatcher(this, request);
+                    RpcManager.Instance.OuterHandlerDispatcher?.Dispatcher(this, request);
                 }
                 catch (CodeException e)
                 {
@@ -122,7 +130,7 @@ public class PlayerActor : BaseActor
                 try
                 {
                     uid = request.PlayerId;
-                    RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
+                    RpcManager.Instance.InnerHandlerDispatcher?.Dispatcher(this, request);
                 }
                 catch (Exception e)
                 {
@@ -183,9 +191,9 @@ public class PlayerActor : BaseActor
         //清除老的链接
         KickOut();
         //检查新链接
-        var connect = GameServer.Instance.GetHome().GetComponent<ConnectionDicCommponent>()
+        var connect = Home.Instance.GetComponent<ConnectionDicCommponent>()
             .GetConnection(request.Unused);
-        A.RequireNotNull(connect, Code.Error, "connect not found", true);
+        A.NotNull(connect, Code.Error, "connect not found", true);
         _connectionId = request.Unused;
         //每次重新登录重置id
         lastPushSn = 0;

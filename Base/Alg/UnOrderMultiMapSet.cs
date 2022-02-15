@@ -2,7 +2,7 @@
 
 namespace Base.Alg;
 
-public class UnOrderMultiMapSet<T, K>
+public class UnOrderMultiMapSet<T, K> where T : notnull
 {
     private readonly Dictionary<T, HashSet<K>> _dictionary = new();
 

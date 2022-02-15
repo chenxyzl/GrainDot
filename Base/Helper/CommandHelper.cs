@@ -10,14 +10,6 @@ public class CommandHelper
 
     private CommandHelper()
     {
-    }
-
-    public static CommandHelper Instance { get; } = new();
-    public string NodeId => _idOption.Value();
-    public string NodeType => _typeOption.Value();
-
-    public bool Parse(string[] args)
-    {
         _commandLineApplication = new CommandLineApplication(false);
         _idOption = _commandLineApplication.Option(
             "-i | --id",
@@ -30,7 +22,14 @@ public class CommandHelper
             CommandOptionType.MultipleValue);
 
         _commandLineApplication.HelpOption("-? | -h | --help");
+    }
 
+    public static CommandHelper Instance { get; } = new();
+    public string NodeId => _idOption.Value();
+    public string NodeType => _typeOption.Value();
+
+    public bool Parse(string[] args)
+    {
         _commandLineApplication.Execute(args);
 
         if (args.Length == 1 && (args[0] == "-?" || args[0] == "-h" || args[0] == "--help"))

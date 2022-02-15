@@ -6,7 +6,7 @@ namespace Base.Config;
 [SheetName("职业类型")]
 public class RoleConfig : IExcelConfig<int>
 {
-    [ExcelColumnName("名字")] public string CareerName { get; set; }
+    [ExcelColumnName("名字")] public string CareerName { get; set; } = null!;
     [ExcelColumnName("##ID")] public int Id { get; set; }
 }
 

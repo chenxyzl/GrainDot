@@ -30,7 +30,7 @@ public static class CallComponentService
 
         //
         var beginTime = TimeHelper.Now();
-        var response = await tcs;
+        var response = A.NotNull(await tcs);
         var cost = TimeHelper.Now() - beginTime;
         //
         if (cost >= 100) self.Node.Logger.Warning($"call cost time:{cost} too long");
@@ -56,7 +56,7 @@ public static class CallComponentService
 
         //
         var beginTime = TimeHelper.Now();
-        var response = await tcs;
+        var response = A.NotNull(await tcs);
         var cost = TimeHelper.Now() - beginTime;
         //
         if (cost >= 100) self.Node.Logger.Warning($"call cost time:{cost} too long");

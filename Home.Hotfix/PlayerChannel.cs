@@ -59,7 +59,7 @@ public class PlayerChannel : ICustomChannel
         catch (CodeException e) //可预料的返回客户端错误码
         {
             _logger.Warning(e.Message);
-            
+
             ret.Code = e.Code;
             _ = _conn.Send(ret.ToBinary());
             if (e.Serious)
@@ -90,7 +90,7 @@ public class PlayerChannel : ICustomChannel
         A.Ensure(_playerKey == null, Code.Error, "player has bind", true);
         //获取actor
         //玩家没有获取到则断开链接让客户用重新走http登陆
-        var player = A.RequireNotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(login.Key),
+        var player = A.NotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(login.Key),
             Code.NotLogin, "player actor not found, login api may be overdue， please login again",
             true);
         //保存key
@@ -105,7 +105,8 @@ public class PlayerChannel : ICustomChannel
 
     private void TellSelf(Request message)
     {
-        var player = A.RequireNotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(_playerKey),
+        _playerKey = A.NotNull(_playerKey, Code.NotLogin, "player key not set, please login again");
+        var player = A.NotNull(GameServer.Instance.GetComponent<LoginKeyComponent>().CheckGetKey(_playerKey),
             Code.NotLogin, "player actor not found, may be free too long， please login again",
             true);
         player.Tell(message);

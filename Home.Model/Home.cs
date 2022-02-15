@@ -6,6 +6,8 @@ namespace Home.Model;
 
 public class Home : GameServer
 {
+    public new static Home Instance => A.NotNull(_ins as Home);
+
     public Home() : base(RoleType.Home)
     {
     }
@@ -14,13 +16,5 @@ public class Home : GameServer
     {
         await base.AfterCreate();
         StartPlayerShardProxy();
-    }
-}
-
-public static class GameServerExt
-{
-    public static Home GetHome(this GameServer _)
-    {
-        return GameServer.Instance as Home;
     }
 }

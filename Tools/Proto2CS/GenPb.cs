@@ -107,7 +107,7 @@ namespace Proto
             var index = -1;
             while (++index < lines.Count)
             {
-                var newline = lines[index].ToString();
+                var newline = lines[index]!.ToString()!;
                 if (newline.StartsWith("//"))
                 {
                     sb.Append($"{newline}\n");
@@ -370,12 +370,9 @@ namespace Proto
             }
         }
 
-        public static unsafe string ToUpperFirst(this string str)
+        private static unsafe string ToUpperFirst(this string str)
         {
-            if (str == null) return null;
-#pragma warning disable CS0618 // 类型或成员已过时
-            var ret = string.Copy(str);
-#pragma warning restore CS0618 // 类型或成员已过时
+            var ret = str;
             fixed (char* ptr = ret)
             {
                 *ptr = char.ToUpper(*ptr);

@@ -17,23 +17,35 @@ namespace Base;
 public abstract class GameServer
 {
     //
-    public static GameServer Instance;
+    protected static GameServer? _ins = null;
+    public static GameServer Instance => A.NotNull(_ins);
+    public static GameServer Instance1<T>() where T : GameServer => A.NotNull(Instance as T);
 
     //日志
     public readonly ILog Logger;
 
     //玩家代理
-    private IActorRef _playerShardProxy;
+    private IActorRef? _playerShardProxy;
+
+    //世界代理
+    private IActorRef? _worldShardProxy;
 
     //退出标记
     private bool _quitFlag;
 
     //配置
-    protected Akka.Configuration.Config _systemConfig;
+    protected Akka.Configuration.Config _systemConfig = null!;
 
-    //世界代理
-    private IActorRef _worldShardProxy;
     private long lastTime;
+
+    //角色类型
+    public RoleType role { get; }
+
+    //根系统
+    public ActorSystem system { get; protected set; } = null!;
+    public IActorRef PlayerShardProxy => A.NotNull(_playerShardProxy, Code.Error, "need StartPlayerProxy");
+
+    public IActorRef WorldShardProxy => A.NotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
 
     //
     public GameServer(RoleType r)
@@ -44,13 +56,6 @@ public abstract class GameServer
 
     public Akka.Configuration.Config SystemConfig => _systemConfig;
 
-    //根系统
-    public ActorSystem system { get; protected set; }
-
-    //角色类型
-    public RoleType role { get; }
-    public IActorRef PlayerShardProxy => A.RequireNotNull(_playerShardProxy, Code.Error, "need StartPlayerProxy");
-    public IActorRef WorldShardProxy => A.RequireNotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
 
     //退出标记监听
     protected virtual void WatchQuit()
@@ -157,14 +162,6 @@ public abstract class GameServer
         GlobalLog.Warning($"---{role}停止完成---");
     }
 
-    public IActorRef GetChild(string path)
-    {
-        var a = system.ActorSelection(path);
-        if (a == null) A.Abort(Code.Error, $"local system get child path:{path} not found");
-
-        return a.Anchor;
-    }
-
     //加载程序集合
     protected virtual void Load(uint nodeId)
     {
@@ -207,7 +204,7 @@ public abstract class GameServer
         //before
         BeforeRun();
         //创建
-        Instance = Activator.CreateInstance(gsType) as GameServer;
+        _ins = A.NotNull(Activator.CreateInstance(gsType) as GameServer);
         //准备
         Instance.Load(nodeId);
         //开始游戏
@@ -224,7 +221,7 @@ public abstract class GameServer
         //before；
         BeforeRun();
         //创建
-        Instance = Activator.CreateInstance(gsType) as GameServer;
+        _ins = A.NotNull(Activator.CreateInstance(gsType) as GameServer);
         //准备
         Instance.Load(nodeId);
         //开始游戏
@@ -246,21 +243,17 @@ public abstract class GameServer
     //获取model
     public K GetComponent<K>() where K : class, IGlobalComponent
     {
-        if (!_components.TryGetValue(typeof(K), out var component))
-        {
-            A.Abort(Code.Error, $"game component:{typeof(K).Name} not found");
-            ;
-        }
-
+        _components.TryGetValue(typeof(K), out var component);
+        component = A.NotNull(component, Code.Error, $"game component:{typeof(K).Name} not found");
         return (K) component;
     }
 
     public void AddComponent<K>(params object[] args) where K : class, IGlobalComponent
     {
         var t = typeof(K);
-        if (_components.TryGetValue(t, out var _)) A.Abort(Code.Error, $"game component:{t.Name} repeated");
+        if (_components.TryGetValue(t, out _)) A.Abort(Code.Error, $"game component:{t.Name} repeated");
 
-        var obj = Activator.CreateInstance(t, args) as K;
+        var obj = A.NotNull(Activator.CreateInstance(t, args) as K);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }

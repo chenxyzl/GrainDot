@@ -56,6 +56,5 @@ public class ClientConvChannelManager : IChannelManager
     {
         var bytebuffer = msg.Content;
         return bytebuffer.GetIntLE(convIndex);
-        ;
     }
 }

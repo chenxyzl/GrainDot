@@ -25,36 +25,40 @@ public abstract class ACategory : ISupportInitialize
 ///     管理该所有的配置
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class ACategory<K, T> : ACategory where T : IExcelConfig<K>
+public abstract class ACategory<K, T> : ACategory where T : IExcelConfig<K> where K : notnull
 {
-    protected Dictionary<K, T> dict;
+    protected Dictionary<K, T> dict = new();
 
     public override Type ConfigType => typeof(T);
 
     public override void BeginInit()
     {
-        //typeof(T).GetTypeInfo().IsAssignableFrom(typeof(IExcelConfig).Ge‌​tTypeInfo())
-        var fileName = GetType().GetCustomAttribute<ConfigAttribute>().FileName;
+        //typeof(T).GetTypeInfo().IsAssignableFrom(typeof(IExcelConfig).GetTypeInfo())
+        var fileName = A.NotNull(GetType().GetCustomAttribute<ConfigAttribute>()?.FileName, Code.Error,
+            "get ConfigAttribute not found");
         FromExcel(fileName);
     }
 
     private void FromExcel(string fileName)
     {
-        dict = new Dictionary<K, T>();
+        var temp = new Dictionary<K, T>();
         var path = $"../Config/{fileName}.xlsx";
         try
         {
             using (var stream = File.OpenRead(path))
             {
                 using var importer = new ExcelImporter(stream);
-                var sheetNames = typeof(T).GetCustomAttribute<SheetNameAttribute>().SheetName;
+                var sheetNames = A.NotNull(typeof(T).GetCustomAttribute<SheetNameAttribute>()?.SheetName,
+                    Code.Error, "get SheetNameAttribute not found");
                 foreach (var sheetName in sheetNames)
                 {
                     var sheet = importer.ReadSheet(sheetName);
                     var president = sheet.ReadRows<T>().ToArray();
-                    foreach (var v in president) dict[v.Id] = v;
+                    foreach (var v in president) temp[v.Id] = v;
                 }
             }
+
+            dict = temp;
         }
         catch (Exception e)
         {
@@ -68,9 +72,8 @@ public abstract class ACategory<K, T> : ACategory where T : IExcelConfig<K>
 
     public T Get(K id)
     {
-        T t;
-        if (!dict.TryGetValue(id, out t))
-            A.RequireNotNull(t, Code.ConfigNotFound, $"not found config: {typeof(T)} id: {id}");
+        if (!dict.TryGetValue(id, out var t))
+            t = A.NotNull(t, Code.ConfigNotFound, $"not found config: {typeof(T)} id: {id}");
 
         return t;
     }
@@ -90,36 +93,41 @@ public abstract class ACategory<K, T> : ACategory where T : IExcelConfig<K>
 ///     管理该所有的配置
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class ACategory<K, T, V> : ACategory where T : ExcelClassMap<V> where V : IExcelConfig<K>
+public abstract class ACategory<K, T, V> : ACategory
+    where T : ExcelClassMap<V> where V : IExcelConfig<K> where K : notnull
 {
-    protected Dictionary<K, V> dict;
+    protected Dictionary<K, V> dict = new();
 
     public override Type ConfigType => typeof(V);
 
     public override void BeginInit()
     {
         //typeof(T).GetTypeInfo().IsAssignableFrom(typeof(IExcelConfig).Ge‌​tTypeInfo())
-        var fileName = GetType().GetCustomAttribute<ConfigAttribute>().FileName;
+        var fileName = A.NotNull(GetType().GetCustomAttribute<ConfigAttribute>()?.FileName, Code.Error,
+            "get ConfigAttribute not found");
         FromExcel(fileName);
     }
 
     private void FromExcel(string fileName)
     {
-        dict = new Dictionary<K, V>();
+        var temp = new Dictionary<K, V>();
         var path = $"../Config/{fileName}.xlsx";
         try
         {
             using (var importer = new ExcelImporter(File.OpenRead(path)))
             {
                 importer.Configuration.RegisterClassMap(Activator.CreateInstance<T>());
-                var sheetNames = typeof(V).GetCustomAttribute<SheetNameAttribute>().SheetName;
+                var sheetNames = A.NotNull(typeof(V).GetCustomAttribute<SheetNameAttribute>()?.SheetName,
+                    Code.Error, "get SheetNameAttribute not found");
                 foreach (var sheetName in sheetNames)
                 {
                     var sheet = importer.ReadSheet(sheetName);
                     var president = sheet.ReadRows<V>().ToArray();
-                    foreach (var v in president) dict[v.Id] = v;
+                    foreach (var v in president) temp[v.Id] = v;
                 }
             }
+
+            dict = temp;
         }
         catch (Exception e)
         {
@@ -133,9 +141,8 @@ public abstract class ACategory<K, T, V> : ACategory where T : ExcelClassMap<V> 
 
     public V Get(K id)
     {
-        V t;
-        if (!dict.TryGetValue(id, out t))
-            A.RequireNotNull(t, Code.ConfigNotFound, $"not found config: {typeof(V)} id: {id}");
+        if (!dict.TryGetValue(id, out var t))
+            t = A.NotNull(t, Code.ConfigNotFound, $"not found config: {typeof(V)} id: {id}");
 
         return t;
     }

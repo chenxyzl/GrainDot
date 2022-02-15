@@ -5,107 +5,99 @@ namespace Proto
 {
     public class CommandHelper
     {
-        private CommandOption client;
+        private readonly CommandOption _client;
 
-        private CommandLineApplication commandLineApplication;
-        private CommandOption innerClass;
-        private CommandOption innerFiles;
-        private CommandOption ns;
+        private readonly CommandLineApplication _commandLineApplication;
+        private readonly CommandOption _innerClass;
+        private readonly CommandOption _innerFiles;
+        private readonly CommandOption _ns;
 
-        private CommandOption nsOpcode;
-        private CommandOption outerClass;
-        private CommandOption outerFiles;
-        private CommandOption outputInnerFile;
+        private readonly CommandOption _nsOpcode;
+        private readonly CommandOption _outerClass;
+        private readonly CommandOption _outerFiles;
 
-        private CommandOption outputOuterFile;
-        private CommandOption outputPath;
-        private CommandOption protoPath;
-        private CommandOption server;
+        private readonly CommandOption _outputOuterFile;
+        private readonly CommandOption _outputPath;
+        private readonly CommandOption _protoPath;
+        private readonly CommandOption _server;
 
         private CommandHelper()
         {
-        }
-
-        public static CommandHelper Instance { get; } = new();
-        public string Namespace => ns.Value();
-        public List<string> ProtoPath => protoPath.Values;
-        public string OutputPath => outputPath.Value();
-        public bool GenServer => server.HasValue();
-        public bool GenClient => client.HasValue();
-        public List<string> InnerFiles => innerFiles.Values;
-        public List<string> OuterFiles => outerFiles.Values;
-        public string InnerClass => innerClass.Value();
-        public string OuterClass => outerClass.Value();
-        public string OuputInnerFile => outputInnerFile.Value();
-        public string OutputOuterFile => outputOuterFile.Value();
-        public string NamespaceOpcode => nsOpcode.Value();
-
-        public bool Parse(string[] args)
-        {
-            commandLineApplication = new CommandLineApplication(false);
-            ns = commandLineApplication.Option(
+            _commandLineApplication = new CommandLineApplication(false);
+            _ns = _commandLineApplication.Option(
                 "-n | --namespace",
                 "Namespace of protocols",
                 CommandOptionType.SingleValue);
 
-            protoPath = commandLineApplication.Option(
+            _protoPath = _commandLineApplication.Option(
                 "-p | --protocol",
                 "Path of .proto files",
                 CommandOptionType.MultipleValue);
 
-            outputPath = commandLineApplication.Option(
+            _outputPath = _commandLineApplication.Option(
                 "-o | --output",
                 "Destination directory path of the protocol .cs files",
                 CommandOptionType.SingleValue);
 
-            server = commandLineApplication.Option(
+            _server = _commandLineApplication.Option(
                 "-s | --server",
                 "Gen server rpc",
                 CommandOptionType.NoValue);
 
-            client = commandLineApplication.Option(
+            _client = _commandLineApplication.Option(
                 "-c | --client",
                 "Gen Client OpCode operations",
                 CommandOptionType.NoValue);
 
-            innerFiles = commandLineApplication.Option(
+            _innerFiles = _commandLineApplication.Option(
                 "--innerfile",
                 "input file of opcode and inner rpc definitions.",
                 CommandOptionType.MultipleValue);
 
-            outerFiles = commandLineApplication.Option(
+            _outerFiles = _commandLineApplication.Option(
                 "--outerfile",
                 "input file of opcode and outer rpc definitions.",
                 CommandOptionType.MultipleValue);
 
-            innerClass = commandLineApplication.Option(
+            _innerClass = _commandLineApplication.Option(
                 "--innerclass",
                 "input class name of inner definitions.",
                 CommandOptionType.SingleValue);
 
-            outerClass = commandLineApplication.Option(
+            _outerClass = _commandLineApplication.Option(
                 "--outerclass",
                 "input class name of inner definitions.",
                 CommandOptionType.SingleValue);
 
-            outputInnerFile = commandLineApplication.Option(
-                "--outputinner",
-                "filename of inner cs file.",
-                CommandOptionType.SingleValue);
-
-            outputOuterFile = commandLineApplication.Option(
+            _outputOuterFile = _commandLineApplication.Option(
                 "--outputouter",
                 "filename of outer cs file.",
                 CommandOptionType.SingleValue);
 
-            nsOpcode = commandLineApplication.Option(
+            _nsOpcode = _commandLineApplication.Option(
                 "--nsopcode",
                 "namespaceo of opcode class",
                 CommandOptionType.SingleValue);
 
-            commandLineApplication.HelpOption("-? | -h | --help");
+            _commandLineApplication.HelpOption("-? | -h | --help");
+        }
 
-            commandLineApplication.Execute(args);
+        public static CommandHelper Instance { get; } = new();
+        public string Namespace => _ns.Value();
+        public List<string> ProtoPath => _protoPath.Values;
+        public string OutputPath => _outputPath.Value();
+        public bool GenServer => _server.HasValue();
+        public bool GenClient => _client.HasValue();
+        public List<string> InnerFiles => _innerFiles.Values;
+        public List<string> OuterFiles => _outerFiles.Values;
+        public string InnerClass => _innerClass.Value();
+        public string OuterClass => _outerClass.Value();
+        public string OutputOuterFile => _outputOuterFile.Value();
+        public string NamespaceOpcode => _nsOpcode.Value();
+
+        public bool Parse(string[] args)
+        {
+            _commandLineApplication.Execute(args);
 
             if (args.Length == 1 && (args[0] == "-?" || args[0] == "-h" || args[0] == "--help"))
                 return true;

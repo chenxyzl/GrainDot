@@ -8,7 +8,7 @@ namespace World.Model;
 public class WorldActor : BaseActor
 {
     public static readonly Props P = Props.Create<WorldActor>();
-    private ILog _log;
+    private ILog? _log;
 
 
     public WorldActor()
@@ -18,15 +18,7 @@ public class WorldActor : BaseActor
 
     public ulong WorldId { get; private set; }
 
-    public override ILog Logger
-    {
-        get
-        {
-            if (_log == null) _log = new NLogAdapter($"world:{WorldId}");
-
-            return _log;
-        }
-    }
+    public override ILog Logger => _log ??= new NLogAdapter($"world:{WorldId}");
 
     protected override async void PreStart()
     {
@@ -66,7 +58,7 @@ public class WorldActor : BaseActor
             }
             case RequestWorld request:
             {
-                RpcManager.Instance.InnerHandlerDispatcher.Dispatcher(this, request);
+                RpcManager.Instance.InnerHandlerDispatcher?.Dispatcher(this, request);
                 break;
             }
         }

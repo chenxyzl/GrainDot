@@ -6,9 +6,9 @@ namespace Base;
 
 public class GlobalHotfixManager : Single<GlobalHotfixManager>
 {
-    private IGlobalHotfixLife hotfix;
+    private IGlobalHotfixLife? hotfix;
 
-    public IGlobalHotfixLife Hotfix => A.RequireNotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
+    public IGlobalHotfixLife Hotfix => A.NotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
 
     public void ReloadHandler()
     {
@@ -21,6 +21,6 @@ public class GlobalHotfixManager : Single<GlobalHotfixManager>
 
         if (types.Count > 1) A.Abort(Code.Error, $"GlobalLife.ServiceAttribute Count:{types.Count} Error");
 
-        hotfix = Activator.CreateInstance(types.First()) as IGlobalHotfixLife;
+        hotfix = A.NotNull(Activator.CreateInstance(types.First()) as IGlobalHotfixLife);
     }
 }

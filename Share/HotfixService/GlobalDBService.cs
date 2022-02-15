@@ -18,7 +18,7 @@ public static class GlobalDBService
         return Task.CompletedTask;
     }
 
-    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
+    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string? collection = null)
         where T : BaseState
     {
         return self._database.GetCollection<T>(collection ?? typeof(T).Name);
@@ -37,7 +37,7 @@ public static class GlobalDBService
     // }
 
     //查询1个
-    public static async Task<T> Query<T>(this DBComponent self, ulong id, string collection = null)
+    public static async Task<T> Query<T>(this DBComponent self, ulong id, string? collection = null)
         where T : BaseState
     {
         var cursor =
@@ -50,7 +50,7 @@ public static class GlobalDBService
 
     //查询多个
     public static async Task<List<T>> Query<T>(this DBComponent self, Expression<Func<T, bool>> filter,
-        string collection = null)
+        string? collection = null)
         where T : BaseState
     {
         var cursor = await self.GetCollection<T>(collection)
@@ -60,7 +60,7 @@ public static class GlobalDBService
     }
 
     //保存1个
-    public static async Task Save<T>(this DBComponent self, T state, string collectionName = null) where T : BaseState
+    public static async Task Save<T>(this DBComponent self, T state, string? collectionName = null) where T : BaseState
     {
         if (state == null)
         {
@@ -82,7 +82,7 @@ public static class GlobalDBService
     // }
 
     //按照string删除
-    public static async Task<long> Remove<T>(this DBComponent self, ulong id, string collection = null)
+    public static async Task<long> Remove<T>(this DBComponent self, ulong id, string? collection = null)
         where T : BaseState
     {
         var result = await self.GetCollection<T>(collection)
@@ -92,7 +92,7 @@ public static class GlobalDBService
 
     //按条件删除多个
     public static async Task<long> Remove<T>(this DBComponent self, Expression<Func<T, bool>> filter,
-        string collection = null) where T : BaseState
+        string? collection = null) where T : BaseState
     {
         var result = await self.GetCollection<T>(collection)
             .DeleteManyAsync(filter);

@@ -11,9 +11,9 @@ public partial class HomeInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
     public async void Dispatcher(BaseActor actor, IRequest request)
     {
-        var message = request as RequestPlayer;
+        var message = A.NotNull(request as RequestPlayer);
         var sender = actor.GetSender();
-        var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
+        var rpcType = A.NotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
             $"inner opcode:{message.Opcode} not exit", true);
         if (rpcType == OpType.CS)
             try

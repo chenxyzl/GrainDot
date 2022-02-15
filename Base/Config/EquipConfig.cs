@@ -6,7 +6,7 @@ namespace Base.Config;
 
 public class EAConfig : IExcelConfig<int>
 {
-    [ExcelColumnName("名称")] public string Name { get; set; }
+    [ExcelColumnName("名称")] public string Name { get; set; } = "";
 
     [ExcelColumnName("稀有度")] public Rarity Rarity { get; set; }
 

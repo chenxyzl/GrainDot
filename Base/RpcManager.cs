@@ -20,26 +20,26 @@ public class RpcManager : Single<RpcManager>
     //
     private bool onlyFirst = true;
 
-    public IInnerHandlerDispatcher InnerHandlerDispatcher { get; private set; }
+    public IInnerHandlerDispatcher? InnerHandlerDispatcher { get; private set; }
 
-    public IGateHandlerDispatcher OuterHandlerDispatcher { get; private set; }
+    public IGateHandlerDispatcher? OuterHandlerDispatcher { get; private set; }
 
     public uint GetRequestOpcode(Type t)
     {
         requestOpcodeDic.TryGetValue(t, out var v);
-        return A.RequireNotNull(v, Code.Error, $"request type:{t.Name} to code not found");
+        return A.NotNull(v, Code.Error, $"request type:{t.Name} to code not found");
     }
 
     public Type GetResponseOpcode(uint opcode)
     {
         opcodeResponseDic.TryGetValue(opcode, out var v);
-        return A.RequireNotNull(v, Code.Error,
+        return A.NotNull(v, Code.Error,
             $"response opcode:{opcode} to code not found");
     }
 
     public OpType GetRpcType(uint opcode)
     {
-        return A.RequireNotNull(rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
+        return A.NotNull(rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
     }
 
     public void ReloadHanlder()
@@ -53,10 +53,10 @@ public class RpcManager : Single<RpcManager>
             A.Abort(Code.Error, $"InnerRpcAttribute Count Must 0 or 1, now is {outerTypes.Count}");
 
         if (innerTypes.Count == 1)
-            InnerHandlerDispatcher = Activator.CreateInstance(innerTypes.First()) as IInnerHandlerDispatcher;
+            InnerHandlerDispatcher = A.NotNull(Activator.CreateInstance(innerTypes.First()) as IInnerHandlerDispatcher);
 
         if (outerTypes.Count == 1)
-            OuterHandlerDispatcher = Activator.CreateInstance(innerTypes.First()) as IGateHandlerDispatcher;
+            OuterHandlerDispatcher = A.NotNull(Activator.CreateInstance(outerTypes.First()) as IGateHandlerDispatcher);
 
         //不会改变的，只需要Load一次
         if (onlyFirst)

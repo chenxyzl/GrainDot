@@ -42,7 +42,7 @@ public class CallComponent : IActorComponent<BaseActor>
         else
         {
             var retType = RpcManager.Instance.GetResponseOpcode(respone.Opcode);
-            var ret = SerializeHelper.FromBinary(retType, respone.Content) as IResponse;
+            var ret = A.NotNull(SerializeHelper.FromBinary(retType, respone.Content) as IResponse);
             senderMessage.Tcs.SetResult(ret);
         }
     }

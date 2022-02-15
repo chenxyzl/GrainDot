@@ -4,12 +4,12 @@ namespace Base.ET;
 
 public class ETCancellationToken
 {
-    private HashSet<Action> actions = new();
+    private HashSet<Action>? actions = new();
 
     public void Add(Action callback)
     {
         // 如果action是null，绝对不能添加,要抛异常，说明有协程泄漏
-        actions.Add(callback);
+        actions!.Add(callback);
     }
 
     public void Remove(Action callback)
@@ -33,6 +33,8 @@ public class ETCancellationToken
     {
         var runActions = actions;
         actions = null;
-        foreach (var action in runActions) action.Invoke();
+        if (runActions != null)
+            foreach (var action in runActions)
+                action.Invoke();
     }
 }

@@ -13,9 +13,9 @@ internal static class Extention
     /// =
     /// <param name="str">字符串</param>
     /// <returns></returns>
-    public static IPEndPoint ToIPEndPoint(this string str)
+    public static IPEndPoint? ToIPEndPoint(this string str)
     {
-        IPEndPoint iPEndPoint = null;
+        IPEndPoint? iPEndPoint;
         try
         {
             var strArray = str.Split(':').ToArray();

@@ -16,7 +16,7 @@ public class WorldSessionComponent : IActorComponent<WorldActor>
     public WorldSession GetWorldSession(ulong playerId)
     {
         sessionManager.TryGetValue(playerId, out var sess);
-        return A.RequireNotNull(sess, Code.PlayerNotOnline);
+        return A.NotNull(sess, Code.PlayerNotOnline);
     }
 
     public WorldSession AddOrUpdateWorldSession(ulong playerId, IActorRef player)

@@ -4,7 +4,7 @@ namespace Base.ET;
 
 public static class ETTaskHelper
 {
-    public static async ETTask<bool> WaitAny<T>(ETTask<T>[] tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAny<T>(ETTask<T>[] tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Length == 0) return false;
 
@@ -25,7 +25,7 @@ public static class ETTaskHelper
         return !cancellationToken.IsCancel();
     }
 
-    public static async ETTask<bool> WaitAny(ETTask[] tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAny(ETTask[] tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Length == 0) return false;
 
@@ -46,7 +46,7 @@ public static class ETTaskHelper
         return !cancellationToken.IsCancel();
     }
 
-    public static async ETTask<bool> WaitAll<T>(ETTask<T>[] tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAll<T>(ETTask<T>[] tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Length == 0) return false;
 
@@ -67,7 +67,7 @@ public static class ETTaskHelper
         return !cancellationToken.IsCancel();
     }
 
-    public static async ETTask<bool> WaitAll<T>(List<ETTask<T>> tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAll<T>(List<ETTask<T>> tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Count == 0) return false;
 
@@ -88,7 +88,7 @@ public static class ETTaskHelper
         return !cancellationToken.IsCancel();
     }
 
-    public static async ETTask<bool> WaitAll(ETTask[] tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAll(ETTask[] tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Length == 0) return false;
 
@@ -109,7 +109,7 @@ public static class ETTaskHelper
         return !cancellationToken.IsCancel();
     }
 
-    public static async ETTask<bool> WaitAll(List<ETTask> tasks, ETCancellationToken cancellationToken = null)
+    public static async ETTask<bool> WaitAll(List<ETTask> tasks, ETCancellationToken? cancellationToken = null)
     {
         if (tasks.Count == 0) return false;
 
@@ -134,7 +134,7 @@ public static class ETTaskHelper
     {
         private int count;
 
-        private List<ETTask> tcss = new();
+        private List<ETTask>? tcss = new();
 
         public CoroutineBlocker(int count)
         {
@@ -150,14 +150,16 @@ public static class ETTaskHelper
             {
                 var t = tcss;
                 tcss = null;
-                foreach (var ttcs in t) ttcs.SetResult();
+                if (t != null)
+                    foreach (var ttcs in t)
+                        ttcs.SetResult();
 
                 return;
             }
 
             var tcs = ETTask.Create(true);
 
-            tcss.Add(tcs);
+            tcss?.Add(tcs);
             await tcs;
         }
     }

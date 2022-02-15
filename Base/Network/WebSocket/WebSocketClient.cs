@@ -35,7 +35,7 @@ internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocke
             if (!handshaker.IsHandshakeComplete) _handshakerSp.WaitOne();
 
             await _channel.WriteAndFlushAsync(new BinaryWebSocketFrame(Unpooled.WrappedBuffer(bytes)));
-            _clientEvent?.OnSend(this, bytes);
+            _clientEvent.OnSend?.Invoke(this, bytes);
         }
         catch (Exception ex)
         {

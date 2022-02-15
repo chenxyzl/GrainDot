@@ -17,7 +17,7 @@ public static class EnumHelper
 
     public static T FromString<T>(string str)
     {
-        if (!Enum.IsDefined(typeof(T), str)) return default;
+        A.Ensure(Enum.IsDefined(typeof(T), str), des: $"str{str} not in {typeof(T)}");
 
         return (T) Enum.Parse(typeof(T), str);
     }

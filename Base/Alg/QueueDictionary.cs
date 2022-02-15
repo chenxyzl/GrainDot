@@ -2,7 +2,7 @@
 
 namespace Base.Alg;
 
-public class QueueDictionary<T, K>
+public class QueueDictionary<T, K> where T : notnull
 {
     private readonly Dictionary<T, K> dictionary = new();
     private readonly List<T> list = new();

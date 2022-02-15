@@ -14,11 +14,11 @@ public class MapListValue : IExcelConfig<uint>
 
     [ExcelColumnName("key", field: "val")]
     [ExcelColumnMulti(5)]
-    public Dictionary<uint, uint> MapTest { get; set; }
+    public Dictionary<uint, uint> MapTest { get; set; } = new();
 
     [ExcelColumnName("list")]
     [ExcelColumnMulti(5)]
-    public List<int> ListTest { get; set; }
+    public List<int> ListTest { get; set; } = new();
 
     [ExcelColumnName("id")] public uint Id { get; set; }
 }

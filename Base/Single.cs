@@ -1,6 +1,8 @@
-﻿public class Single<T> where T : class
+﻿namespace Base;
+
+public class Single<T> where T : class
 {
-    private static T _instance;
+    private static T? _instance;
     private static readonly object _syncLock = new();
 
     public static T Instance
@@ -13,7 +15,7 @@
                 {
                     if (_instance == null)
                         //Activator.CreateInstance()  创建类,获取类的实例
-                        _instance = Activator.CreateInstance(typeof(T), true) as T;
+                        _instance = (Activator.CreateInstance(typeof(T), true) as T)!;
 
                     return _instance;
                 }

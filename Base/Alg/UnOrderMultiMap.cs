@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Base.Alg;
 
-public class UnOrderMultiMap<T, K>
+public class UnOrderMultiMap<T, K> where T : notnull
 {
     private readonly Dictionary<T, List<K>> dictionary = new();
 
@@ -17,12 +17,11 @@ public class UnOrderMultiMap<T, K>
     /// </summary>
     /// <param name="t"></param>
     /// <returns></returns>
-    public List<K> this[T t]
+    public List<K>? this[T t]
     {
         get
         {
-            List<K> list;
-            dictionary.TryGetValue(t, out list);
+            dictionary.TryGetValue(t, out var list);
             return list;
         }
     }
@@ -34,8 +33,7 @@ public class UnOrderMultiMap<T, K>
 
     public void Add(T t, K k)
     {
-        List<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null)
         {
             list = FetchList();
@@ -73,8 +71,7 @@ public class UnOrderMultiMap<T, K>
 
     public bool Remove(T t, K k)
     {
-        List<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return false;
 
         if (!list.Remove(k)) return false;
@@ -90,8 +87,7 @@ public class UnOrderMultiMap<T, K>
 
     public bool Remove(T t)
     {
-        List<K> list = null;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list != null) RecycleList(list);
 
         return dictionary.Remove(t);
@@ -104,17 +100,15 @@ public class UnOrderMultiMap<T, K>
     /// <returns></returns>
     public K[] GetAll(T t)
     {
-        List<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return new K[0];
 
         return list.ToArray();
     }
 
-    public K GetOne(T t)
+    public K? GetOne(T t)
     {
-        List<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list != null && list.Count > 0) return list[0];
 
         return default;
@@ -122,8 +116,7 @@ public class UnOrderMultiMap<T, K>
 
     public bool Contains(T t, K k)
     {
-        List<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return false;
 
         return list.Contains(k);

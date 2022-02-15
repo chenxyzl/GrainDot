@@ -4,7 +4,7 @@ namespace fec;
 
 public class InputOutputByteBufTableCodingLoop : ByteBufCodingLoopBase
 {
-    public void codeSomeShards(byte[][] matrixRows, IByteBuffer[] inputs, int inputCount, IByteBuffer[] outputs,
+    public override void codeSomeShards(byte[][] matrixRows, IByteBuffer[] inputs, int inputCount, IByteBuffer[] outputs,
         int outputCount, int offset, int byteCount)
     {
         var table = Galois.MULTIPLICATION_TABLE;
@@ -43,7 +43,7 @@ public class InputOutputByteBufTableCodingLoop : ByteBufCodingLoopBase
     }
 
 
-    public bool checkSomeShards(
+    public override bool checkSomeShards(
         byte[][] matrixRows,
         IByteBuffer[] inputs, int inputCount,
         byte[][] toCheck, int checkCount,

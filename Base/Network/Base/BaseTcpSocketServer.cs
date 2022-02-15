@@ -21,14 +21,14 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
 
     private ConcurrentDictionary<string, TConnection> _idMapConnections { get; } = new();
 
-    protected IChannel _serverChannel { get; set; }
+    protected IChannel _serverChannel { get; set; } = null!;
 
     protected void AddConnection(TConnection theConnection)
     {
         if (_idMapConnections.TryRemove(theConnection.ConnectionId, out var conn))
         {
             A.Abort(Code.Error, $"connectionId {theConnection.ConnectionId} repeated");
-            conn?.Close();
+            conn.Close();
         }
 
         _idMapConnections[theConnection.ConnectionId] = theConnection;
@@ -38,7 +38,7 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     {
         var id = clientChannel.Id.AsShortText();
         _idMapConnections.TryGetValue(clientChannel.Id.AsShortText(), out var conn);
-        return A.RequireNotNull(conn, Code.Error, $"conn:{id} not found");
+        return A.NotNull(conn, Code.Error, $"conn:{id} not found");
     }
 
     protected void PackException(Action action)
@@ -64,7 +64,7 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     {
         var theConnection = BuildConnection(ctx.Channel);
         AddConnection(theConnection);
-        _eventHandle.OnNewConnection?.Invoke(this as TSocketServer, theConnection);
+        _eventHandle.OnNewConnection?.Invoke(A.NotNull(this as TSocketServer), theConnection);
         theConnection.OnConnected();
     }
 
@@ -84,7 +84,7 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
         {
             var theConnection = GetConnection(clientChannel);
             RemoveConnection(theConnection);
-            _eventHandle.OnConnectionClose(this as TSocketServer, theConnection);
+            _eventHandle.OnConnectionClose?.Invoke(A.NotNull(this as TSocketServer), theConnection);
             theConnection.OnClose();
         });
     }
@@ -104,7 +104,7 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     public TConnection GetConnectionById(string connectionId)
     {
         _idMapConnections.TryGetValue(connectionId, out var conn);
-        return A.RequireNotNull(conn, Code.Error, $"conn:{connectionId} not found");
+        return A.NotNull(conn, Code.Error, $"conn:{connectionId} not found");
     }
 
     public int GetConnectionCount()

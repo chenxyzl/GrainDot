@@ -66,7 +66,7 @@ public abstract class BaseTcpSocketConnection<TTcpSocketServer, TConnection, TDa
     /// <summary>
     ///     客户端地址
     /// </summary>
-    public IPEndPoint ClientAddress => _channel.RemoteAddress as IPEndPoint;
+    public IPEndPoint ClientAddress => A.NotNull(_channel.RemoteAddress as IPEndPoint);
 
     public long time { get; }
 

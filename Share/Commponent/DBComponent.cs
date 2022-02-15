@@ -5,8 +5,8 @@ namespace Share.Model.Component;
 
 public class DBComponent : IGlobalComponent
 {
-    public IMongoDatabase _database;
-    public MongoClient _mongoClient;
+    public IMongoDatabase _database = null!;
+    public MongoClient _mongoClient = null!;
 
     public DBComponent(string _url)
     {

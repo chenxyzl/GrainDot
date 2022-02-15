@@ -285,7 +285,7 @@ public sealed class Galois
                 generateLogTable(i);
                 result.Add(i);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // this one didn't work
             }

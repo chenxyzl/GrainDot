@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Base;
 using Base.Serialize;
 using Home.Model;
@@ -21,7 +22,8 @@ public partial class GateHandlerDispatcher
         }
 
         A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);
-        return null;
+        //只是为了编译过
+        throw new Exception();
     }
 
     public async Task DispatcherNoResult(PlayerActor player, Request message)

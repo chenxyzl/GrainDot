@@ -9,7 +9,7 @@ public static class ExtensionMethods
     //反射调用异步方法
     public static async Task<object> InvokeAsync(this MethodInfo @this, object obj, params object[] parameters)
     {
-        dynamic awaitable = @this.Invoke(obj, parameters);
+        dynamic awaitable = @this.Invoke(obj, parameters)!;
         await awaitable;
         return awaitable.GetAwaiter().GetResult();
     }

@@ -19,34 +19,34 @@ internal abstract class BaseGenericClientBuilder<TBuilder, TTarget, TData> :
     {
         _event.OnClientClose = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnClientStarted(Action<TTarget> action)
     {
         _event.OnClientStarted = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnRecieve(Action<TTarget, TData> action)
     {
         _event.OnRecieve = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnSend(Action<TTarget, TData> action)
     {
         _event.OnSend = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public override TBuilder OnException(Action<Exception> action)
     {
         _event.OnException = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 }

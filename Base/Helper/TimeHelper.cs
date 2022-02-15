@@ -18,6 +18,5 @@ public static class TimeHelper
     public static long Now()
     {
         return (DateTime.UtcNow.Ticks - epoch) / 10000;
-        ;
     }
 }

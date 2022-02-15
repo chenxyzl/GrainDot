@@ -16,7 +16,7 @@ internal class TcpSocketServerBuilder<T> :
     {
     }
 
-    protected Action<IChannelPipeline> _setEncoder { get; set; }
+    protected Action<IChannelPipeline>? _setEncoder { get; set; }
 
     public ITcpSocketServerBuilder SetLengthFieldDecoder(int maxFrameLength, int lengthFieldOffset,
         int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip,

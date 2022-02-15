@@ -28,6 +28,6 @@ public abstract class ICustomChannel
 
     public virtual void Close()
     {
-        _conn = null;
+        _conn.Close();
     }
 }

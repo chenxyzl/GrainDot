@@ -6,9 +6,9 @@ namespace Base;
 
 public class GameHotfixManager : Single<GameHotfixManager>
 {
-    private IGameHotfixLife hotfix;
+    private IGameHotfixLife? hotfix;
 
-    public IGameHotfixLife Hotfix => A.RequireNotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
+    public IGameHotfixLife Hotfix => A.NotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
 
     public void ReloadHandler()
     {
@@ -21,6 +21,6 @@ public class GameHotfixManager : Single<GameHotfixManager>
 
         if (types.Count > 1) A.Abort(Code.Error, $"GameLife.ServiceAttribute Count:{types.Count} Error");
 
-        hotfix = Activator.CreateInstance(types.First()) as IGameHotfixLife;
+        hotfix = A.NotNull(Activator.CreateInstance(types.First()) as IGameHotfixLife);
     }
 }

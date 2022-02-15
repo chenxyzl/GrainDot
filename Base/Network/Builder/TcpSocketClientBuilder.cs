@@ -15,7 +15,7 @@ internal class TcpSocketClientBuilder : BaseGenericClientBuilder<ITcpSocketClien
     {
     }
 
-    protected Action<IChannelPipeline> _setEncoder { get; set; }
+    protected Action<IChannelPipeline>? _setEncoder { get; set; }
 
     public ITcpSocketClientBuilder SetLengthFieldDecoder(int maxFrameLength, int lengthFieldOffset,
         int lengthFieldLength, int lengthAdjustment, int initialBytesToStrip,

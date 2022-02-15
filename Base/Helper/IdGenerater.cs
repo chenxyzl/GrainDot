@@ -10,7 +10,7 @@ public class IdGenerater
     private static readonly ulong _timeFlagLimit = 1UL << 42;
     private static readonly int _incFlag = 10; //每毫秒2^10个id
     private static readonly ulong _incFlagLimit = 1UL << 10;
-    private static IdGenerater _ins;
+    private static IdGenerater? _ins;
     private readonly uint _node;
     private ulong _lastTime;
     private uint _value;
@@ -49,12 +49,14 @@ public class IdGenerater
     public static long ParseTime(ulong id)
     {
         var time = (id << _nodeFlag) >> (_nodeFlag + _incFlag);
-        return (long)time;
+        return (long) time;
     }
 
 
     public static ulong GenerateId()
     {
+        _ins = A.NotNull(_ins, Code.Error, "_ins not init");
+
         while (true)
         {
             var time = (ulong) TimeHelper.Now();

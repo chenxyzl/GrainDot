@@ -146,7 +146,9 @@ public class Kcp
     private long tsFlush = IKCP_INTERVAL;
 
     /**上次ack时间**/
+#pragma warning disable CS0169
     private long tsLastack;
+#pragma warning restore CS0169
 
     /**探测时间**/
     private long tsProbe;
@@ -1039,7 +1041,7 @@ public class Kcp
             var index = (int) (sn - RcvNxt - 1);
             if (index >= ackMaskSize)
                 break;
-            if (index >= 0) ackMask |= 1 << index;
+            if (index >= 0) ackMask |= (uint) (1 << index);
         }
 
         seg.AckMask = ackMask;

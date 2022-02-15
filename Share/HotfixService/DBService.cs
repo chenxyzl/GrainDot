@@ -20,7 +20,7 @@ public static class DBService
         return Task.CompletedTask;
     }
 
-    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string collection = null)
+    public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string? collection = null)
         where T : BaseState
     {
         return self._database.GetCollection<T>(collection ?? typeof(T).Name);
@@ -39,7 +39,7 @@ public static class DBService
     // }
 
     //查询1个
-    public static async Task<T> Query<T>(this CallComponent self, ulong id, string collection = null)
+    public static async Task<T> Query<T>(this CallComponent self, ulong id, string? collection = null)
         where T : BaseState
     {
         var beginTime = TimeHelper.Now();
@@ -56,7 +56,7 @@ public static class DBService
 
     //查询多个
     public static async Task<List<T>> Query<T>(this CallComponent self, Expression<Func<T, bool>> filter,
-        string collection = null)
+        string? collection = null)
         where T : BaseState
     {
         var cursor = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
@@ -67,7 +67,7 @@ public static class DBService
     }
 
     //保存1个
-    public static async Task Save<T>(this CallComponent self, T state, string collectionName = null) where T : BaseState
+    public static async Task Save<T>(this CallComponent self, T state, string? collectionName = null) where T : BaseState
     {
         if (state == null)
         {
@@ -90,7 +90,7 @@ public static class DBService
     // }
 
     //按照string删除
-    public static async Task<long> Remove<T>(this CallComponent self, ulong id, string collection = null)
+    public static async Task<long> Remove<T>(this CallComponent self, ulong id, string? collection = null)
         where T : BaseState
     {
         var result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
@@ -101,7 +101,7 @@ public static class DBService
 
     //按条件删除多个
     public static async Task<long> Remove<T>(this CallComponent self, Expression<Func<T, bool>> filter,
-        string collection = null) where T : BaseState
+        string? collection = null) where T : BaseState
     {
         var result = await GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection)
             .DeleteManyAsync(filter);

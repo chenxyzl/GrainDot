@@ -20,11 +20,11 @@ public static class ConfigHelper
 
     public static T ToObject<T>(string str)
     {
-        return JsonConvert.DeserializeObject<T>(str);
+        return A.NotNull(JsonConvert.DeserializeObject<T>(str));
     }
 
     public static string ToJson(object obj)
     {
-        return JsonConvert.SerializeObject(obj);
+        return A.NotNull(JsonConvert.SerializeObject(obj));
     }
 }

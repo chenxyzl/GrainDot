@@ -6,7 +6,7 @@ namespace Base.Config;
 [SheetName(new[] {"材料", "道具"})]
 public class ItemConfig : IExcelConfig<int>
 {
-    [ExcelColumnName("名称")] public string Name { get; set; }
+    [ExcelColumnName("名称")] public string Name { get; set; } = "";
 
     [ExcelColumnName("最大堆叠数")] public uint MaxCount { get; set; }
 
@@ -17,18 +17,12 @@ public class ItemConfig : IExcelConfig<int>
 [Config("Item")]
 public class ItemConfigCategory : ACategory<int, ItemConfig>
 {
-    public static ItemConfigCategory Instance;
-
-    public ItemConfigCategory()
-    {
-        Instance = this;
-    }
 }
 
 [SheetName(new[] {"产出包"})]
 public class AssetsConfig : IExcelConfig<int>
 {
-    [ExcelColumnName("名称")] public string Name { get; set; }
+    [ExcelColumnName("名称")] public string Name { get; set; } = "";
 
     [ExcelColumnName("最大堆叠数")] public uint MaxCount { get; set; }
     [ExcelColumnName("##ID")] public int Id { get; set; }

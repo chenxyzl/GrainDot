@@ -6,6 +6,6 @@ namespace Home.Model.State;
 public class PlayerState : IPlayerState
 {
     public ulong Exp; //经验值
-    public string Name;
+    public string Name = "";
     public int TId; //角色模版id
 }

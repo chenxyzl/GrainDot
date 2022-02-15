@@ -10,7 +10,7 @@ public class WebSocketChannel<T> : WebSocketConnection where T : ICustomChannel
         TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> serverEvent) : base(server, channel,
         serverEvent)
     {
-        _customChannel = Activator.CreateInstance(typeof(T), this) as T;
+        _customChannel = A.NotNull(Activator.CreateInstance(typeof(T), this) as T);
     }
 
     public override void OnClose()

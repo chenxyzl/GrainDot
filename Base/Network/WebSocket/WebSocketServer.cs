@@ -4,6 +4,7 @@ using DotNetty.Buffers;
 using DotNetty.Codecs.Http;
 using DotNetty.Codecs.Http.WebSockets;
 using DotNetty.Transport.Channels;
+using Message;
 
 namespace Base.Network;
 
@@ -11,7 +12,7 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
     IWebSocketServer
     where T : WebSocketConnection
 {
-    private WebSocketServerHandshaker handshaker;
+    private WebSocketServerHandshaker? handshaker;
 
     public WebSocketServer(int port, string path,
         TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> eventHandle)
@@ -25,7 +26,7 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
     protected override IWebSocketConnection BuildConnection(IChannel clientChannel)
     {
         var arg = new object[] {this, clientChannel, _eventHandle};
-        return Activator.CreateInstance(typeof(T), arg) as T;
+        return A.NotNull(Activator.CreateInstance(typeof(T), arg) as T, Code.Error);
     }
 
     public override void OnChannelReceive(IChannelHandlerContext ctx, object msg)
@@ -71,7 +72,7 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
         // Check for closing frame
         if (frame is CloseWebSocketFrame)
         {
-            handshaker.CloseAsync(ctx.Channel, (CloseWebSocketFrame) frame.Retain());
+            handshaker?.CloseAsync(ctx.Channel, (CloseWebSocketFrame) frame.Retain());
             return;
         }
 
@@ -111,7 +112,7 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
         // Send the response and close the connection if necessary.
         var task = ctx.Channel.WriteAndFlushAsync(res);
         if (!HttpUtil.IsKeepAlive(req) || res.Status.Code != 200)
-            task.ContinueWith((t, c) => ((IChannelHandlerContext) c).CloseAsync(),
+            task.ContinueWith((t, c) => ((IChannelHandlerContext) c!).CloseAsync(),
                 ctx, TaskContinuationOptions.ExecuteSynchronously);
     }
 

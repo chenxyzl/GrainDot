@@ -17,7 +17,7 @@ internal class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSo
     {
         PackException(() =>
         {
-            var bytes = (msg as IByteBuffer).ToArray();
+            var bytes = (A.NotNull(msg as IByteBuffer)).ToArray();
             var theConnection = GetConnection(ctx.Channel);
             _eventHandle.OnRecieve?.Invoke(this, theConnection, bytes);
             theConnection.OnRecieve(bytes);
@@ -27,6 +27,6 @@ internal class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSo
     protected override ITcpSocketConnection BuildConnection(IChannel clientChannel)
     {
         var arg = new object[] {this, clientChannel, _eventHandle};
-        return Activator.CreateInstance(typeof(T), arg) as T;
+        return A.NotNull(Activator.CreateInstance(typeof(T), arg) as T);
     }
 }

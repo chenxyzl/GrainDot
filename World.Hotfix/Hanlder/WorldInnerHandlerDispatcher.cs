@@ -12,9 +12,9 @@ public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
     public async void Dispatcher(WorldSession session, IRequest request)
     {
-        var message = request as RequestWorld;
+        var message = A.NotNull(request as RequestWorld);
         var sender = session.World.GetSender();
-        var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
+        var rpcType = A.NotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
             $"inner opcode:{message.Opcode} not exit", true);
         if (rpcType == OpType.CS)
             try
@@ -32,5 +32,11 @@ public partial class WorldInnerHandlerDispatcher : IInnerHandlerDispatcher
             await DispatcherNoResult(session, message);
         else
             A.Abort(Code.Error, $"opcode:{message.Opcode} type error", true);
+    }
+
+    public void Dispatcher(BaseActor actor, IRequest message)
+    {
+        //todo 把消息转成对应的玩家的session
+        throw new System.NotImplementedException();
     }
 }

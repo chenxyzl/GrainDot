@@ -16,7 +16,7 @@ public static class HomeLoginHandler
 
     public static Task<HAPlayerLoginKeyAns> LoginKeyHandler(PlayerActor player, AHPlayerLoginKeyAsk msg)
     {
-        var loginKeyComponent = GameServer.Instance.GetHome().GetComponent<LoginKeyComponent>();
+        var loginKeyComponent = Model.Home.Instance.GetComponent<LoginKeyComponent>();
         player.LastLoginKey = loginKeyComponent.AddPlayerRef(player.GetSelf(), player.LastLoginKey);
         return Task.FromResult(new HAPlayerLoginKeyAns {PlayerKey = player.LastLoginKey});
     }

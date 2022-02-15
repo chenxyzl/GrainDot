@@ -18,7 +18,7 @@ public class EtcdComponent : IGlobalComponent
         addrs = "http://10.7.69.254:12379";
     }
 
-    public EtcdClient etcdClient { private set; get; }
+    public EtcdClient etcdClient { private set; get; } = null!;
     public long LeaseId { private set; get; }
     public CancellationTokenSource CancellationKeepLive { get; } = new();
 

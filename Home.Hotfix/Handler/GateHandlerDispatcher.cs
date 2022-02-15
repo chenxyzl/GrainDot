@@ -13,8 +13,8 @@ public partial class GateHandlerDispatcher : IGateHandlerDispatcher
     {
         var sender = actor.GetSender();
         sender.Tell(message, actor.GetSelf());
-        var player = A.RequireNotNull(actor as PlayerActor, Code.Error, "actor not player");
-        var rpcType = A.RequireNotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
+        var player = A.NotNull(actor as PlayerActor, Code.Error, "actor not player");
+        var rpcType = A.NotNull(RpcManager.Instance.GetRpcType(message.Opcode), Code.Error,
             $"gate opcode:{message.Opcode} not exit", true);
         if (rpcType == OpType.CS)
             try

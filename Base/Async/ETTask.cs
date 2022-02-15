@@ -10,7 +10,7 @@ namespace Base.ET;
 public class ETTask : ICriticalNotifyCompletion
 {
     private static readonly Queue<ETTask> queue = new();
-    private object callback; // Action or ExceptionDispatchInfo
+    private object? callback; // Action or ExceptionDispatchInfo
 
     private bool fromPool;
     private AwaiterStatus state;
@@ -151,11 +151,11 @@ public class ETTask : ICriticalNotifyCompletion
 public class ETTask<T> : ICriticalNotifyCompletion
 {
     private static readonly Queue<ETTask<T>> queue = new();
-    private object callback; // Action or ExceptionDispatchInfo
+    private object? callback; // Action or ExceptionDispatchInfo
 
     private bool fromPool;
     private AwaiterStatus state;
-    private T value;
+    private T? value;
 
     private ETTask()
     {
@@ -238,7 +238,7 @@ public class ETTask<T> : ICriticalNotifyCompletion
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [DebuggerHidden]
-    public T GetResult()
+    public T? GetResult()
     {
         switch (state)
         {

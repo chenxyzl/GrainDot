@@ -6,13 +6,13 @@ namespace Base;
 
 public abstract class BaseActor : UntypedActor, IWithTimers
 {
-    private ICancelable _cancel;
+    private ICancelable? _cancel;
     public ulong uid;
 
     public bool LoadComplete { get; private set; }
 
     public abstract ILog Logger { get; }
-    public ITimerScheduler Timers { get; set; }
+    public ITimerScheduler? Timers { get; set; }
 
     public IActorRef GetSelf()
     {
@@ -40,9 +40,8 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
     protected void EnterUpState()
     {
-        if (_cancel == null)
-            _cancel = Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
-                TimeSpan.FromSeconds(30), Self, new TickT(), Self);
+        _cancel ??= Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
+            TimeSpan.FromSeconds(30), Self, new TickT(), Self);
         LoadComplete = true;
         // Timers.StartSingleTimer(1, message, TimeSpan.FromSeconds(600));
     }
@@ -77,25 +76,19 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     //获取model
     public K GetComponent<K>() where K : class, IComponent
     {
-        IComponent component;
-        if (!_components.TryGetValue(typeof(K), out component))
-        {
-            A.Abort(Code.Error, $"actor component:{typeof(K).Name} not found");
-            ;
-        }
-
+        _components.TryGetValue(typeof(K), out var component);
+        component = A.NotNull(component, Code.Error, $"actor component:{typeof(K).Name} not found");
         return (K) component;
     }
 
     public void AddComponent<K>(params object[] args) where K : class, IComponent
     {
-        IComponent component;
         var t = typeof(K);
-        if (_components.TryGetValue(t, out component)) A.Abort(Code.Error, $"actor component:{t.Name} repeated");
+        if (_components.TryGetValue(t, out _)) A.Abort(Code.Error, $"actor component:{t.Name} repeated");
 
         var allArgs = new List<object> {this};
         foreach (var a in args) allArgs.Add(a);
-        var obj = Activator.CreateInstance(t, allArgs.ToArray()) as K;
+        var obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as K, Code.Error);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }

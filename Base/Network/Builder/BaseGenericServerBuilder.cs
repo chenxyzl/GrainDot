@@ -16,39 +16,39 @@ internal abstract class BaseGenericServerBuilder<TBuilder, TTarget, IConnection,
     {
         _event.OnConnectionClose = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnNewConnection(Action<TTarget, IConnection> action)
     {
         _event.OnNewConnection = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnServerStarted(Action<TTarget> action)
     {
         _event.OnServerStarted = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public override TBuilder OnException(Action<Exception> action)
     {
         _event.OnException = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnRecieve(Action<TTarget, IConnection, TData> action)
     {
         _event.OnRecieve = action;
 
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 
     public TBuilder OnSend(Action<TTarget, IConnection, TData> action)
     {
-        return this as TBuilder;
+        return A.NotNull(this as TBuilder);
     }
 }

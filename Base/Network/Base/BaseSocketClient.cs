@@ -14,16 +14,16 @@ internal abstract class BaseSocketClient<TSocketClient, TData> : ISocketClient, 
     }
 
     protected TcpSocketCientEvent<TSocketClient, TData> _clientEvent { get; }
-    protected IChannel _channel { get; set; }
+    protected IChannel _channel { get; set; } = null!;
 
     public virtual void OnChannelActive(IChannelHandlerContext ctx)
     {
-        _clientEvent.OnClientStarted?.Invoke(this as TSocketClient);
+        _clientEvent.OnClientStarted?.Invoke(A.NotNull(this as TSocketClient));
     }
 
     public void OnChannelInactive(IChannel channel)
     {
-        _clientEvent.OnClientClose(this as TSocketClient);
+        _clientEvent.OnClientClose?.Invoke(A.NotNull(this as TSocketClient));
     }
 
     public void OnException(IChannel channel, Exception exception)

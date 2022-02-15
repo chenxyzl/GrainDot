@@ -6,9 +6,9 @@ namespace Base;
 
 public class PlayerHotfixManager : Single<PlayerHotfixManager>
 {
-    private IPlayerHotfixLife hotfix;
+    private IPlayerHotfixLife? hotfix;
 
-    public IPlayerHotfixLife Hotfix => A.RequireNotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
+    public IPlayerHotfixLife Hotfix => A.NotNull(hotfix, Code.Error, $"{GetType().FullName} must not null");
 
     public void ReloadHanlder()
     {
@@ -21,6 +21,6 @@ public class PlayerHotfixManager : Single<PlayerHotfixManager>
 
         if (types.Count > 1) A.Abort(Code.Error, $"PlayerLife.ServiceAttribute Count:{types.Count} Error");
 
-        hotfix = Activator.CreateInstance(types.First()) as IPlayerHotfixLife;
+        hotfix = A.NotNull(Activator.CreateInstance(types.First()) as IPlayerHotfixLife, Code.Error);
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Base.Alg;
 
-public class MultiMapSet<T, K>
+public class MultiMapSet<T, K> where T : notnull
 {
     // 重用list
     private static readonly Queue<HashSet<K>> queue = new();
@@ -34,8 +34,7 @@ public class MultiMapSet<T, K>
 
     public void Add(T t, K k)
     {
-        HashSet<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null)
         {
             list = FetchList();
@@ -75,8 +74,7 @@ public class MultiMapSet<T, K>
 
     public bool Remove(T t, K k)
     {
-        HashSet<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return false;
 
         if (!list.Remove(k)) return false;
@@ -92,8 +90,7 @@ public class MultiMapSet<T, K>
 
     public bool Remove(T t)
     {
-        HashSet<K> list = null;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list != null) RecycleList(list);
 
         return dictionary.Remove(t);
@@ -106,17 +103,15 @@ public class MultiMapSet<T, K>
     /// <returns></returns>
     public K[] GetAll(T t)
     {
-        HashSet<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return new K[0];
 
         return list.ToArray();
     }
 
-    public K GetOne(T t)
+    public K? GetOne(T t)
     {
-        HashSet<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list != null && list.Count > 0) return list.FirstOrDefault();
 
         return default;
@@ -124,8 +119,7 @@ public class MultiMapSet<T, K>
 
     public bool Contains(T t, K k)
     {
-        HashSet<K> list;
-        dictionary.TryGetValue(t, out list);
+        dictionary.TryGetValue(t, out var list);
         if (list == null) return false;
 
         return list.Contains(k);
