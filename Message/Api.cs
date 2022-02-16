@@ -25,9 +25,9 @@ public partial class SimpleRole: IMessage
 
 }
 
-//登录选角色界面
+//获取角色列表
 [ProtoContract]
-public partial class C2ALogin: IHttpRequest
+public partial class C2AGetRoleList: IHttpRequest
 {
 	[ProtoMember(1)]
 	public int MobileType { get; set; }
@@ -41,7 +41,7 @@ public partial class C2ALogin: IHttpRequest
 }
 
 [ProtoContract]
-public partial class A2CLogin: IHttpResponse
+public partial class A2CGetRoleList: IHttpResponse
 {
 		[ProtoMember(1)]
 		public List<SimpleRole> Rols = new List<SimpleRole>();

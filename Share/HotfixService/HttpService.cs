@@ -35,8 +35,6 @@ public static class HttpService
     {
         try
         {
-            var a = new C2ALogin().ToBinary();
-            var b = Convert.ToBase64String(a);
             var reader = new StreamReader(context.Request.Body);
             var base64 = (await reader.ReadToEndAsync()).Replace("_", "=");
             var data = Convert.FromBase64String(base64);

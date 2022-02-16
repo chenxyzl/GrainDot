@@ -13,13 +13,13 @@ message SimpleRole {// IMessage 角色简单信息
   uint64 exp = 6;             //经验 --等级靠换算
 }
 
-//登录选角色界面
-message C2ALogin {// IHttpRequest
+//获取角色列表
+message C2AGetRoleList {// IHttpRequest
   int32 mobileType = 1;
   string deviceId = 2;
   string token = 3;  // sdk返回的token
 }
-message A2CLogin {// IHttpResponse
+message A2CGetRoleList {// IHttpResponse
   repeated SimpleRole rols = 1;  //角色列表
 }
 
