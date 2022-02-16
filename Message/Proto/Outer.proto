@@ -25,6 +25,7 @@ message C2SLogin {// IRequest
   uint64 playerId = 1; //选择的角色
   string key = 2;  //登录验证
   string unused = 3;
+  bool isReconnect = 4; //是否重连
 }
 message S2CLogin {// IResponse
   Role role = 1;
@@ -44,7 +45,7 @@ message Role {
 }
 
 //在其他地方登录
-  message SLoginElsewhere {//IResponse
+message SLoginElsewhere {//IResponse
 
 }
 

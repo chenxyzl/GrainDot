@@ -15,9 +15,7 @@ public partial class GateHandlerDispatcher
         {
             case 200003:
             {
-                var msg = SerializeHelper.FromBinary<C2SLogin>(message.Content);
-                player.LoginPreDeal(msg, message);
-                return await HomeLoginHandler.Login(player, msg);
+                return await HomeLoginHandler.Login(player, SerializeHelper.FromBinary<C2SLogin>(message.Content));
             }
         }
 

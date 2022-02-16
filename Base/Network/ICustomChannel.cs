@@ -22,9 +22,16 @@ public abstract class ICustomChannel
 
     public abstract void OnRecieve(byte[] bytes);
 
-    public async Task Send(byte[] bytes)
+    public Task Send(byte[] bytes, uint opcode)
     {
-        await _conn.Send(bytes);
+        if (bytes.Length >= ushort.MaxValue)
+        {
+            GlobalLog.Error($"channel:{ConnectionId} bytes too long,size:{bytes.Length} opcode:{opcode}");
+            return Task.CompletedTask;
+        }
+        //这里没有必要等，要等的话还要切换线程恢复线程
+        _ = _conn.Send(bytes);
+        return Task.CompletedTask;
     }
 
     public virtual void Close()

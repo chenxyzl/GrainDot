@@ -33,7 +33,7 @@ public class PlayerActor : BaseActor
     }
 
     //获取channel
-    public ICustomChannel? channel
+    private ICustomChannel? Channel
     {
         get
         {
@@ -45,8 +45,8 @@ public class PlayerActor : BaseActor
 
     public ulong PlayerId => uid;
 
-    public uint lastPushSn { get; private set; }
-    public uint nextPushSn => ++lastPushSn;
+    private uint _lastPushSn { get; set; }
+    private uint _nextPushSn => ++_lastPushSn;
 
     public override ILog Logger
     {
@@ -111,7 +111,7 @@ public class PlayerActor : BaseActor
                     //严重错误直接踢下线
                     if (e.Serious)
                     {
-                        channel?.Close();
+                        Channel?.Close();
                         _connectionId = null;
                     }
 
@@ -159,24 +159,30 @@ public class PlayerActor : BaseActor
         await PlayerHotfixManager.Instance.Hotfix.Tick(this, now);
     }
 
-    public Task Send(Response message)
+    public async Task Send(IMessage? message, uint opcode, uint sn, Code code = Code.Ok)
     {
-        //没必要等待 --等待还会切换线程，没必要
         //channel存在则发送，不存在就算了
-        _ = channel?.Send(message.ToBinary());
-        return Task.CompletedTask;
+        if (Channel != null)
+        {
+            var res = new Response {Sn = sn, Code = code, Opcode = opcode, Content = message?.ToBinary()};
+            await Channel.Send(res.ToBinary(), res.Opcode);
+        }
     }
 
-    public void Push(IMessage msg)
+    public async Task SendError(uint opcode, uint sn, Code code)
+    {
+        await Send(null, opcode, sn, code);
+    }
+
+    public async void Push(IMessage msg)
     {
         var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
-        _ = channel?.Send(
-            new Response {Opcode = opcode, Sn = nextPushSn, Code = Code.Ok, Content = msg.ToBinary()}.ToBinary());
+        await Send(msg, opcode, _nextPushSn);
     }
 
     private void KickOut()
     {
-        var oldConn = channel;
+        var oldConn = Channel;
         if (oldConn != null)
         {
             Push(new SLoginElsewhere());
@@ -185,7 +191,7 @@ public class PlayerActor : BaseActor
         }
     }
 
-    public void LoginPreDeal(C2SLogin request, Request message)
+    public void LoginPreDeal(C2SLogin request)
     {
         //清除老的链接
         KickOut();
@@ -194,8 +200,18 @@ public class PlayerActor : BaseActor
             .GetConnection(request.Unused);
         A.NotNull(connect, Code.Error, "connect not found", true);
         _connectionId = request.Unused;
-        //每次重新登录重置id
-        lastPushSn = 0;
-        //todo 断线重连则在这里处理
+    }
+
+    public void LoginAfterDeal(C2SLogin request)
+    {
+        if (request.IsReconnect)
+        {
+            //todo 断线重连则在这里处理
+        }
+        else
+        {
+            //每次重新登录重置pushId
+            _lastPushSn = 0;
+        }
     }
 }
