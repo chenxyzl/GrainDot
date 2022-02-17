@@ -10,3 +10,8 @@ Bin/
 **/.vs/*
 Logs/
 .idea/
+Client/Logs
+Client/obj
+Client/Temp
+Client/UserSettings
+Client/Library
