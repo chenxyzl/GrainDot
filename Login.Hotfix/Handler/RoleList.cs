@@ -17,7 +17,6 @@ public class RoleList : HttpHandler<C2AGetRoleList, A2CGetRoleList>
     {
         var list = await GameServer.Instance.GetComponent<DBComponent>()
             .Query<RoleSimpleState>(x => x.Account == data.Token, null);
-        await GameServer.Instance.GetComponent<DBComponent>().CreateIndexAsync<RoleSimpleState>("Account");
 
         //转换
         var o = new A2CGetRoleList {Rols = new()};

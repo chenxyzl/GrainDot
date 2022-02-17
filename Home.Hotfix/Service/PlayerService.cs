@@ -14,7 +14,7 @@ public static class PlayerService
 {
     public static async Task Load(this PlayerComponent self)
     {
-        self.State = await self.Node.GetComponent<DBComponent>().Query<PlayerState>(self.Node.uid, self.Node);
+        self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<PlayerState>(self.Node.uid, self.Node);
         if (self.State == null)
         {
             var state = new PlayerState
@@ -24,8 +24,7 @@ public static class PlayerService
                 Name = Base62Helper.EncodeUInt64(self.Node.PlayerId),
                 TId = ConfigManager.Instance.Get<HeroConfigCategory>().GetAll().First().Value.Id
             };
-            //todo 初始化代码
-            await self.Node.GetComponent<DBComponent>().Save(state, self.Node);
+            await GameServer.Instance.GetComponent<DBComponent>().Save(state, self.Node);
         }
     }
 

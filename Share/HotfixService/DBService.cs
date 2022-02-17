@@ -24,7 +24,7 @@ public static class DBService
         GlobalLog.Debug("mongo init success");
     }
 
-    private static Task RegisterState(this DBComponent self)
+    private static async Task RegisterState(this DBComponent self)
     {
         var conventionPack = new ConventionPack {new IgnoreExtraElementsConvention(true)};
         ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
@@ -38,7 +38,11 @@ public static class DBService
 
             try
             {
+                //注册类
                 BsonClassMap.LookupClassMap(type);
+                //注册索引
+                var index = type.GetCustomAttribute<StateIndexAttribute>();
+                if (index != null) await self.CreateIndexAsync<BaseState>(index.Field, type.Name);
             }
             catch (Exception e)
             {
@@ -46,8 +50,6 @@ public static class DBService
                 throw;
             }
         }
-
-        return Task.CompletedTask;
     }
 
     public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string? collection = null)
@@ -136,11 +138,11 @@ public static class DBService
         return result.DeletedCount;
     }
 
-    public static async Task CreateIndexAsync<T>(this DBComponent self, string field, string? collection = null)
+    private static async Task CreateIndexAsync<T>(this DBComponent self, string field, string? collection = null)
         where T : BaseState
     {
         var col = self.GetCollection<T>(collection);
-        var indexKeysDefinition = Builders<T>.IndexKeys.Text(field);
+        var indexKeysDefinition = Builders<T>.IndexKeys.Ascending(field);
         await col.Indexes.CreateOneAsync(new CreateIndexModel<T>(indexKeysDefinition));
     }
 }
