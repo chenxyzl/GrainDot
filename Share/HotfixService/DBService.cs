@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Base;
 using Base.Helper;
 using Base.State;
+using Home.Model.State;
+using Message;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
@@ -18,19 +20,37 @@ public static class DBService
     public static async Task Load(this DBComponent self)
     {
         GlobalLog.Debug("mongo init begin");
+        await self.RegisterState();
         self._mongoClient = new MongoClient(self.Url);
         self._database = self._mongoClient.GetDatabase("foundation");
-        await self.RegisterState();
+        await self.RegisterIndex();
+        // await self.Test();
         GlobalLog.Debug("mongo init success");
     }
 
-    private static async Task RegisterState(this DBComponent self)
+    // private static async Task Test(this DBComponent self)
+    // {
+    //     await self.Save(new BagState
+    //     {
+    //         Id = 1,
+    //         Bag = new Dictionary<ulong, Item>
+    //             {{1, new Item {Uid = 1, Tid = (uint) 1, Count = 999999999, GetTime = TimeHelper.Now()}}}
+    //     }, null);
+    // }
+
+    private static void ManalRegisterState()
+    {
+        BsonClassMap.LookupClassMap(typeof(Item));
+    }
+
+    private static Task RegisterState(this DBComponent self)
     {
         var conventionPack = new ConventionPack {new IgnoreExtraElementsConvention(true)};
         ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
         var asm = DllHelper.GetHotfixAssembly(GameServer.Instance);
         var baseState = typeof(BaseState);
         BsonClassMap.LookupClassMap(baseState);
+        ManalRegisterState();
         foreach (var x in asm)
         foreach (var type in x.GetTypes())
         {
@@ -40,6 +60,29 @@ public static class DBService
             {
                 //注册类
                 BsonClassMap.LookupClassMap(type);
+            }
+            catch (Exception e)
+            {
+                GlobalLog.Error($"register error: {type.Name} {e}");
+                throw;
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+
+    private static async Task RegisterIndex(this DBComponent self)
+    {
+        var asm = DllHelper.GetHotfixAssembly(GameServer.Instance);
+        var baseState = typeof(BaseState);
+        foreach (var x in asm)
+        foreach (var type in x.GetTypes())
+        {
+            if (!baseState.IsAssignableFrom(type)) continue;
+
+            try
+            {
                 //注册索引
                 var index = type.GetCustomAttribute<StateIndexAttribute>();
                 if (index != null) await self.CreateIndexAsync<BaseState>(index.Field, type.Name);
