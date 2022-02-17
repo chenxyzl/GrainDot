@@ -94,7 +94,6 @@ public abstract class GameServer
         //加载配置
         LoadConfig();
         //注册mongo的State
-        MongoHelper.Init();
         //全局触发load
         Logger.Info("Load begin!!!");
         await GlobalHotfixManager.Instance.Hotfix.Load();

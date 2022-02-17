@@ -1,15 +1,38 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Base;
+using Login.Model.State;
 using Message;
+using Share.Hotfix.Service;
+using Share.Model.Component;
 
 namespace Login.Hotfix.Handler;
 
 [HttpHandler("/api/rolelist")]
 public class RoleList : HttpHandler<C2AGetRoleList, A2CGetRoleList>
 {
-    protected override Task<A2CGetRoleList> Run(C2AGetRoleList data)
+    protected override async Task<A2CGetRoleList> Run(C2AGetRoleList data)
     {
-        //todo 本地查询数据库 返回客户端账号列表
-        return Task.FromResult(new A2CGetRoleList());
+        var list = await GameServer.Instance.GetComponent<DBComponent>()
+            .Query<RoleSimpleState>(x => x.Account == data.Token);
+
+        //转换
+        var o = new A2CGetRoleList {Rols = new()};
+        foreach (var roleSumpState in list)
+        {
+            o.Rols.Add(new SimpleRole
+            {
+                Uid = roleSumpState.Id,
+                Tid = roleSumpState.Tid,
+                Name = roleSumpState.Name,
+                LastLoginTime = roleSumpState.LastLoginTime,
+                LastOfflineTime = roleSumpState.LastOfflineTime,
+                Exp = roleSumpState.Exp
+            });
+        }
+
+        return o;
     }
 }

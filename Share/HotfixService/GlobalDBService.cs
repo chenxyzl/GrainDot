@@ -53,8 +53,7 @@ public static class GlobalDBService
         string? collection = null)
         where T : BaseState
     {
-        var cursor = await self.GetCollection<T>(collection)
-            .FindAsync(filter);
+        var cursor = await self.GetCollection<T>(collection).FindAsync(filter);
         var result = await cursor.ToListAsync();
         return result;
     }

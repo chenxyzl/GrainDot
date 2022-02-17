@@ -18,6 +18,25 @@ public static class EtcdService
         await self.ConnectEtcd();
     }
 
+    public static async Task ConnectEtcd(this EtcdComponent self)
+    {
+        GlobalLog.Debug("etcd init begin");
+        self.EtcdClient = new EtcdClient(self.Addrs);
+        try
+        {
+            var res = await self.EtcdClient.LeaseGrantAsync(new LeaseGrantRequest {TTL = 30});
+            self.LeaseId = res.ID;
+        }
+        catch (Exception e)
+        {
+            GlobalLog.Error(e);
+            throw;
+        }
+
+        _ = self.EtcdClient.LeaseKeepAlive(self.LeaseId, self.CancellationKeepLive.Token);
+        GlobalLog.Debug("etcd init success");
+    }
+
     public static Task PreStop(this EtcdComponent self)
     {
         self.CancelSub();
@@ -27,7 +46,7 @@ public static class EtcdService
     //跟随进程的临时kv
     public static async Task PutTemp(this EtcdComponent self, string k, string v)
     {
-        await self.etcdClient.PutAsync(new PutRequest
+        await self.EtcdClient.PutAsync(new PutRequest
         {
             Key = ByteString.CopyFromUtf8(k), Value = ByteString.CopyFromUtf8(v),
             Lease = self.LeaseId
@@ -37,23 +56,23 @@ public static class EtcdService
     //持久化的kv
     public static async Task PutPersistent(this EtcdComponent self, string k, string v)
     {
-        await self.etcdClient.PutAsync(new PutRequest
+        await self.EtcdClient.PutAsync(new PutRequest
             {Key = ByteString.CopyFromUtf8(k), Value = ByteString.CopyFromUtf8(v)});
     }
 
     public static async Task Delete(this EtcdComponent self, string k)
     {
-        await self.etcdClient.DeleteAsync(k);
+        await self.EtcdClient.DeleteAsync(k);
     }
 
     public static async Task DeleteWithPrefix(this EtcdComponent self, string k)
     {
-        await self.etcdClient.DeleteRangeAsync(k);
+        await self.EtcdClient.DeleteRangeAsync(k);
     }
 
     public static async Task<string> Get(this EtcdComponent self, string k, bool noException = true)
     {
-        var result = await self.etcdClient.GetAsync(k);
+        var result = await self.EtcdClient.GetAsync(k);
         if (result.Kvs.Count == 0)
         {
             if (noException)
@@ -67,7 +86,7 @@ public static class EtcdService
     public static async Task<List<string>> GetWithPrefix(this EtcdComponent self, string k)
     {
         var r = new List<string>();
-        var result = await self.etcdClient.GetRangeAsync(k);
+        var result = await self.EtcdClient.GetRangeAsync(k);
         foreach (var a in result.Kvs) r.Add(a.Value.ToStringUtf8());
 
         return r;
@@ -83,7 +102,7 @@ public static class EtcdService
             await EtcdComponent.LockAdd.WaitAsync();
             var t = new CancellationTokenSource();
             EtcdComponent.LockAdd.Release();
-            self.etcdClient.Watch(k, a =>
+            self.EtcdClient.Watch(k, a =>
             {
                 foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
             }, null, null, t.Token);
@@ -112,7 +131,7 @@ public static class EtcdService
             _ = Task.Run(() =>
             {
                 EtcdComponent.LockAdd.Release();
-                self.etcdClient.WatchRange(k, a =>
+                self.EtcdClient.WatchRange(k, a =>
                 {
                     foreach (var v in a) GlobalThreadSynchronizationContext.Instance.Post(state => { func(v); }, v);
 

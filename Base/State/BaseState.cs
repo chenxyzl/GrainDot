@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Common;
 using MongoDB.Bson.Serialization.Attributes;
@@ -39,5 +40,15 @@ public abstract class BaseState : ISupportInitialize
     public void MarkDirty()
     {
         Dirty = true;
+    }
+}
+
+public class StateIndexAttribute : Attribute
+{
+    public string Field;
+
+    public StateIndexAttribute(string field)
+    {
+        this.Field = field;
     }
 }

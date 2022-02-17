@@ -12,9 +12,11 @@ public enum Code
 
 	AccountIllegal = 3,
 
-	LoginElsewhere = 4,
+	PlayerNotFound = 4,
 
-	NotLogin = 5,
+	LoginElsewhere = 5,
+
+	NotLogin = 6,
 
 	ItemNodEnough = 10000,
 

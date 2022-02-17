@@ -1,5 +1,5 @@
 ﻿namespace Base;
 
-public interface IGlobalComponent
+public interface IGlobalComponent : IComponent
 {
 }

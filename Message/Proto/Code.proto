@@ -6,8 +6,9 @@ enum Code {
   Error = 1;                        //内部未知错误
   GateSignFailed = 2;               // gate校验失败
   AccountIllegal = 3;               //账号id非法
-  LoginElsewhere = 4;               //账号在其他地方登录
-  NotLogin = 5;                     //未在线 请重新登录
+  PlayerNotFound = 4;               //角色不存在
+  LoginElsewhere = 5;               //账号在其他地方登录
+  NotLogin = 6;                     //未在线 请重新登录
   ItemNodEnough = 10000;            //道具数量不足
   ItemIdNotExist = 10001;           //道具不存在
   ItemTypeNotDeal = 10002;          //道具类型未处理

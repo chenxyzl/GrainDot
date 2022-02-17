@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Base;
 using Base.Helper;
 using Base.State;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Share.Model.Component;
 
@@ -12,23 +15,67 @@ namespace Share.Hotfix.Service;
 
 public static class DBService
 {
-    public static Task Load(this DBComponent self)
+    public static async Task Load(this DBComponent self)
     {
+        GlobalLog.Debug("mongo init begin");
+        RegisterState();
         self._mongoClient = new MongoClient(self.Url);
         self._database = self._mongoClient.GetDatabase("foundation");
-        GlobalLog.Debug("mongdo init success");
-        return Task.CompletedTask;
+        await CheckIndex();
+        GlobalLog.Debug("mongo init success");
+    }
+
+    private static void RegisterState()
+    {
+        var conventionPack = new ConventionPack {new IgnoreExtraElementsConvention(true)};
+        ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
+        var asm = DllHelper.GetHotfixAssembly(GameServer.Instance);
+        var baseState = typeof(BaseState);
+        BsonClassMap.LookupClassMap(baseState);
+        foreach (var x in asm)
+        foreach (var type in x.GetTypes())
+        {
+            if (!baseState.IsAssignableFrom(type)) continue;
+
+            try
+            {
+                BsonClassMap.LookupClassMap(type);
+            }
+            catch (Exception e)
+            {
+                GlobalLog.Error($"register error: {type.Name} {e}");
+                throw;
+            }
+        }
+    }
+
+    private static async Task CheckIndex()
+    {
+        var asm = DllHelper.GetHotfixAssembly(GameServer.Instance);
+        var baseState = typeof(BaseState);
+        foreach (var x in asm)
+        foreach (var type in x.GetTypes())
+        {
+            if (!baseState.IsAssignableFrom(type)) continue;
+            if (!baseState.IsClass) continue;
+            var index = baseState.GetCustomAttribute<StateIndexAttribute>();
+            if (index == null) continue;
+            try
+            {
+                await CreateIndexAsync<BaseState>(index.Field);
+            }
+            catch (Exception e)
+            {
+                GlobalLog.Error($"register error: {type.Name} {e}");
+                throw;
+            }
+        }
     }
 
     public static IMongoCollection<T> GetCollection<T>(this DBComponent self, string? collection = null)
         where T : BaseState
     {
         return self._database.GetCollection<T>(collection ?? typeof(T).Name);
-    }
-
-    public static IMongoCollection<BaseState> GetCollection(this DBComponent self, string name)
-    {
-        return self._database.GetCollection<BaseState>(name);
     }
 
     //查询1个
@@ -70,16 +117,22 @@ public static class DBService
     public static async Task Save<T>(this CallComponent self, T state, string? collectionName = null)
         where T : BaseState
     {
-        if (state == null)
-        {
-            GlobalLog.Error($"save entity is null: {typeof(T).Name}");
-            return;
-        }
+        collectionName ??= state.GetType().Name;
 
-        if (collectionName == null) collectionName = state.GetType().Name;
-
-        var collection = GameServer.Instance.GetComponent<DBComponent>().GetCollection(collectionName);
+        var collection = GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collectionName);
         _ = await collection.ReplaceOneAsync(d => d.Id == state.Id, state, new ReplaceOptions {IsUpsert = true});
+        await self.ResumeActorThread();
+    }
+
+    //保存1个--按照条件替换
+    public static async Task Save<T>(this CallComponent self, T state, Expression<Func<T, bool>> filter,
+        string? collectionName = null)
+        where T : BaseState
+    {
+        collectionName ??= state.GetType().Name;
+
+        var collection = GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collectionName);
+        _ = await collection.ReplaceOneAsync(filter, state, new ReplaceOptions {IsUpsert = true});
         await self.ResumeActorThread();
     }
 
@@ -108,5 +161,13 @@ public static class DBService
             .DeleteManyAsync(filter);
         await self.ResumeActorThread();
         return result.DeletedCount;
+    }
+
+    static async Task CreateIndexAsync<T>(string field, string? collection = null)
+        where T : BaseState
+    {
+        var col = GameServer.Instance.GetComponent<DBComponent>().GetCollection<T>(collection);
+        var indexKeysDefinition = Builders<T>.IndexKeys.Text(field);
+        await col.Indexes.CreateOneAsync(new CreateIndexModel<T>(indexKeysDefinition));
     }
 }
