@@ -1,4 +1,6 @@
-﻿namespace Base.Network;
+﻿using System.Net;
+
+namespace Base.Network;
 
 /// <summary>
 ///     TcpSocket客户端
@@ -12,7 +14,7 @@ public interface ISocketClient : IClose, ISendBytes, ISendString
     /// <value>
     ///     The ip.
     /// </value>
-    string Ip { get; }
+    IPAddress Ip { get; }
 
     /// <summary>
     ///     服务器端口

@@ -6,6 +6,7 @@ message AHPlayerLoginKeyAsk {// IRequest
 }
 message HAPlayerLoginKeyAns{// IResponse
   string playerKey = 1;
+  string addr = 2;
 }
 
 // 玩家上线

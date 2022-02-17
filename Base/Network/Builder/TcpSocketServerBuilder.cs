@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Bootstrapping;
@@ -11,8 +12,8 @@ internal class TcpSocketServerBuilder<T> :
     BaseGenericServerBuilder<ITcpSocketServerBuilder, ITcpSocketServer, ITcpSocketConnection, byte[]>,
     ITcpSocketServerBuilder where T : TcpSocketConnection
 {
-    public TcpSocketServerBuilder(int port)
-        : base(port)
+    public TcpSocketServerBuilder(IPAddress ip, int port)
+        : base(ip, port)
     {
     }
 
@@ -37,7 +38,7 @@ internal class TcpSocketServerBuilder<T> :
 
     public override async Task<ITcpSocketServer> BuildAsync()
     {
-        var tcpServer = new TcpSocketServer<T>(_port, _event);
+        var tcpServer = new TcpSocketServer<T>(_ip, _port, _event);
 
         var serverChannel = await new ServerBootstrap()
             .Group(new MultithreadEventLoopGroup(), new MultithreadEventLoopGroup())
@@ -49,7 +50,7 @@ internal class TcpSocketServerBuilder<T> :
                 var pipeline = channel.Pipeline;
                 _setEncoder?.Invoke(pipeline);
                 pipeline.AddLast(new CommonChannelHandler(tcpServer));
-            })).BindAsync(_port);
+            })).BindAsync(_ip, _port);
         _event.OnServerStarted?.Invoke(tcpServer);
         tcpServer.SetChannel(serverChannel);
 

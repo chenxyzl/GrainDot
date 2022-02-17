@@ -13,6 +13,9 @@ public partial class HAPlayerLoginKeyAns: IResponse
 	[ProtoMember(1)]
 	public string PlayerKey { get; set; }
 
+	[ProtoMember(2)]
+	public string Addr { get; set; }
+
 }
 
 // 玩家上线

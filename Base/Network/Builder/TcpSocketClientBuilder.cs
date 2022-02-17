@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Transport.Bootstrapping;
@@ -10,7 +11,7 @@ namespace Base.Network;
 internal class TcpSocketClientBuilder : BaseGenericClientBuilder<ITcpSocketClientBuilder, ISocketClient, byte[]>,
     ITcpSocketClientBuilder
 {
-    public TcpSocketClientBuilder(string ip, int port)
+    public TcpSocketClientBuilder(IPAddress ip, int port)
         : base(ip, port)
     {
     }

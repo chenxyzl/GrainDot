@@ -65,7 +65,7 @@ public class client : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void Send(int msg)
+    void Send(IRequest msg)
     {
         //第一层序列化
 
@@ -99,7 +99,7 @@ public class client : MonoBehaviour
                     roleList.Add(simpleRole.Uid);
                 }
 
-                recMes = roleList.ToString();
+                recMes = string.Join(",", roleList.ToArray());
                 break;
             }
             case "/api/login":
@@ -142,6 +142,11 @@ public class client : MonoBehaviour
 
     void LoginHome()
     {
+        Send(new C2SLogin
+        {
+            PlayerId = playerId,
+            Key = loginKey
+        });
     }
 
     void AddGlod1()
@@ -199,6 +204,7 @@ public class client : MonoBehaviour
 
         if (GUI.Button(new Rect(305, 230, 100, 20), "登录游戏服"))
         {
+            LoginHome();
         }
 
         if (GUI.Button(new Rect(65, 270, 100, 20), "增加1金币"))

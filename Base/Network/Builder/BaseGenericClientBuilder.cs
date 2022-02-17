@@ -1,17 +1,16 @@
-﻿namespace Base.Network;
+﻿using System.Net;
+
+namespace Base.Network;
 
 internal abstract class BaseGenericClientBuilder<TBuilder, TTarget, TData> :
     BaseBuilder<TBuilder, TTarget>,
     IGenericClientBuilder<TBuilder, TTarget, TData>
     where TBuilder : class
 {
-    public BaseGenericClientBuilder(string ip, int port)
-        : base(port)
+    public BaseGenericClientBuilder(IPAddress ip, int port)
+        : base(ip, port)
     {
-        _ip = ip;
     }
-
-    protected string _ip { get; }
 
     protected TcpSocketCientEvent<TTarget, TData> _event { get; } = new();
 

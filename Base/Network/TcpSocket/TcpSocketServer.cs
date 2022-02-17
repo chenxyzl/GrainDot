@@ -1,4 +1,5 @@
-﻿using DotNetty.Buffers;
+﻿using System.Net;
+using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
 
 namespace Base.Network;
@@ -7,9 +8,9 @@ internal class TcpSocketServer<T> : BaseTcpSocketServer<ITcpSocketServer, ITcpSo
     ITcpSocketServer
     where T : TcpSocketConnection
 {
-    public TcpSocketServer(int port,
+    public TcpSocketServer(IPAddress ip, int port,
         TcpSocketServerEvent<ITcpSocketServer, ITcpSocketConnection, byte[]> eventHandle)
-        : base(port, eventHandle)
+        : base(ip, port, eventHandle)
     {
     }
 

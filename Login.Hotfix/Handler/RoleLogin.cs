@@ -39,8 +39,8 @@ public class RoleLogin : HttpHandler<C2ARoleLogin, A2CRoleLogin>
         };
         var ans = await GameServer.Instance.PlayerShardProxy.Ask<InnerResponse>(ask, TimeSpan.FromSeconds(3));
         if (ans.Code != Code.Ok) throw new CodeException(ans.Code, ans.Code.ToString());
-
-        var ret = SerializeHelper.FromBinary<A2CRoleLogin>(ans.Content);
-        return ret;
+        var ret = SerializeHelper.FromBinary<HAPlayerLoginKeyAns>(ans.Content);
+        var ou = new A2CRoleLogin {Addr = ret.Addr, Key = ret.PlayerKey};
+        return ou;
     }
 }

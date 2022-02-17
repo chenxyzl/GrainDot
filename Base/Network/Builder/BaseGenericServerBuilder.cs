@@ -1,12 +1,14 @@
-﻿namespace Base.Network;
+﻿using System.Net;
+
+namespace Base.Network;
 
 internal abstract class BaseGenericServerBuilder<TBuilder, TTarget, IConnection, TData> :
     BaseBuilder<TBuilder, TTarget>,
     IGenericServerBuilder<TBuilder, TTarget, IConnection, TData>
     where TBuilder : class
 {
-    public BaseGenericServerBuilder(int port)
-        : base(port)
+    public BaseGenericServerBuilder(IPAddress ip, int port)
+        : base(ip, port)
     {
     }
 

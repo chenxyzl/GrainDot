@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DotNetty.Buffers;
@@ -16,7 +17,7 @@ internal class WebSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocke
     private readonly TaskCompletionSource completionSource;
     private readonly WebSocketClientHandshaker handshaker;
 
-    public WebSocketClient(string ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
+    public WebSocketClient(IPAddress ip, int port, string path, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
         : base(ip, port, clientEvent)
     {
         var uri = $"ws://{ip}:{port}{path}";

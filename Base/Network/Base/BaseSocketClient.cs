@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using DotNetty.Transport.Channels;
 
 namespace Base.Network;
@@ -6,7 +7,7 @@ namespace Base.Network;
 internal abstract class BaseSocketClient<TSocketClient, TData> : ISocketClient, IChannelEvent
     where TSocketClient : class, ISocketClient
 {
-    public BaseSocketClient(string ip, int port, TcpSocketCientEvent<TSocketClient, TData> clientEvent)
+    public BaseSocketClient(IPAddress ip, int port, TcpSocketCientEvent<TSocketClient, TData> clientEvent)
     {
         Ip = ip;
         Port = port;
@@ -34,7 +35,7 @@ internal abstract class BaseSocketClient<TSocketClient, TData> : ISocketClient, 
 
     public abstract void OnChannelReceive(IChannelHandlerContext ctx, object msg);
 
-    public string Ip { get; }
+    public IPAddress Ip { get; }
 
     public int Port { get; }
 

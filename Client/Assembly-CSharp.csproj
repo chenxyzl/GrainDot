@@ -12,7 +12,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2be4b740-8e9b-ef5c-f611-04f00d0527ed}</ProjectGuid>
+    <ProjectGuid>{8441f412-22a4-275f-22e6-507969043f15}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -54,6 +54,9 @@
      <Compile Include="Assets/client.cs" />
      <Compile Include="Assets/Message/RpcItem.cs" />
      <Compile Include="Assets/Message/Outer.cs" />
+     <Compile Include="Assets/Message/Inner.cs" />
+     <Compile Include="Assets/Message/InnerBase.cs" />
+     <Compile Include="Assets/Message/InnerRpc.cs" />
      <None Include="Assets/Resources/BillingMode.json" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -299,37 +302,37 @@
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll</HintPath>
      </Reference>
      <Reference Include="System.Runtime.CompilerServices.Unsafe">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
      </Reference>
      <Reference Include="protobuf-net">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/protobuf-net.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/protobuf-net.dll</HintPath>
      </Reference>
      <Reference Include="Newtonsoft.Json">
-     <HintPath>/Users/lin/space/TCPClient/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
      </Reference>
      <Reference Include="System.Numerics.Vectors">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/System.Numerics.Vectors.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Numerics.Vectors.dll</HintPath>
      </Reference>
      <Reference Include="System.Memory">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/System.Memory.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Memory.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.StandardEvents">
-     <HintPath>/Users/lin/space/TCPClient/Library/PackageCache/com.unity.analytics@3.6.12/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.analytics@3.6.12/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Editor.dll</HintPath>
      </Reference>
      <Reference Include="System.Collections.Immutable">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/System.Collections.Immutable.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Collections.Immutable.dll</HintPath>
      </Reference>
      <Reference Include="protobuf-net.Core">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/protobuf-net.Core.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/protobuf-net.Core.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.Tracker">
-     <HintPath>/Users/lin/space/TCPClient/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Tracker.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Tracker.dll</HintPath>
      </Reference>
      <Reference Include="System.Buffers">
-     <HintPath>/Users/lin/space/TCPClient/Assets/Plugins/System.Buffers.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Buffers.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/NetStandard/ref/2.1.0/netstandard.dll</HintPath>
@@ -698,88 +701,88 @@
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/NetStandard/compat/2.1.0/shims/netfx/mscorlib.dll</HintPath>
      </Reference>
      <Reference Include="Purchasing.Common">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Purchasing.Common.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Purchasing.Common.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VSCode.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.2D.Tilemap.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Purchasing">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TextMeshPro.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualStudio.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Timeline">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
      </Reference>
      <Reference Include="Unity.TextMeshPro">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Purchasing.SecurityStub">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityStub.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityStub.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Advertisements">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Advertisements.dll</HintPath>
      </Reference>
      <Reference Include="Unity.2D.Sprite.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.UI">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.PlasticSCM.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.PlasticSCM.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Rider.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Analytics">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Analytics.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Analytics.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.SpatialTracking">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.UI">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.DataPrivacy">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Purchasing.SecurityCore">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityCore.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Purchasing.SecurityCore.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Purchasing.Codeless">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Purchasing.Codeless.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Purchasing.Codeless.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Timeline.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Purchasing.Stores">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Purchasing.Stores.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Purchasing.Stores.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Monetization">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.Purchasing">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor.SpatialTracking">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.Advertisements.Editor">
-     <HintPath>/Users/lin/space/TCPClient/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
+     <HintPath>/Users/lin/space/Lin/Client/Library/ScriptAssemblies/UnityEngine.Advertisements.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Message
@@ -13,9 +14,11 @@ namespace Message
 
         AccountIllegal = 3,
 
-        LoginElsewhere = 4,
+        PlayerNotFound = 4,
 
-        NotLogin = 5,
+        LoginElsewhere = 5,
+
+        NotLogin = 6,
 
         ItemNodEnough = 10000,
 
@@ -29,6 +32,6 @@ namespace Message
 
         ItemNotCurrency = 10005,
 
-        PlayerNotOnline = 10006
+        PlayerNotOnline = 10006,
     }
 }

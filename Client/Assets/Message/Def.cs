@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Message
@@ -11,7 +12,7 @@ namespace Message
 
         Hero = 2,
 
-        Equip = 3
+        Equip = 3,
     }
 
     [ProtoContract]
@@ -23,7 +24,7 @@ namespace Message
 
         Diamond = 2,
 
-        Exp = 3
+        Exp = 3,
     }
 
 //稀有度
@@ -40,6 +41,6 @@ namespace Message
 
         Orange = 4,
 
-        Red = 5
+        Red = 5,
     }
 }

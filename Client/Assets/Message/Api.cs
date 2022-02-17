@@ -5,7 +5,7 @@ namespace Message
 {
 //角色简单信息
     [ProtoContract]
-    public class SimpleRole : IMessage
+    public partial class SimpleRole : IMessage
     {
         [ProtoMember(1)] public ulong Uid { get; set; }
 
@@ -20,9 +20,9 @@ namespace Message
         [ProtoMember(6)] public ulong Exp { get; set; }
     }
 
-//登录选角色界面
+//获取角色列表
     [ProtoContract]
-    public class C2AGetRoleList : IHttpRequest
+    public partial class C2AGetRoleList : IHttpRequest
     {
         [ProtoMember(1)] public int MobileType { get; set; }
 
@@ -32,14 +32,14 @@ namespace Message
     }
 
     [ProtoContract]
-    public class A2CGetRoleList : IHttpResponse
+    public partial class A2CGetRoleList : IHttpResponse
     {
-        [ProtoMember(1)] public List<SimpleRole> Rols = new();
+        [ProtoMember(1)] public List<SimpleRole> Rols = new List<SimpleRole>();
     }
 
 //角色登录验证
     [ProtoContract]
-    public class C2ARoleLogin : IHttpRequest
+    public partial class C2ARoleLogin : IHttpRequest
     {
         [ProtoMember(1)] public ulong Uid { get; set; }
 
@@ -47,7 +47,7 @@ namespace Message
     }
 
     [ProtoContract]
-    public class A2CRoleLogin : IHttpResponse
+    public partial class A2CRoleLogin : IHttpResponse
     {
         [ProtoMember(1)] public string Addr { get; set; }
 
@@ -56,12 +56,12 @@ namespace Message
 
 //性能测试
     [ProtoContract]
-    public class C2APerformanceTest : IHttpRequest
+    public partial class C2APerformanceTest : IHttpRequest
     {
     }
 
     [ProtoContract]
-    public class A2CPerformanceTest : IHttpResponse
+    public partial class A2CPerformanceTest : IHttpResponse
     {
     }
 }

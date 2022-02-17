@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Base;
 using Home.Hotfix.Service;
 using Home.Model;
 using Home.Model.Component;
@@ -15,9 +16,11 @@ public static class HomeLoginHandler
 
     public static Task<HAPlayerLoginKeyAns> LoginKeyHandler(PlayerActor player, AHPlayerLoginKeyAsk msg)
     {
-        var loginKeyComponent = Model.Home.Instance.GetComponent<LoginKeyComponent>();
+        var loginKeyComponent = GameServer.Instance.GetComponent<LoginKeyComponent>();
         player.LastLoginKey = loginKeyComponent.AddPlayerRef(player.GetSelf(), player.LastLoginKey);
-        return Task.FromResult(new HAPlayerLoginKeyAns {PlayerKey = player.LastLoginKey});
+        var net = GameServer.Instance.GetComponent<TcpComponent>();
+        var addr = net.ip + ":" + net.port;
+        return Task.FromResult(new HAPlayerLoginKeyAns {PlayerKey = player.LastLoginKey, Addr = addr});
     }
 
     public static Task<S2CLogin> Login(PlayerActor playerActor, C2SLogin msg)

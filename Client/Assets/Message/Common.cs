@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using ProtoBuf;
 
 namespace Message
 {
     [ProtoContract]
-    public class Item : IMessage
+    public partial class Item : IMessage
     {
         [ProtoMember(1)] public ulong Uid { get; set; }
 
@@ -15,7 +16,7 @@ namespace Message
     }
 
     [ProtoContract]
-    public class Hero : IMessage
+    public partial class Hero : IMessage
     {
         [ProtoMember(1)] public ulong Tid { get; set; }
 
@@ -25,7 +26,7 @@ namespace Message
     }
 
     [ProtoContract]
-    public class Equip : IMessage
+    public partial class Equip : IMessage
     {
         [ProtoMember(1)] public ulong Tid { get; set; }
 

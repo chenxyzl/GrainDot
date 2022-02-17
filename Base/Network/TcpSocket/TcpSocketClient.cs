@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
@@ -7,7 +8,7 @@ namespace Base.Network;
 
 internal class TcpSocketClient : BaseSocketClient<ISocketClient, byte[]>, ISocketClient
 {
-    public TcpSocketClient(string ip, int port, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
+    public TcpSocketClient(IPAddress ip, int port, TcpSocketCientEvent<ISocketClient, byte[]> clientEvent)
         : base(ip, port, clientEvent)
     {
     }

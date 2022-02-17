@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using DotNetty.Codecs.Http;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
@@ -10,8 +11,8 @@ internal class WebSocketServerBuilder<T> :
     BaseGenericServerBuilder<IWebSocketServerBuilder, IWebSocketServer, IWebSocketConnection, byte[]>,
     IWebSocketServerBuilder where T : WebSocketConnection
 {
-    public WebSocketServerBuilder(int port, string path)
-        : base(port)
+    public WebSocketServerBuilder(IPAddress ip, int port, string path)
+        : base(ip, port)
     {
         _path = path;
     }
@@ -20,7 +21,7 @@ internal class WebSocketServerBuilder<T> :
 
     public override async Task<IWebSocketServer> BuildAsync()
     {
-        var tcpServer = new WebSocketServer<T>(_port, _path, _event);
+        var tcpServer = new WebSocketServer<T>(_ip, _port, _path, _event);
 
         var serverChannel = await new ServerBootstrap()
             .Group(new MultithreadEventLoopGroup(), new MultithreadEventLoopGroup())
@@ -33,7 +34,7 @@ internal class WebSocketServerBuilder<T> :
                 pipeline.AddLast(new HttpServerCodec());
                 pipeline.AddLast(new HttpObjectAggregator(65536));
                 pipeline.AddLast(new CommonChannelHandler(tcpServer));
-            })).BindAsync(_port);
+            })).BindAsync(_ip, _port);
         _event.OnServerStarted?.Invoke(tcpServer);
         tcpServer.SetChannel(serverChannel);
 

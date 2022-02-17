@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using Base;
 using Base.Network;
@@ -10,7 +11,7 @@ public static class WsService
 {
     public static async Task Load(this WsComponent self)
     {
-        await self.StartWsServer<WebSocketChannel<PlayerChannel>>(self.port);
+        await self.StartWsServer<WebSocketChannel<PlayerChannel>>(self.ip, self.port);
     }
 
 
@@ -36,10 +37,11 @@ public static class WsService
         return Task.CompletedTask;
     }
 
-    public static async Task StartWsServer<T>(this WsComponent self, ushort port) where T : WebSocketConnection
+    public static async Task StartWsServer<T>(this WsComponent self, IPAddress ip, ushort port)
+        where T : WebSocketConnection
     {
-        self._server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(port)
-            .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name}:{port} 服务端异常:{ex.Message}"); })
+        self._server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(ip, port)
+            .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务端异常:{ex.Message}"); })
             // .OnNewConnection((server, connection) =>
             // {
             //     GameServer.Instance.GetComponent<ConnectionDicCommponent>().AddConnection(connection);
@@ -50,6 +52,6 @@ public static class WsService
             //         GameServer.Instance.GetComponent<ConnectionDicCommponent>()
             //             .RemoveConnection(connection.ConnectionId);
             //     })
-            .OnServerStarted(server => { GlobalLog.Warning($"{self.GetType().Name}:{port} 服务启动"); }).BuildAsync();
+            .OnServerStarted(server => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务启动"); }).BuildAsync();
     }
 }

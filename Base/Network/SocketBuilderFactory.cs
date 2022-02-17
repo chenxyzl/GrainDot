@@ -1,4 +1,6 @@
-﻿namespace Base.Network;
+﻿using System.Net;
+
+namespace Base.Network;
 
 /// <summary>
 ///     Socket构建者工厂
@@ -11,7 +13,7 @@ public class SocketBuilderFactory
     /// <param name="ip">服务器Ip</param>
     /// <param name="port">服务器端口</param>
     /// <returns></returns>
-    public static ITcpSocketClientBuilder GetTcpSocketClientBuilder(string ip, int port)
+    public static ITcpSocketClientBuilder GetTcpSocketClientBuilder(IPAddress ip, int port)
     {
         return new TcpSocketClientBuilder(ip, port);
     }
@@ -21,9 +23,9 @@ public class SocketBuilderFactory
     /// </summary>
     /// <param name="port">监听端口</param>
     /// <returns></returns>
-    public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(int port) where T : TcpSocketConnection
+    public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(IPAddress ip,  int port) where T : TcpSocketConnection
     {
-        return new TcpSocketServerBuilder<T>(port);
+        return new TcpSocketServerBuilder<T>(ip, port);
     }
 
     /// <summary>
@@ -32,10 +34,10 @@ public class SocketBuilderFactory
     /// <param name="port">监听端口</param>
     /// <param name="path">路径,默认为"/"</param>
     /// <returns></returns>
-    public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(int port, string path = "/")
+    public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(IPAddress ip,int port, string path = "/")
         where T : WebSocketConnection
     {
-        return new WebSocketServerBuilder<T>(port, path);
+        return new WebSocketServerBuilder<T>(ip, port, path);
     }
 
     /// <summary>
@@ -45,7 +47,7 @@ public class SocketBuilderFactory
     /// <param name="port">服务器端口</param>
     /// <param name="path">路径,默认为"/"</param>
     /// <returns></returns>
-    public static IWebSocketClientBuilder GetWebSocketClientBuilder(string ip, int port, string path = "/")
+    public static IWebSocketClientBuilder GetWebSocketClientBuilder(IPAddress ip, int port, string path = "/")
     {
         return new WebSocketClientBuilder(ip, port, path);
     }

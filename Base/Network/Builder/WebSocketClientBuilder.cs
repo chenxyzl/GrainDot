@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using DotNetty.Codecs.Http;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
@@ -9,7 +10,7 @@ namespace Base.Network;
 internal class WebSocketClientBuilder : BaseGenericClientBuilder<IWebSocketClientBuilder, ISocketClient, byte[]>,
     IWebSocketClientBuilder
 {
-    public WebSocketClientBuilder(string ip, int port, string path)
+    public WebSocketClientBuilder(IPAddress ip, int port, string path)
         : base(ip, port)
     {
         _path = path;

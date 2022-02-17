@@ -1,9 +1,11 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using DotNetty.Buffers;
 using DotNetty.Codecs.Http;
 using DotNetty.Codecs.Http.WebSockets;
 using DotNetty.Transport.Channels;
+using HttpVersion = DotNetty.Codecs.Http.HttpVersion;
 
 namespace Base.Network;
 
@@ -13,9 +15,9 @@ internal class WebSocketServer<T> : BaseTcpSocketServer<IWebSocketServer, IWebSo
 {
     private WebSocketServerHandshaker? handshaker;
 
-    public WebSocketServer(int port, string path,
+    public WebSocketServer(IPAddress ip, int port, string path,
         TcpSocketServerEvent<IWebSocketServer, IWebSocketConnection, byte[]> eventHandle)
-        : base(port, eventHandle)
+        : base(ip, port, eventHandle)
     {
         _path = path;
     }

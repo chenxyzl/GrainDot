@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using DotNetty.Transport.Channels;
 using Message;
 
@@ -11,8 +12,9 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     where TConnection : class, IBaseSocketConnection
     where TSocketServer : class, IBaseTcpSocketServer<TConnection>
 {
-    public BaseTcpSocketServer(int port, TcpSocketServerEvent<TSocketServer, TConnection, TData> eventHandle)
+    public BaseTcpSocketServer(IPAddress ip, int port, TcpSocketServerEvent<TSocketServer, TConnection, TData> eventHandle)
     {
+        Ip = ip;
         Port = port;
         _eventHandle = eventHandle;
     }
@@ -94,6 +96,7 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
         _serverChannel = channel;
     }
 
+    public IPAddress Ip { get; }
     public int Port { get; }
 
     public List<TConnection> GetAllConnections()
