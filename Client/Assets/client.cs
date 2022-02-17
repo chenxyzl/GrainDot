@@ -17,12 +17,14 @@ public class client : MonoBehaviour
     private string staInfo = "NULL"; //状态信息
     private string inputIp = "127.0.0.1:15000"; //输入ip地址
     private string recMes = "NULL"; //接收到的消息
+    private uint sn = 0;
     private List<ulong> roleList = new List<ulong>();
     private ulong playerId => roleList.FirstOrDefault();
     private string loginKey;
 
     void Start()
     {
+        RpcManager.Instance.ParseRpcItems();
     }
 
     // Update is called once per frame
@@ -68,14 +70,16 @@ public class client : MonoBehaviour
     void Send(IRequest msg)
     {
         //第一层序列化
-
+        var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
+        var content = msg.ToBinary();
         //第二层序列化
-
-        //写入2长度 大端
-
-        //写入内容
-
+        Request req = new Request();
+        req.Opcode = opcode;
+        req.Content = content;
+        req.Sn = ++sn;
+        req.Sign = "";
         //发送
+        NetClient.Instance.SendMsg(req.ToBinary());
     }
 
     void dealHttpResult(string url, string result)
@@ -142,6 +146,7 @@ public class client : MonoBehaviour
 
     void LoginHome()
     {
+        sn = 0;
         Send(new C2SLogin
         {
             PlayerId = playerId,
@@ -226,10 +231,12 @@ public class client : MonoBehaviour
             ms.Position = 0;
 
             //第1层反序列化
-
+            var rsp = SerializeHelper.FromBinary<Response>(ms.GetBuffer());
             //第2层反序列化
-
+            var type = RpcManager.Instance.GetResponseOpcode(rsp.Opcode);
+            var ret = SerializeHelper.FromBinary(type, rsp.Content);
             //显示
+            recMes = ret.ToString();
         }
     }
 }

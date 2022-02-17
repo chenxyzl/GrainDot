@@ -39,10 +39,11 @@ public class RpcManager : Single<RpcManager>
 
     public OpType GetRpcType(uint opcode)
     {
-        return A.NotNull(_rpcTypeDic[opcode], Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
+        _rpcTypeDic.TryGetValue(opcode, out var v);
+        return A.NotNull(v, Code.Error, $"rpcTypeDic opcode:{opcode} to code not found");
     }
 
-    public void ReloadHanlder()
+    public void ReloadHandler()
     {
         var innerTypes = HotfixManager.Instance.GetTypes<InnerRpcAttribute>();
         var outerTypes = HotfixManager.Instance.GetTypes<GateRpcAttribute>();
@@ -61,12 +62,12 @@ public class RpcManager : Single<RpcManager>
         //不会改变的，只需要Load一次
         if (_onlyFirst)
         {
-            ParaseRpcItems();
+            ParseRpcItems();
             _onlyFirst = false;
         }
     }
 
-    public void ParaseRpcItems(List<RpcItem> rpcItems)
+    public void ParseRpcItems(List<RpcItem> rpcItems)
     {
         foreach (var item in rpcItems)
         {
@@ -95,9 +96,9 @@ public class RpcManager : Single<RpcManager>
         }
     }
 
-    public void ParaseRpcItems()
+    public void ParseRpcItems()
     {
-        ParaseRpcItems(RpcItemMessage.rpcItemsInner);
-        ParaseRpcItems(RpcItemMessage.rpcItemsOuter);
+        ParseRpcItems(RpcItemMessage.rpcItemsInner);
+        ParseRpcItems(RpcItemMessage.rpcItemsOuter);
     }
 }

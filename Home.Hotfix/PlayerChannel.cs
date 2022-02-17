@@ -26,6 +26,11 @@ public class PlayerChannel : ICustomChannel
 
     public override async void OnRecieve(byte[] bytes)
     {
+        if (bytes.Length == 0)
+        {
+            return;
+        }
+
         Request message;
         try
         {

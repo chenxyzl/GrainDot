@@ -28,7 +28,7 @@ public class HotfixManager : Single<HotfixManager>
         //
         GlobalHotfixManager.Instance.ReloadHandler();
         //重新加载Handler
-        RpcManager.Instance.ReloadHanlder();
+        RpcManager.Instance.ReloadHandler();
         //
         PlayerHotfixManager.Instance.ReloadHanlder();
         //
