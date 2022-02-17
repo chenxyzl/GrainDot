@@ -18,7 +18,7 @@ public class RoleLogin : HttpHandler<C2ARoleLogin, A2CRoleLogin>
     {
         //查询全部，大概率会限制创建个数
         var list = await GameServer.Instance.GetComponent<DBComponent>()
-            .Query<RoleSimpleState>((x => x.Account == data.Token));
+            .Query<RoleSimpleState>(x => x.Account == data.Token, null);
         ulong playerId = data.Uid;
         if (data.Uid > 0) //检查角色是否存在
         {

@@ -25,24 +25,24 @@ public class CallComponent : IActorComponent<BaseActor>
         }
     }
 
-    public void RunResponse(InnerResponse respone)
+    public void RunResponse(InnerResponse response)
     {
-        if (!RequestCallbackDic.TryGetValue(respone.Sn, out var senderMessage))
+        if (!RequestCallbackDic.TryGetValue(response.Sn, out var senderMessage))
         {
             Node.Logger.Warning(
-                $"inner message callback:{respone.Sn} Name:{respone.Opcode} Code:{respone.Code} not found; maybe time out");
+                $"inner message callback:{response.Sn} Name:{response.Opcode} Code:{response.Code} not found; maybe time out");
             return;
         }
 
-        RequestCallbackDic.Remove(respone.Sn);
-        if (respone.Code != Code.Ok)
+        RequestCallbackDic.Remove(response.Sn);
+        if (response.Code != Code.Ok)
         {
-            senderMessage.Tcs.SetException(new CodeException(respone.Code, respone.Code.ToString()));
+            senderMessage.Tcs.SetException(new CodeException(response.Code, response.Code.ToString()));
         }
         else
         {
-            var retType = RpcManager.Instance.GetResponseOpcode(respone.Opcode);
-            var ret = A.NotNull(SerializeHelper.FromBinary(retType, respone.Content) as IResponse);
+            var retType = RpcManager.Instance.GetResponseOpcode(response.Opcode);
+            var ret = A.NotNull(SerializeHelper.FromBinary(retType, response.Content) as IResponse);
             senderMessage.Tcs.SetResult(ret);
         }
     }

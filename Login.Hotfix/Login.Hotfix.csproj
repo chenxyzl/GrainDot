@@ -20,8 +20,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="..\Share\HotfixService\GlobalDBService.cs">
-            <Link>Service\GlobalDBService.cs</Link>
+        <Compile Include="..\Share\HotfixService\CallService.cs">
+            <Link>Service\CallService.cs</Link>
+        </Compile>
+        <Compile Include="..\Share\HotfixService\DBService.cs">
+            <Link>Service\DBService.cs</Link>
         </Compile>
         <Compile Include="..\Share\HotfixService\HttpService.cs">
             <Link>Service\HttpService.cs</Link>
