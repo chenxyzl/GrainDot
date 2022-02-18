@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Message;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
@@ -38,6 +40,7 @@ public static class HttpService
             var reader = new StreamReader(context.Request.Body);
             var base64 = (await reader.ReadToEndAsync()).Replace("_", "=");
             var data = Convert.FromBase64String(base64);
+            GlobalLog.Debug($"Path:0 {context.Request.Path}");
             var handler = HttpHotfixManager.Instance.GetHandler(context.Request.Path);
             var result = await handler.Handle(data);
             var array = new ApiResult
@@ -48,9 +51,9 @@ public static class HttpService
             var ret = Convert.ToBase64String(array);
             context.Response.StatusCode = 200;
             context.Response.ContentType = "text/html";
-            context.Response.Headers.Add("Date", new DateTimeOffset().UtcDateTime.ToString());
+            context.Response.Headers.Add("Date", new DateTimeOffset().UtcDateTime.ToString("u"));
             await context.Response.WriteAsync(ret);
-            await context.Response.Body.FlushAsync();
+            Console.WriteLine($"Path:1 {context.Request.Path} ret:{ret}");
         }
         catch (CodeException e)
         {
@@ -62,10 +65,12 @@ public static class HttpService
             var ret = Convert.ToBase64String(array);
             await context.Response.WriteAsync(ret);
             await context.Response.Body.FlushAsync();
+            GlobalLog.Debug($"Path:{context.Request.Path} ret:{e.Code} e:{e.Message}");
         }
         catch (Exception e)
         {
             await context.Response.WriteAsync($"server inner error,{e}");
+            GlobalLog.Debug($"Path:{context.Request.Path} unexpect exception");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NLog.Config;
+﻿using Base.Helper;
+using NLog.Config;
 
 namespace Base;
 
@@ -8,12 +9,8 @@ public class NLogAdapter : ILog
 
     public NLogAdapter(string p)
     {
-#if DEBUG
         LogManager.Configuration = new XmlLoggingConfiguration("../Conf/Nlog.config");
-#else
-            LogManager.Configuration = new XmlLoggingConfiguration("Nlog.config");
-#endif
-        LogManager.Configuration.Variables["appIdFormat"] = "xxx";
+        LogManager.Configuration.Variables["appIdFormat"] = $"{CommandHelper.Instance.NodeType}:{CommandHelper.Instance.NodeId}";
         logger = LogManager.GetLogger(p);
     }
 
