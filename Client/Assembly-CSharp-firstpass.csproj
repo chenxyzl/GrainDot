@@ -41,8 +41,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <None Include="Assets/Plugins/protobuf-net.Core.xml" />
-     <None Include="Assets/Plugins/protobuf-net.xml" />
+     <None Include="Assets/Plugins/Google.Protobuf.xml" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>

@@ -68,7 +68,6 @@ public class RpcManager : Single<RpcManager>
 
     public void ParseRpcItems()
     {
-        ParseRpcItems(RpcItemMessage.rpcItemsInner);
         ParseRpcItems(RpcItemMessage.rpcItemsOuter);
     }
 }

@@ -5,7 +5,7 @@ Tools/etcd/etcd.exe
 Tools/etcd/etcdctl.exe
 Tools/etcd/default.etcd/
 Bin/
-**/*.csproj.user
+**/*.*.user
 **/~$*.xlsx
 **/.vs/*
 Logs/
@@ -15,3 +15,5 @@ Client/obj
 Client/Temp
 Client/UserSettings
 Client/Library
+Client/Client.app
+Client/Client_*

@@ -7,6 +7,7 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Google.Protobuf;
 using Message;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -67,7 +68,7 @@ public class client : MonoBehaviour
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void Send(IRequest msg)
+    void Send(IMessage msg)
     {
         //第一层序列化
         var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
@@ -75,7 +76,7 @@ public class client : MonoBehaviour
         //第二层序列化
         Request req = new Request();
         req.Opcode = opcode;
-        req.Content = content;
+        req.Content = ByteString.CopyFrom(content);
         req.Sn = ++sn;
         req.Sign = "";
         //发送
@@ -96,7 +97,7 @@ public class client : MonoBehaviour
         {
             case "/api/rolelist":
             {
-                var res = SerializeHelper.FromBinary<A2CGetRoleList>(msg.Content);
+                var res = SerializeHelper.FromBinary<A2CGetRoleList>(msg.Content.ToByteArray());
                 roleList.Clear();
                 foreach (var simpleRole in res.Rols)
                 {
@@ -108,7 +109,7 @@ public class client : MonoBehaviour
             }
             case "/api/login":
             {
-                var res = SerializeHelper.FromBinary<A2CRoleLogin>(msg.Content);
+                var res = SerializeHelper.FromBinary<A2CRoleLogin>(msg.Content.ToByteArray());
                 loginKey = res.Key;
                 inputIp = res.Addr;
                 recMes = loginKey;
@@ -117,7 +118,7 @@ public class client : MonoBehaviour
         }
     }
 
-    IEnumerator GetRequest(string url, IHttpRequest req)
+    IEnumerator GetRequest(string url, IMessage req)
     {
         var data = Convert.ToBase64String(req.ToBinary());
         //UnityWebRequest 会对post的data进入url编码
@@ -187,24 +188,25 @@ public class client : MonoBehaviour
 
         GUI.Label(new Rect(155, 110, 300, 60), recMes);
 
-        if (GUI.Button(new Rect(65, 190, 100, 20), "开始连接"))
-        {
-            ClickConnect();
-        }
-
-        if (GUI.Button(new Rect(185, 190, 100, 20), "断开连接"))
-        {
-            DisConnect();
-        }
-
-        if (GUI.Button(new Rect(65, 230, 100, 20), "获取角色列表"))
+        if (GUI.Button(new Rect(65, 190, 100, 20), "获取角色列表"))
         {
             StartCoroutine(GetRoleList());
         }
 
-        if (GUI.Button(new Rect(185, 230, 100, 20), "选择或创建角色"))
+        if (GUI.Button(new Rect(185, 190, 100, 20), "选择或创建角色"))
         {
             StartCoroutine(LoginApi());
+        }
+
+
+        if (GUI.Button(new Rect(65, 230, 100, 20), "链接到游戏服务器"))
+        {
+            ClickConnect();
+        }
+
+        if (GUI.Button(new Rect(185, 230, 100, 20), "断开游戏服连接"))
+        {
+            DisConnect();
         }
 
         if (GUI.Button(new Rect(305, 230, 100, 20), "登录游戏服"))
@@ -229,7 +231,7 @@ public class client : MonoBehaviour
         var rsp = SerializeHelper.FromBinary<Response>(msg);
         //第2层反序列化
         var type = RpcManager.Instance.GetResponseOpcode(rsp.Opcode);
-        var ret = SerializeHelper.FromBinary(type, rsp.Content);
+        var ret = SerializeHelper.FromBinary(type, rsp.Content.ToByteArray());
         //显示
         recMes = JsonUtility.ToJson(ret);
     }

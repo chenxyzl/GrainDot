@@ -41,25 +41,21 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets/Message/IMessage.cs" />
      <Compile Include="Assets/NetClient.cs" />
      <Compile Include="Assets/RpcManager.cs" />
-     <Compile Include="Assets/Message/Inner.cs" />
      <Compile Include="Assets/SerializeHelper.cs" />
-     <Compile Include="Assets/Message/InnerBase.cs" />
-     <Compile Include="Assets/Message/Base.cs" />
-     <Compile Include="Assets/Message/Common.cs" />
-     <Compile Include="Assets/Message/OuterRpc.cs" />
-     <Compile Include="Assets/Message/Api.cs" />
-     <Compile Include="Assets/Message/Code.cs" />
      <Compile Include="Assets/Single.cs" />
-     <Compile Include="Assets/Message/Def.cs" />
-     <Compile Include="Assets/Message/TypeReverse.cs" />
-     <Compile Include="Assets/Message/InnerRpc.cs" />
      <Compile Include="Assets/client.cs" />
-     <Compile Include="Assets/Message/RpcItem.cs" />
-     <Compile Include="Assets/Message/Outer.cs" />
+     <Compile Include="Assets/Proto/Def.cs" />
+     <Compile Include="Assets/Proto/Outer.cs" />
+     <Compile Include="Assets/Proto/Code.cs" />
+     <Compile Include="Assets/Proto/Common.cs" />
+     <Compile Include="Assets/Proto/Api.cs" />
+     <Compile Include="Assets/Proto/Base.cs" />
+     <Compile Include="Assets/Proto/OuterRpc.cs" />
+     <Compile Include="Assets/Proto/RpcItem.cs" />
      <None Include="Assets/Resources/BillingMode.json" />
+     <None Include="Assets/link.xml" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
@@ -306,14 +302,8 @@
      <Reference Include="System.Runtime.CompilerServices.Unsafe">
      <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Runtime.CompilerServices.Unsafe.dll</HintPath>
      </Reference>
-     <Reference Include="protobuf-net">
-     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/protobuf-net.dll</HintPath>
-     </Reference>
      <Reference Include="Newtonsoft.Json">
      <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
-     </Reference>
-     <Reference Include="System.Numerics.Vectors">
-     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Numerics.Vectors.dll</HintPath>
      </Reference>
      <Reference Include="System.Memory">
      <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Memory.dll</HintPath>
@@ -324,17 +314,14 @@
      <Reference Include="Unity.Analytics.Editor">
      <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="System.Collections.Immutable">
-     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Collections.Immutable.dll</HintPath>
-     </Reference>
-     <Reference Include="protobuf-net.Core">
-     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/protobuf-net.Core.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.Analytics.Tracker">
      <HintPath>/Users/lin/space/Lin/Client/Library/PackageCache/com.unity.analytics@3.6.12/Unity.Analytics.Tracker.dll</HintPath>
      </Reference>
      <Reference Include="System.Buffers">
      <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/System.Buffers.dll</HintPath>
+     </Reference>
+     <Reference Include="Google.Protobuf">
+     <HintPath>/Users/lin/space/Lin/Client/Assets/Plugins/Google.Protobuf.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/NetStandard/ref/2.1.0/netstandard.dll</HintPath>
