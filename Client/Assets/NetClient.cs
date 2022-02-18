@@ -116,7 +116,7 @@ public class NetClient
     /// <returns></returns>
     public static int BytesToInt(byte[] data, int offset)
     {
-        var a = data.SubArray(offset, 2);
+        var a = data.SubArray(offset, 2).Reverse().ToArray();
         var b = BitConverter.ToUInt16(a, 0);
         return b;
     }
@@ -129,22 +129,9 @@ public class NetClient
     /// <returns></returns>
     public static byte[] IntToBytes(ushort num)
     {
-        var bytes = BitConverter.GetBytes(num);
-        var byte1 = IntToBytes1(num);
+        var bytes = BitConverter.GetBytes(num).Reverse().ToArray();
         return bytes;
     }
-
-    public static byte[] IntToBytes1(int num)
-    {
-        byte[] bytes = new byte[4];
-        for (int i = 0; i < 4; i++)
-        {
-            bytes[i] = (byte) (num >> (24 - i * 8));
-        }
-
-        return bytes;
-    }
-
 
     public void Close()
     {

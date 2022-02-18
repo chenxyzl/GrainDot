@@ -225,18 +225,12 @@ public class client : MonoBehaviour
 
     void OnRecMsg(byte[] msg)
     {
-        using (MemoryStream ms = new MemoryStream())
-        {
-            ms.Write(msg, 0, msg.Length);
-            ms.Position = 0;
-
-            //第1层反序列化
-            var rsp = SerializeHelper.FromBinary<Response>(ms.GetBuffer());
-            //第2层反序列化
-            var type = RpcManager.Instance.GetResponseOpcode(rsp.Opcode);
-            var ret = SerializeHelper.FromBinary(type, rsp.Content);
-            //显示
-            recMes = ret.ToString();
-        }
+        //第1层反序列化
+        var rsp = SerializeHelper.FromBinary<Response>(msg);
+        //第2层反序列化
+        var type = RpcManager.Instance.GetResponseOpcode(rsp.Opcode);
+        var ret = SerializeHelper.FromBinary(type, rsp.Content);
+        //显示
+        recMes = JsonUtility.ToJson(ret);
     }
 }

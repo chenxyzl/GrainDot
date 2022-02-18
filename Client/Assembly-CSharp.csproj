@@ -43,22 +43,22 @@
   <ItemGroup>
      <Compile Include="Assets/Message/IMessage.cs" />
      <Compile Include="Assets/NetClient.cs" />
+     <Compile Include="Assets/RpcManager.cs" />
+     <Compile Include="Assets/Message/Inner.cs" />
      <Compile Include="Assets/SerializeHelper.cs" />
+     <Compile Include="Assets/Message/InnerBase.cs" />
      <Compile Include="Assets/Message/Base.cs" />
      <Compile Include="Assets/Message/Common.cs" />
      <Compile Include="Assets/Message/OuterRpc.cs" />
      <Compile Include="Assets/Message/Api.cs" />
      <Compile Include="Assets/Message/Code.cs" />
+     <Compile Include="Assets/Single.cs" />
      <Compile Include="Assets/Message/Def.cs" />
      <Compile Include="Assets/Message/TypeReverse.cs" />
+     <Compile Include="Assets/Message/InnerRpc.cs" />
      <Compile Include="Assets/client.cs" />
      <Compile Include="Assets/Message/RpcItem.cs" />
      <Compile Include="Assets/Message/Outer.cs" />
-     <Compile Include="Assets/Message/Inner.cs" />
-     <Compile Include="Assets/Message/InnerBase.cs" />
-     <Compile Include="Assets/Message/InnerRpc.cs" />
-     <Compile Include="Assets/Single.cs" />
-     <Compile Include="Assets/RpcManager.cs" />
      <None Include="Assets/Resources/BillingMode.json" />
      <Reference Include="UnityEngine">
      <HintPath>/Applications/Unity/Hub/Editor/2021.2.10f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

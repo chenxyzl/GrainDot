@@ -16,10 +16,6 @@ public class RpcManager : Single<RpcManager>
     private readonly Dictionary<uint, OpType> _rpcTypeDic = new();
     //内部rpc调用派发
 
-    //
-    private bool _onlyFirst = true;
-
-
     public uint GetRequestOpcode(Type t)
     {
         _requestOpcodeDic.TryGetValue(t, out var v);
