@@ -34,11 +34,6 @@ public static class BagService
         return Task.CompletedTask;
     }
 
-    public static Task Tick(this BagComponent self, long now)
-    {
-        return Task.CompletedTask;
-    }
-
     public static Task PreStop(this BagComponent self)
     {
         return Task.CompletedTask;
@@ -47,6 +42,11 @@ public static class BagService
     public static Task Stop(this BagComponent self)
     {
         return Task.CompletedTask;
+    }
+
+    public static async Task Tick(this BagComponent self, long now)
+    {
+        await self.CheckState();
     }
 
     public static async Task CheckState(this BagComponent self)

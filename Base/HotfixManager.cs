@@ -24,13 +24,11 @@ public class HotfixManager : Single<HotfixManager>
 
         //新旧覆盖 ~~
         types = t;
-        //
-        GlobalHotfixManager.Instance.ReloadHandler();
         //重新加载Handler
         RpcManager.Instance.ReloadHandler();
-        //
+        //生命周期函数
         LifeHotfixManager.Instance.ReloadHandler();
-        //
+        //http的Handler
         HttpHotfixManager.Instance.ReloadHanlder();
     }
 

@@ -29,7 +29,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
         foreach (var type in types)
         {
             //todo 获取type所属的service
-            var s = A.NotNull(type.GetCustomAttribute<ServiceAttribute>(),
+            var host = A.NotNull(type.GetCustomAttribute<ServiceAttribute>(),
                 des: $"type:{type.Name} not found ServiceAttribute");
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public);
             LoadDelegate? loadDelegate = null;
@@ -39,9 +39,10 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             TickDelegate? tickDelegate = null;
             foreach (var method in methods)
             {
-                if (!(method.IsDefined(typeof(ExtensionAttribute), false) &&
-                      method.GetParameters()[0].ParameterType.IsAssignableFrom(s.HostType)))
-                    continue;
+                A.Ensure(method.IsDefined(typeof(ExtensionAttribute), false) &&
+                         method.GetParameters()[0].ParameterType.IsAssignableFrom(host.HostType),
+                    des: $"all method must extension by host type: {host.HostType.Name} ");
+
                 switch (method.Name)
                 {
                     case "Load":

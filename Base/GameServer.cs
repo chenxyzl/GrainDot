@@ -84,10 +84,12 @@ public abstract class GameServer
         //_systemConfig  = File.ReadAllText($"../Conf/{role}.conf");
     }
 
+    protected abstract void RegisterComponent();
+
     protected virtual async Task BeforCreate()
     {
         Logger.Info("Register begin!!!");
-        GlobalHotfixManager.Instance.Hotfix.RegisterComponent();
+        RegisterComponent();
         Logger.Info("Register success!!!");
         //拦截退出
         WatchQuit();
@@ -96,7 +98,10 @@ public abstract class GameServer
         //注册mongo的State
         //全局触发load
         Logger.Info("Load begin!!!");
-        await GlobalHotfixManager.Instance.Hotfix.Load();
+        foreach (var component in _componentsList)
+        {
+            await component.Load();
+        }
         Logger.Info("Load success!!!");
     }
 
@@ -106,30 +111,41 @@ public abstract class GameServer
         Instance.lastTime = TimeHelper.Now();
         Logger.Info("Start begin!!!");
         //全局触发AfterLoad
-        await GlobalHotfixManager.Instance.Hotfix.Start();
+        foreach (var component in _componentsList)
+        {
+            await component.Start(false);
+        }
         Logger.Info("Start success!!!");
     }
 
 
-    protected virtual async Task Tick()
-    {
-        //全局触发PreStop
-        await GlobalHotfixManager.Instance.Hotfix.Tick();
+    protected virtual async Task Tick(long now)
+    {;
+        foreach (var component in _componentsList)
+        {
+            await component.Tick(now);
+        }
     }
 
     protected virtual async Task PreStop()
     {
         Logger.Info("preStoop begin!!!");
         //全局触发PreStop
-        await GlobalHotfixManager.Instance.Hotfix.PreStop();
+        foreach (var component in _componentsList)
+        {
+            await component.PreStop();
+        }
         Logger.Info("preStoop success!!!");
     }
 
     protected virtual async Task Stop()
     {
         Logger.Info("Stop begin!!!");
-        //全局触发PreStop
-        await GlobalHotfixManager.Instance.Hotfix.Stop();
+        //全局触发Stop
+        foreach (var component in _componentsList)
+        {
+            await component.Load();
+        }
         Logger.Info("Stop success!!!");
     }
 
@@ -189,7 +205,7 @@ public abstract class GameServer
             var now = TimeHelper.Now();
             if (now - lastTime < 1000) continue;
             lastTime += 1000;
-            _ = Tick();
+            _ = Tick(now);
         }
 
         GlobalLog.Warning($"---{role}退出loop---");
