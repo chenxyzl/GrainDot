@@ -25,6 +25,8 @@ public class PlayerActor : BaseActor
     //上次的登录key
     public string? LastLoginKey;
 
+    public long _lastRequestTime = TimeHelper.NowSeconds();
+
     // path = akka://Z/system/sharding/Player/8714/4505283499219672065
     public PlayerActor()
     {
@@ -66,6 +68,7 @@ public class PlayerActor : BaseActor
                 await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
                 base.PreStart();
                 EnterUpState();
+                Logger.Debug($"player active id:{PlayerId}");
             }
         );
     }
@@ -79,8 +82,15 @@ public class PlayerActor : BaseActor
                 await PlayerHotfixManager.Instance.Hotfix.PreStop(this);
                 await PlayerHotfixManager.Instance.Hotfix.Stop(this);
                 base.PostStop();
+                Logger.Debug($"player stop id:{PlayerId}");
             }
         );
+    }
+
+    protected override void EnterUpState()
+    {
+        base.EnterUpState();
+        _lastRequestTime = TimeHelper.NowSeconds();
     }
 
     protected override void OnReceive(object message)
@@ -91,6 +101,7 @@ public class PlayerActor : BaseActor
             {
                 var now = TimeHelper.Now();
                 Tick(now);
+                CheckFree(now);
                 break;
             }
             case ReceiveTimeout m:
@@ -104,6 +115,7 @@ public class PlayerActor : BaseActor
                 //
                 try
                 {
+                    _lastRequestTime = TimeHelper.NowSeconds();
                     RpcManager.Instance.OuterHandlerDispatcher?.Dispatcher(this, request);
                 }
                 catch (CodeException e)
@@ -152,6 +164,13 @@ public class PlayerActor : BaseActor
                 break;
             }
         }
+    }
+
+    private void CheckFree(long now)
+    {
+        if (!LoadComplete) return;
+        if (now - _lastRequestTime * 1000 <= 600_000) return;
+        ElegantStop();
     }
 
     private async void Tick(long now)

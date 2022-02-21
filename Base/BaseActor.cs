@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Akka.Actor;
+using Base.Helper;
 using Message;
 
 namespace Base;
@@ -38,7 +39,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     }
 
 
-    protected void EnterUpState()
+    protected virtual void EnterUpState()
     {
         _cancel ??= Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
             TimeSpan.FromSeconds(30), Self, new TickT(), Self);
@@ -46,7 +47,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
         // Timers.StartSingleTimer(1, message, TimeSpan.FromSeconds(600));
     }
 
-    public void ElegantStop()
+    protected void ElegantStop()
     {
         Context.Parent.Tell(PoisonPill.Instance, Self);
     }

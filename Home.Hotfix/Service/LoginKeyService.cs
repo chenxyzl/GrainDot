@@ -34,7 +34,12 @@ public static class LoginKeyService
             }
         }
 
-        //检查长时间未连接的
+        if (now > self._lastConsoleTime + 60_000)
+        {
+            self._lastConsoleTime = now;
+            GlobalLog.Info($"time:{now} active actor size:{self.loginKeys.Count} ");
+        }
+
         return Task.CompletedTask;
     }
 
