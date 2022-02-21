@@ -2,7 +2,10 @@
 
 ps aux|grep Boot|grep -v grep > ./svc_pid_file.txt
 
+
+# killall -SIGUSR1 Boot
 killall Boot
+
 set i=0
 while test $(ps aux|grep Boot|grep -v grep|wc -l) -ne 0
 do
