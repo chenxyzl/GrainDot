@@ -11,7 +11,8 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
-public static class CallComponentService
+[Service(typeof(CallComponent))]
+public static class CallService
 {
     public static async ETTask<IResponse> AskPlayer(this CallComponent self, IRequestPlayer request,
         IActorRef? target = null)
@@ -86,6 +87,26 @@ public static class CallComponentService
         //
         if (cost >= 100) GlobalLog.Warning($"sync cost time:{cost} too long");
         //
+    }
+
+    public static Task Load(this CallComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Start(this CallComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task PreStop(this CallComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this CallComponent self)
+    {
+        return Task.CompletedTask;
     }
 
     public static Task Tick(this CallComponent self, long dt)

@@ -1,12 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Base;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
+[Service(typeof(ReplComponent))]
 public static class ReplService
 {
     public static Task Load(this ReplComponent self)
@@ -59,9 +61,27 @@ public static class ReplService
         }
     }
 
-    public static void PreStop(this ReplComponent self)
+    public static Task PreStop(this ReplComponent self)
     {
         self.ScriptOptions = null;
         self.ScriptState = null;
+        return Task.CompletedTask;
+    }
+    
+
+    public static Task Start(this ReplComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+
+    public static Task Stop(this ReplComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this ReplComponent self, long now)
+    {
+        return Task.CompletedTask;
     }
 }

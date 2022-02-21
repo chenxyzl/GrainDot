@@ -29,7 +29,7 @@ public static class PlayerService
         }
     }
 
-    public static Task Start(this PlayerComponent self, bool crossDay)
+    public static Task Start(this PlayerComponent self)
     {
         return Task.CompletedTask;
     }

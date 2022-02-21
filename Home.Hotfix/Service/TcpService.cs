@@ -7,6 +7,7 @@ using Home.Model.Component;
 
 namespace Home.Hotfix.Service;
 
+[Service(typeof(TcpComponent))]
 public static class TcpService
 {
     public static async Task Load(this TcpComponent self)
@@ -31,7 +32,7 @@ public static class TcpService
         return Task.CompletedTask;
     }
 
-    public static Task Tick(this TcpComponent self)
+    public static Task Tick(this TcpComponent self, long now)
     {
         //tick里检查所有的链接是否有超时未登陆的 如果有则关闭链接
         return Task.CompletedTask;

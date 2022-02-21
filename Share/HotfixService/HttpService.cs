@@ -14,6 +14,7 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
+[Service(typeof(HttpComponent))]
 public static class HttpService
 {
     public static async Task Start(this HttpComponent self)
@@ -72,5 +73,20 @@ public static class HttpService
             await context.Response.WriteAsync($"server inner error,{e}");
             GlobalLog.Debug($"Path:{context.Request.Path} unexpect exception");
         }
+    }
+    
+    public static Task Load(this HttpComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this HttpComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this HttpComponent self, long now)
+    {
+        return Task.CompletedTask;
     }
 }

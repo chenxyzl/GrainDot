@@ -24,13 +24,13 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
         Dictionary<Type, PreStopDelegate> preStopDelegateTempDic = new();
         Dictionary<Type, StopDelegate> stopDelegateTempDic = new();
         Dictionary<Type, TickDelegate> tickDelegateTempDic = new();
-        //todo 这里解析所有的Delegate
+        //这里解析所有的Delegate
         var types = HotfixManager.Instance.GetTypes<ServiceAttribute>();
         foreach (var type in types)
         {
-            //todo 获取type所属的service
-            var host = A.NotNull(type.GetCustomAttribute<ServiceAttribute>(),
-                des: $"type:{type.Name} not found ServiceAttribute");
+            var HostType = A.NotNull(type.GetCustomAttribute<ServiceAttribute>(),
+                des: $"type:{type.Name} not found ServiceAttribute").HostType;
+            GlobalLog.Debug($"check type:{type.Name} hostType:{HostType.Name} life");
             var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public);
             LoadDelegate? loadDelegate = null;
             StartDelegate? startDelegate = null;
@@ -39,9 +39,9 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             TickDelegate? tickDelegate = null;
             foreach (var method in methods)
             {
-                A.Ensure(method.IsDefined(typeof(ExtensionAttribute), false) &&
-                         method.GetParameters()[0].ParameterType.IsAssignableFrom(host.HostType),
-                    des: $"all method must extension by host type: {host.HostType.Name} ");
+                if (!(method.IsDefined(typeof(ExtensionAttribute), false) &&
+                      method.GetParameters()[0].ParameterType.IsAssignableFrom(HostType))) continue;
+
 
                 switch (method.Name)
                 {
@@ -73,12 +73,16 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
                 }
             }
 
-            loadDelegateTempDic[type] = A.NotNull(loadDelegate, des: $"type:{type.Name} not found loadDelegate");
-            startDelegateTempDic[type] = A.NotNull(startDelegate, des: $"type:{type.Name} not found startDelegate");
-            preStopDelegateTempDic[type] =
-                A.NotNull(preStopDelegate, des: $"type:{type.Name} not found preStopDelegate");
-            stopDelegateTempDic[type] = A.NotNull(stopDelegate, des: $"type:{type.Name} not found stopDelegate");
-            tickDelegateTempDic[type] = A.NotNull(tickDelegate, des: $"type:{type.Name} not found tickDelegate");
+            loadDelegateTempDic[HostType] =
+                A.NotNull(loadDelegate, des: $"HostType:{HostType.Name} not found loadDelegate");
+            startDelegateTempDic[HostType] =
+                A.NotNull(startDelegate, des: $"HostType:{HostType.Name} not found startDelegate");
+            preStopDelegateTempDic[HostType] =
+                A.NotNull(preStopDelegate, des: $"HostType:{HostType.Name} not found preStopDelegate");
+            stopDelegateTempDic[HostType] =
+                A.NotNull(stopDelegate, des: $"HostType:{HostType.Name} not found stopDelegate");
+            tickDelegateTempDic[HostType] =
+                A.NotNull(tickDelegate, des: $"HostType:{HostType.Name} not found tickDelegate");
         }
 
         _loadDelegateDic = loadDelegateTempDic;

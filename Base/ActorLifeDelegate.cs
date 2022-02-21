@@ -6,7 +6,7 @@ namespace Base;
 public delegate Task LoadDelegate();
 
 //开始 第一个tick开始前  @param:crossDay 是否跨天
-public delegate Task StartDelegate(bool crossDay);
+public delegate Task StartDelegate();
 
 //停止前
 public delegate Task PreStopDelegate();

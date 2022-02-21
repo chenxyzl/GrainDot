@@ -8,6 +8,7 @@ using Home.Model.Component;
 
 namespace Home.Hotfix.Service;
 
+[Service(typeof(LoginKeyComponent))]
 public static class LoginKeyService
 {
     public static Task Load(this LoginKeyComponent self)
@@ -15,9 +16,8 @@ public static class LoginKeyService
         return Task.CompletedTask;
     }
 
-    public static Task Tick(this LoginKeyComponent self)
+    public static Task Tick(this LoginKeyComponent self, long now)
     {
-        var now = TimeHelper.Now();
         while (true)
         {
             if (self.timeKeys.Count == 0) break;
@@ -85,4 +85,21 @@ public static class LoginKeyService
             self.loginKeys.Remove(key);
         }
     }
+    
+    
+    public static Task Start(this LoginKeyComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task PreStop(this LoginKeyComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this LoginKeyComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
 }

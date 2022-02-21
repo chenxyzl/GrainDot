@@ -5,6 +5,7 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
+[Service(typeof(ConsoleComponent))]
 public static class ConsoleService
 {
     public static async Task WaitingRead(this ConsoleComponent self)
@@ -111,6 +112,21 @@ public static class ConsoleService
     {
         self.stopWatch = true;
         self.CancellationTokenSource.Cancel();
+        return Task.CompletedTask;
+    }
+
+    public static Task Start(this ConsoleComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this ConsoleComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this ConsoleComponent self, long dt)
+    {
         return Task.CompletedTask;
     }
 }

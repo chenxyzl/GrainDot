@@ -113,7 +113,7 @@ public abstract class GameServer
         //全局触发AfterLoad
         foreach (var component in _componentsList)
         {
-            await component.Start(false);
+            await component.Start();
         }
         Logger.Info("Start success!!!");
     }

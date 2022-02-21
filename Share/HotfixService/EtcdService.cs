@@ -11,6 +11,7 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
+[Service(typeof(EtcdComponent))]
 public static class EtcdService
 {
     public static async Task Load(this EtcdComponent self)
@@ -164,7 +165,7 @@ public static class EtcdService
         Console.WriteLine($"watch {e.Key}, {e.Value}, {e.Type}");
     }
 
-    public static async Task Test(EtcdComponent self)
+    public static async Task Test(this EtcdComponent self)
     {
         self.Watch("/a/b", self.WatchTest);
         await self.WatchPrefix("/a/", self.WatchTest);
@@ -183,5 +184,20 @@ public static class EtcdService
         var e = await self.Get("/a/b");
         var f = await self.Get("/a/c");
         Console.WriteLine($"final {a},{b},{c},{d}, {f}");
+    }
+    
+    public static Task Start(this EtcdComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this EtcdComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this EtcdComponent self, long now)
+    {
+        return Task.CompletedTask;
     }
 }

@@ -42,7 +42,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
         var components = GetAllComponent();
         foreach (var component in components)
         {
-            await component.Start(false);
+            await component.Start();
         }
     }
 

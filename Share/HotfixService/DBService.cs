@@ -15,6 +15,7 @@ using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
 
+[Service(typeof(DBComponent))]
 public static class DBService
 {
     public static async Task Load(this DBComponent self)
@@ -187,5 +188,26 @@ public static class DBService
         var col = self.GetCollection<T>(collection);
         var indexKeysDefinition = Builders<T>.IndexKeys.Ascending(field);
         await col.Indexes.CreateOneAsync(new CreateIndexModel<T>(indexKeysDefinition));
+    }
+
+
+    public static Task Start(this DBComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task PreStop(this DBComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this DBComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this DBComponent self, long now)
+    {
+        return Task.CompletedTask;
     }
 }
