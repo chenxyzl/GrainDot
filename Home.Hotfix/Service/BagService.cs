@@ -27,4 +27,18 @@ public static class BagService
             }, self.Node);
         }
     }
+
+    public static void Tick(this BagComponent self, long now)
+    {
+    }
+
+    public static async Task CheckState(this BagComponent self)
+    {
+        if (self.State == null) return;
+        if (self.State.Dirty)
+        {
+            await GameServer.Instance.GetComponent<DBComponent>().Save(self.State, self.Node);
+            self.State.CleanDirty();
+        }
+    }
 }
