@@ -16,7 +16,6 @@ public class HotfixManager : Single<HotfixManager>
         foreach (var x in asm)
         foreach (var type in x.GetTypes())
         {
-            if (type.IsAbstract) continue;
             var objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
             if (objects.Length == 0) continue;
 
@@ -30,9 +29,7 @@ public class HotfixManager : Single<HotfixManager>
         //重新加载Handler
         RpcManager.Instance.ReloadHandler();
         //
-        PlayerHotfixManager.Instance.ReloadHanlder();
-        //
-        GameHotfixManager.Instance.ReloadHandler();
+        LifeHotfixManager.Instance.ReloadHandler();
         //
         HttpHotfixManager.Instance.ReloadHanlder();
     }

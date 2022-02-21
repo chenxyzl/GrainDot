@@ -1,10 +1,10 @@
 ﻿namespace Base;
 
-public abstract class IActorComponent<NT> : IComponent where NT : BaseActor
+public abstract class IActorComponent<T> : IComponent where T : BaseActor
 {
-    public NT Node;
+    public T Node;
 
-    public IActorComponent(NT a)
+    public IActorComponent(T a)
     {
         Node = a;
     }

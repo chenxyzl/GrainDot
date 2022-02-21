@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Akka.Actor;
+using Akka.Dispatch;
 using Base.Helper;
 using Message;
 
@@ -25,24 +27,85 @@ public abstract class BaseActor : UntypedActor, IWithTimers
         return Sender;
     }
 
+
+    private async Task Load()
+    {
+        var components = GetAllComponent();
+        foreach (var component in components)
+        {
+            await component.Load();
+        }
+    }
+
+    private async Task Start()
+    {
+        var components = GetAllComponent();
+        foreach (var component in components)
+        {
+            await component.Start(false);
+        }
+    }
+
+    private async Task PreStop()
+    {
+        var components = GetAllComponent();
+        foreach (var component in components)
+        {
+            await component.PreStop();
+        }
+    }
+
+    private async Task Stop()
+    {
+        var components = GetAllComponent();
+        foreach (var component in components)
+        {
+            await component.Stop();
+        }
+    }
+
+    protected async Task Tick(long now)
+    {
+        var components = GetAllComponent();
+        foreach (var component in components)
+        {
+            await component.Tick(now);
+        }
+    }
+
     protected override void PreStart()
     {
-        base.PreStart();
+        ActorTaskScheduler.RunTask(
+            async () =>
+            {
+                base.PreStart();
+                await Load();
+                base.PreStart();
+                await Start();
+                EnterUpState();
+
+                _cancel ??= Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
+                    TimeSpan.FromSeconds(30), Self, new TickT(), Self);
+            }
+        );
     }
 
     protected override void PostStop()
     {
-        base.PostStop();
-
-        _cancel?.Cancel();
-        _cancel = null;
+        ActorTaskScheduler.RunTask(
+            async () =>
+            {
+                _cancel?.Cancel();
+                _cancel = null;
+                await PreStop();
+                base.PostStop();
+                await Stop();
+            }
+        );
     }
-
 
     protected virtual void EnterUpState()
     {
-        _cancel ??= Context.System.Scheduler.ScheduleTellRepeatedlyCancelable(TimeSpan.Zero,
-            TimeSpan.FromSeconds(30), Self, new TickT(), Self);
         LoadComplete = true;
         // Timers.StartSingleTimer(1, message, TimeSpan.FromSeconds(600));
     }
@@ -61,7 +124,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     {
     }
 
-    #region 全局组件i
+    #region 全局组件
 
     //所有model
     public Dictionary<Type, IComponent> _components = new();
@@ -69,9 +132,9 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     public List<IComponent> _componentsList = new();
 
     //获取所有组件
-    public Dictionary<Type, IComponent> GetAllComponent()
+    public List<IComponent> GetAllComponent()
     {
-        return _components;
+        return _componentsList;
     }
 
     //获取model

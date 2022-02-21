@@ -31,19 +31,15 @@ public class PlayerActor : BaseActor
     public PlayerActor()
     {
         uid = ulong.Parse(Self.Path.ToString().Split("/").Last());
-        PlayerHotfixManager.Instance.Hotfix.AddComponent(this);
+        //有顺序
+        AddComponent<PlayerComponent>();
+        AddComponent<BagComponent>();
+        AddComponent<CallComponent>();
     }
 
     //获取channel
-    private ICustomChannel? Channel
-    {
-        get
-        {
-            if (_connectionId == null) return null;
-
-            return Home.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
-        }
-    }
+    private ICustomChannel? Channel =>
+        Home.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
 
     public ulong PlayerId => uid;
 
@@ -59,33 +55,6 @@ public class PlayerActor : BaseActor
         }
     }
 
-    protected override void PreStart()
-    {
-        ActorTaskScheduler.RunTask(
-            async () =>
-            {
-                await PlayerHotfixManager.Instance.Hotfix.Load(this);
-                await PlayerHotfixManager.Instance.Hotfix.Start(this, false);
-                base.PreStart();
-                EnterUpState();
-                Logger.Debug($"player active id:{PlayerId}");
-            }
-        );
-    }
-
-
-    protected override void PostStop()
-    {
-        ActorTaskScheduler.RunTask(
-            async () =>
-            {
-                await PlayerHotfixManager.Instance.Hotfix.PreStop(this);
-                await PlayerHotfixManager.Instance.Hotfix.Stop(this);
-                base.PostStop();
-                Logger.Debug($"player stop id:{PlayerId}");
-            }
-        );
-    }
 
     protected override void EnterUpState()
     {
@@ -93,18 +62,19 @@ public class PlayerActor : BaseActor
         _lastRequestTime = TimeHelper.NowSeconds();
     }
 
-    protected override void OnReceive(object message)
+    protected override async void OnReceive(object message)
     {
+        //消息处理
         switch (message)
         {
-            case TickT tik:
+            case TickT:
             {
                 var now = TimeHelper.Now();
-                Tick(now);
+                await Tick(now);
                 CheckFree(now);
                 break;
             }
-            case ReceiveTimeout m:
+            case ReceiveTimeout:
             {
                 ElegantStop();
                 break;
@@ -173,10 +143,6 @@ public class PlayerActor : BaseActor
         ElegantStop();
     }
 
-    private async void Tick(long now)
-    {
-        await PlayerHotfixManager.Instance.Hotfix.Tick(this, now);
-    }
 
     public async Task Send(IMessage? message, uint opcode, uint sn, Code code = Code.Ok)
     {

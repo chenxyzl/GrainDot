@@ -10,6 +10,7 @@ using Share.Model.Component;
 
 namespace Home.Hotfix.Service;
 
+[Service(typeof(PlayerComponent))]
 public static class PlayerService
 {
     public static async Task Load(this PlayerComponent self)
@@ -41,6 +42,12 @@ public static class PlayerService
     }
 
     public static Task Stop(this PlayerComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+
+    public static Task Tick(this PlayerComponent self, long now)
     {
         return Task.CompletedTask;
     }

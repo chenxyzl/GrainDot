@@ -13,33 +13,13 @@ public class WorldActor : BaseActor
 
     public WorldActor()
     {
-        GameHotfixManager.Instance.Hotfix.AddComponent(this);
+        //todo 这里添加component
     }
 
     public ulong WorldId { get; private set; }
 
     public override ILog Logger => _log ??= new NLogAdapter($"world:{WorldId}");
 
-    protected override async void PreStart()
-    {
-        base.PreStart();
-        await GameHotfixManager.Instance.Hotfix.Load(this);
-        await GameHotfixManager.Instance.Hotfix.Start(this, false);
-        EnterUpState();
-    }
-
-
-    protected override async void PostStop()
-    {
-        await GameHotfixManager.Instance.Hotfix.PreStop(this);
-        await GameHotfixManager.Instance.Hotfix.Stop(this);
-        base.PostStop();
-    }
-
-    private async void Tick(long now)
-    {
-        await GameHotfixManager.Instance.Hotfix.Tick(this, now);
-    }
 
     protected override void OnReceive(object message)
     {

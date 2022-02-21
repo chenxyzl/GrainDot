@@ -12,10 +12,11 @@ public class ConnectionDicCommponent : IGlobalComponent
     private readonly Dictionary<string, ICustomChannel> connects = new();
     private readonly object lockObj = new();
 
-    public ICustomChannel? GetConnection(string connectId)
+    public ICustomChannel? GetConnection(string? connectId)
     {
         lock (lockObj)
         {
+            if (connectId == null) return null;
             connects.TryGetValue(connectId, out var v);
             return v;
         }

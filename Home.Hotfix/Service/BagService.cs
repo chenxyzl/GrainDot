@@ -10,6 +10,7 @@ using Share.Model.Component;
 
 namespace Home.Hotfix.Service;
 
+[Service(typeof(BagComponent))]
 public static class BagService
 {
     public static async Task Load(this BagComponent self)
@@ -28,8 +29,24 @@ public static class BagService
         }
     }
 
-    public static void Tick(this BagComponent self, long now)
+    public static Task Start(this BagComponent self)
     {
+        return Task.CompletedTask;
+    }
+
+    public static Task Tick(this BagComponent self, long now)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task PreStop(this BagComponent self)
+    {
+        return Task.CompletedTask;
+    }
+
+    public static Task Stop(this BagComponent self)
+    {
+        return Task.CompletedTask;
     }
 
     public static async Task CheckState(this BagComponent self)
