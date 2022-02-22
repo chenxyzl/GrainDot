@@ -11,8 +11,8 @@ public static class DllHelper
         {
             typeof(GameServer).Assembly,
             game.GetType().Assembly,
-            Assembly.Load(File.ReadAllBytes($"./{game.role}.Hotfix.dll"),
-                File.ReadAllBytes($"./{game.role}.Hotfix.pdb"))
+            Assembly.Load(File.ReadAllBytes($"./{game.Role}.Hotfix.dll"),
+                File.ReadAllBytes($"./{game.Role}.Hotfix.pdb"))
         };
 
         return assembly;

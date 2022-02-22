@@ -39,7 +39,7 @@ public class PlayerActor : BaseActor
 
     //获取channel
     private ICustomChannel? Channel =>
-        Home.Instance.GetComponent<ConnectionDicCommponent>().GetConnection(_connectionId);
+        Home.Instance.GetComponent<ConnectionCommponent>().GetConnection(_connectionId);
 
     public ulong PlayerId => uid;
 
@@ -181,7 +181,7 @@ public class PlayerActor : BaseActor
         //清除老的链接
         KickOut();
         //检查新链接
-        var connect = Home.Instance.GetComponent<ConnectionDicCommponent>()
+        var connect = Home.Instance.GetComponent<ConnectionCommponent>()
             .GetConnection(request.Unused);
         A.NotNull(connect, Code.Error, "connect not found", true);
         _connectionId = request.Unused;

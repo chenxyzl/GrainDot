@@ -29,27 +29,32 @@ public abstract class GameServer
     private bool _quitFlag;
 
     //配置
-    protected Akka.Configuration.Config _systemConfig = null!;
+    private Akka.Configuration.Config _systemConfig = null!;
 
     //世界代理
     private IActorRef? _worldShardProxy;
 
-    private long lastTime;
+    private long _lastTime;
 
     //
-    public GameServer(RoleType r)
+    public GameServer(RoleType r, ushort nodeId)
     {
-        role = r;
-        Logger = new NLogAdapter(role.ToString());
+        Role = r;
+        NodeId = nodeId;
+        Logger = new NLogAdapter(Role.ToString());
+        //初始化id生成器
+        IdGenerater.GlobalInit(nodeId);
     }
 
     public static GameServer Instance => A.NotNull(_ins);
 
     //角色类型
-    public RoleType role { get; }
+    public RoleType Role { get; }
+
+    public ushort NodeId { get; }
 
     //根系统
-    public ActorSystem system { get; protected set; } = null!;
+    public ActorSystem System { get; private set; } = null!;
     public IActorRef PlayerShardProxy => A.NotNull(_playerShardProxy, Code.Error, "need StartPlayerProxy");
 
     public IActorRef WorldShardProxy => A.NotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
@@ -65,7 +70,7 @@ public abstract class GameServer
     //退出标记监听
     protected virtual void WatchQuit()
     {
-        Console.CancelKeyPress += (sender, e) =>
+        Console.CancelKeyPress += (_, e) =>
         {
             if (_quitFlag) return;
             _quitFlag = true;
@@ -76,7 +81,7 @@ public abstract class GameServer
     protected virtual void LoadConfig()
     {
         var baseConfig = File.ReadAllText("../Conf/Base.conf");
-        var config = File.ReadAllText($"../Conf/{role}.conf");
+        var config = File.ReadAllText($"../Conf/{Role}.conf");
         // var o = ConfigurationFactory.Default();
         var a = ConfigurationFactory.ParseString(baseConfig);
         var b = ConfigurationFactory.ParseString(config);
@@ -102,25 +107,27 @@ public abstract class GameServer
         {
             await component.Load();
         }
+
         Logger.Info("Load success!!!");
     }
 
     protected virtual async Task AfterCreate()
     {
         //触发挤时间
-        Instance.lastTime = TimeHelper.Now();
+        Instance._lastTime = TimeHelper.Now();
         Logger.Info("Start begin!!!");
         //全局触发AfterLoad
         foreach (var component in _componentsList)
         {
             await component.Start();
         }
+
         Logger.Info("Start success!!!");
     }
 
 
     protected virtual async Task Tick(long now)
-    {;
+    {
         foreach (var component in _componentsList)
         {
             await component.Tick(now);
@@ -135,6 +142,7 @@ public abstract class GameServer
         {
             await component.PreStop();
         }
+
         Logger.Info("preStoop success!!!");
     }
 
@@ -146,6 +154,7 @@ public abstract class GameServer
         {
             await component.Load();
         }
+
         Logger.Info("Stop success!!!");
     }
 
@@ -153,48 +162,47 @@ public abstract class GameServer
         HashCodeMessageExtractor extractor)
     {
         await BeforCreate();
-        system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
-        var sharding = ClusterSharding.Get(system);
+        System = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+        var sharding = ClusterSharding.Get(System);
         var shardRegion = await sharding.StartAsync(
             sharedType.ToString(),
             p,
-            ClusterShardingSettings.Create(system).WithRole(roleType.ToString()),
+            ClusterShardingSettings.Create(System).WithRole(roleType.ToString()),
             extractor
         );
-        ClusterClientReceptionist.Get(system).RegisterService(shardRegion);
+        ClusterClientReceptionist.Get(System).RegisterService(shardRegion);
         await AfterCreate();
     }
 
     protected virtual async Task StartSystem()
     {
         await BeforCreate();
-        system = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+        System = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
         await AfterCreate();
     }
 
     protected virtual async Task StopSystem()
     {
-        GlobalLog.Warning($"---{role}停止中,请勿强关---");
+        GlobalLog.Warning($"---{Role}停止中,请勿强关---");
         await PreStop();
-        await system.Terminate();
+        await System.Terminate();
         // ClusterClientReceptionist.Get(system).UnregisterService(Self);
         await Stop();
-        GlobalLog.Warning($"---{role}停止完成---");
+        GlobalLog.Warning($"---{Role}停止完成---");
     }
 
     //加载程序集合
-    protected virtual void Load(uint nodeId)
+    protected virtual void Load()
     {
-        GlobalLog.Warning($"---{role}加载中---");
-        IdGenerater.GlobalInit(nodeId);
+        GlobalLog.Warning($"---{Role}加载中---");
         HotfixManager.Instance.Reload();
         ConfigManager.Instance.ReloadConfig();
-        GlobalLog.Warning($"---{role}加载完成---");
+        GlobalLog.Warning($"---{Role}加载完成---");
     }
 
     protected virtual void Loop()
     {
-        GlobalLog.Warning($"---{role}开启loop---");
+        GlobalLog.Warning($"---{Role}开启loop---");
         //异步时间回调到主线程
         // SynchronizationContext.SetSynchronizationContext(GlobalThreadSynchronizationContext.Instance);
         while (!_quitFlag)
@@ -203,32 +211,32 @@ public abstract class GameServer
             Thread.Sleep(1);
             //1000毫秒tick一次
             var now = TimeHelper.Now();
-            if (now - lastTime < 1000) continue;
-            lastTime += 1000;
+            if (now - _lastTime < 1000) continue;
+            _lastTime += 1000;
             _ = Tick(now);
         }
 
-        GlobalLog.Warning($"---{role}退出loop---");
+        GlobalLog.Warning($"---{Role}退出loop---");
     }
 
-    private static void BeforeRun()
+    private static void BeforeRun(Type gsType, ushort nodeId)
     {
         //支持gbk2132
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        //创建
+        _ins = A.NotNull(Activator.CreateInstance(gsType, nodeId) as GameServer);
     }
 
     //有actor的启动
     public static async Task Run(Type gsType, GameSharedType sharedType, Props p,
-        HashCodeMessageExtractor extractor, uint nodeId)
+        HashCodeMessageExtractor extractor, ushort nodeId)
     {
         //before
-        BeforeRun();
-        //创建
-        _ins = A.NotNull(Activator.CreateInstance(gsType) as GameServer);
+        BeforeRun(gsType, nodeId);
         //准备
-        Instance.Load(nodeId);
+        Instance.Load();
         //开始游戏
-        await Instance.StartSystem(Instance.role, sharedType, p, extractor);
+        await Instance.StartSystem(Instance.Role, sharedType, p, extractor);
         //开启无限循环
         Instance.Loop();
         //结束游戏
@@ -236,14 +244,12 @@ public abstract class GameServer
     }
 
     //无actor的启动
-    public static async Task Run(Type gsType, uint nodeId)
+    public static async Task Run(Type gsType, ushort nodeId)
     {
         //before；
-        BeforeRun();
-        //创建
-        _ins = A.NotNull(Activator.CreateInstance(gsType) as GameServer);
+        BeforeRun(gsType, nodeId);
         //准备
-        Instance.Load(nodeId);
+        Instance.Load();
         //开始游戏
         await Instance.StartSystem();
         //开启无限循环
@@ -261,19 +267,19 @@ public abstract class GameServer
     protected List<IGlobalComponent> _componentsList = new();
 
     //获取model
-    public K GetComponent<K>() where K : class, IGlobalComponent
+    public C GetComponent<C>() where C : IGlobalComponent
     {
-        _components.TryGetValue(typeof(K), out var component);
-        component = A.NotNull(component, Code.Error, $"game component:{typeof(K).Name} not found");
-        return (K) component;
+        _components.TryGetValue(typeof(C), out var component);
+        component = A.NotNull(component, Code.Error, $"game component:{typeof(C).Name} not found");
+        return (C) component;
     }
 
-    public void AddComponent<K>(params object[] args) where K : class, IGlobalComponent
+    public void AddComponent<C>(params object[] args) where C : IGlobalComponent
     {
-        var t = typeof(K);
+        var t = typeof(C);
         if (_components.TryGetValue(t, out _)) A.Abort(Code.Error, $"game component:{t.Name} repeated");
 
-        var obj = A.NotNull(Activator.CreateInstance(t, args) as K);
+        var obj = A.NotNull(Activator.CreateInstance(t, args) as C);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }
@@ -285,17 +291,17 @@ public abstract class GameServer
 
     protected virtual void StartPlayerShardProxy()
     {
-        ClusterSharding.Get(system).StartProxy(GameSharedType.Player.ToString(), role.ToString(),
+        ClusterSharding.Get(System).StartProxy(GameSharedType.Player.ToString(), Role.ToString(),
             MessageExtractor.PlayerMessageExtractor);
-        _playerShardProxy = ClusterSharding.Get(system)
+        _playerShardProxy = ClusterSharding.Get(System)
             .ShardRegion(GameSharedType.Player.ToString());
     }
 
     protected virtual void StartWorldShardProxy()
     {
-        ClusterSharding.Get(system).StartProxy(GameSharedType.World.ToString(), role.ToString(),
+        ClusterSharding.Get(System).StartProxy(GameSharedType.World.ToString(), Role.ToString(),
             MessageExtractor.WorldMessageExtractor);
-        _worldShardProxy = ClusterSharding.Get(system)
+        _worldShardProxy = ClusterSharding.Get(System)
             .ShardRegion(GameSharedType.World.ToString());
     }
 

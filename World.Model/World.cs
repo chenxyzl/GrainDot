@@ -8,7 +8,7 @@ public class World : GameServer
 {
     public new static World Instance => A.NotNull(_ins as World);
 
-    public World() : base(RoleType.World)
+    public World(ushort nodeId) : base(RoleType.World, nodeId)
     {
     }
 

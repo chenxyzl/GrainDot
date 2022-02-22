@@ -138,21 +138,21 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     }
 
     //获取model
-    public K GetComponent<K>() where K : class, IComponent
+    public C GetComponent<C>() where C : class, IComponent
     {
-        _components.TryGetValue(typeof(K), out var component);
-        component = A.NotNull(component, Code.Error, $"actor component:{typeof(K).Name} not found");
-        return (K) component;
+        _components.TryGetValue(typeof(C), out var component);
+        component = A.NotNull(component, Code.Error, $"actor component:{typeof(C).Name} not found");
+        return (C) component;
     }
 
-    public void AddComponent<K>(params object[] args) where K : class, IComponent
+    public void AddComponent<C>(params object[] args) where C : class, IComponent
     {
-        var t = typeof(K);
+        var t = typeof(C);
         if (_components.TryGetValue(t, out _)) A.Abort(Code.Error, $"actor component:{t.Name} repeated");
 
         var allArgs = new List<object> {this};
         foreach (var a in args) allArgs.Add(a);
-        var obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as K);
+        C obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as C);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }

@@ -25,7 +25,7 @@ public class CommandHelper
     }
 
     public static CommandHelper Instance { get; } = new();
-    public string NodeId => _idOption.Value();
+    public ushort NodeId => ushort.Parse(_idOption.Value());
     public string NodeType => _typeOption.Value();
 
     public bool Parse(string[] args)

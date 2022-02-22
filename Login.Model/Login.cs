@@ -7,7 +7,7 @@ namespace Login.Model;
 
 public class Login : GameServer
 {
-    public Login() : base(RoleType.Login)
+    public Login(ushort nodeId) : base(RoleType.Login, nodeId)
     {
     }
 

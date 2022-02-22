@@ -16,7 +16,7 @@ internal class Program
             return;
 
         var roleType = EnumHelper.FromString<RoleType>(CommandHelper.Instance.NodeType);
-        var nodeId = uint.Parse(CommandHelper.Instance.NodeId);
+        var nodeId = CommandHelper.Instance.NodeId;
         switch (roleType)
         {
             case RoleType.Home:

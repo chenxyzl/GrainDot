@@ -50,7 +50,7 @@ public static class LoginKeyService
             //删除老的loginKey
             if (lastLoginKey != null)
                 self.loginKeys.Remove(lastLoginKey);
-            var playerRef = GameServer.Instance.system.ActorSelection(actor.Path.ToString());
+            var playerRef = GameServer.Instance.System.ActorSelection(actor.Path.ToString());
             while (true)
             {
                 var key = self.random.RandUInt64().ToString();
