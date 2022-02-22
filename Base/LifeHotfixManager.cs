@@ -10,11 +10,11 @@ namespace Base;
 
 public class LifeHotfixManager : Single<LifeHotfixManager>
 {
-    private Dictionary<ulong, LoadDelegate> _loadDelegateDic = new();
-    private Dictionary<ulong, StartDelegate> _startDelegateDic = new();
-    private Dictionary<ulong, PreStopDelegate> _preStopDelegateDic = new();
-    private Dictionary<ulong, StopDelegate> _stopDelegateDic = new();
-    private Dictionary<ulong, TickDelegate> _tickDelegateDic = new();
+    private Dictionary<ulong, Dictionary<Type, LoadDelegate>> _loadDelegateDic = new();
+    private Dictionary<ulong, Dictionary<Type, StartDelegate>> _startDelegateDic = new();
+    private Dictionary<ulong, Dictionary<Type, PreStopDelegate>> _preStopDelegateDic = new();
+    private Dictionary<ulong, Dictionary<Type, StopDelegate>> _stopDelegateDic = new();
+    private Dictionary<ulong, Dictionary<Type, TickDelegate>> _tickDelegateDic = new();
 
     private Dictionary<Type, MethodInfo> _loadMethodDic = new();
     private Dictionary<Type, MethodInfo> _startMethodDic = new();
@@ -111,81 +111,111 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
 
     public LoadDelegate GetLoadDelegate<T>(T t, ulong id) where T : IComponent
     {
-        if (_loadDelegateDic.TryGetValue(id, out var de))
+        if (!_loadDelegateDic.ContainsKey(id)) _loadDelegateDic.TryAdd(id, new());
+        if (!_loadDelegateDic.TryGetValue(id, out var dic))
         {
-            return de;
+            dic = new();
+            _loadDelegateDic.TryAdd(id, dic);
         }
 
         var type = t.GetType();
-        _loadMethodDic.TryGetValue(type, out var temp);
-        var method = A.NotNull(temp, des: type.Name + ": can found load method");
-        var del = (LoadDelegate) method.CreateDelegate(typeof(LoadDelegate), t);
-        var loadDelegate = A.NotNull(del, des: type.Name + ": can found load method");
-        _loadDelegateDic.TryAdd(id, loadDelegate);
+        if (!dic.TryGetValue(type, out var loadDelegate))
+        {
+            _loadMethodDic.TryGetValue(type, out var temp);
+            var method = A.NotNull(temp, des: type.Name + ": can found load method");
+            var del = (LoadDelegate) method.CreateDelegate(typeof(LoadDelegate), t);
+            loadDelegate = A.NotNull(del, des: type.Name + ": can create delegate");
+            dic.TryAdd(type, loadDelegate);
+        }
+
         return loadDelegate;
     }
 
     public StartDelegate GetStartDelegate<T>(T t, ulong id) where T : IComponent
     {
-        if (_startDelegateDic.TryGetValue(id, out var de))
+        if (!_startDelegateDic.ContainsKey(id)) _startDelegateDic.TryAdd(id, new());
+        if (!_startDelegateDic.TryGetValue(id, out var dic))
         {
-            return de;
+            dic = new();
+            _startDelegateDic.TryAdd(id, dic);
         }
 
         var type = t.GetType();
-        _startMethodDic.TryGetValue(type, out var temp);
-        var method = A.NotNull(temp, des: type.Name + ": can found start method");
-        var del = (StartDelegate) method.CreateDelegate(typeof(StartDelegate), t);
-        var startDelegate = A.NotNull(del, des: type.Name + ": can found start method");
-        _startDelegateDic.TryAdd(id, startDelegate);
+        if (!dic.TryGetValue(type, out var startDelegate))
+        {
+            _startMethodDic.TryGetValue(type, out var temp);
+            var method = A.NotNull(temp, des: type.Name + ": can found start method");
+            var del = (StartDelegate) method.CreateDelegate(typeof(StartDelegate), t);
+            startDelegate = A.NotNull(del, des: type.Name + ": can create delegate");
+            dic.TryAdd(type, startDelegate);
+        }
+
         return startDelegate;
     }
 
     public PreStopDelegate GetPreStopDelegate<T>(T t, ulong id) where T : IComponent
     {
-        if (_preStopDelegateDic.TryGetValue(id, out var de))
+        if (!_preStopDelegateDic.ContainsKey(id)) _preStopDelegateDic.TryAdd(id, new());
+        if (!_preStopDelegateDic.TryGetValue(id, out var dic))
         {
-            return de;
+            dic = new();
+            _preStopDelegateDic.TryAdd(id, dic);
         }
 
         var type = t.GetType();
-        _preStopMethodDic.TryGetValue(type, out var temp);
-        var method = A.NotNull(temp, des: type.Name + ": can found preStop method");
-        var del = (PreStopDelegate) method.CreateDelegate(typeof(PreStopDelegate), t);
-        var preStopDelegate = A.NotNull(del, des: type.Name + ": can found preStop method");
-        _preStopDelegateDic.TryAdd(id, preStopDelegate);
+        if (!dic.TryGetValue(type, out var preStopDelegate))
+        {
+            _preStopMethodDic.TryGetValue(type, out var temp);
+            var method = A.NotNull(temp, des: type.Name + ": can found preStop method");
+            var del = (PreStopDelegate) method.CreateDelegate(typeof(PreStopDelegate), t);
+            preStopDelegate = A.NotNull(del, des: type.Name + ": can create delegate");
+            dic.TryAdd(type, preStopDelegate);
+        }
+
         return preStopDelegate;
     }
 
     public StopDelegate GetStopDelegate<T>(T t, ulong id) where T : IComponent
     {
-        if (_stopDelegateDic.TryGetValue(id, out var de))
+        if (!_stopDelegateDic.ContainsKey(id)) _stopDelegateDic.TryAdd(id, new());
+        if (!_stopDelegateDic.TryGetValue(id, out var dic))
         {
-            return de;
+            dic = new();
+            _stopDelegateDic.TryAdd(id, dic);
         }
 
         var type = t.GetType();
-        _stopMethodDic.TryGetValue(type, out var temp);
-        var method = A.NotNull(temp, des: type.Name + ": can found stop method");
-        var del = (StopDelegate) method.CreateDelegate(typeof(StopDelegate), t);
-        var stopDelegate = A.NotNull(del, des: type.Name + ": can found stop method");
-        _stopDelegateDic.TryAdd(id, stopDelegate);
+        if (!dic.TryGetValue(type, out var stopDelegate))
+        {
+            _stopMethodDic.TryGetValue(type, out var temp);
+            var method = A.NotNull(temp, des: type.Name + ": can found stop method");
+            var del = (StopDelegate) method.CreateDelegate(typeof(StopDelegate), t);
+            stopDelegate = A.NotNull(del, des: type.Name + ": can create delegate");
+            dic.TryAdd(type, stopDelegate);
+        }
+
         return stopDelegate;
     }
 
     public TickDelegate GetTickDelegate<T>(T t, ulong id) where T : IComponent
     {
-        if (_tickDelegateDic.TryGetValue(id, out var de))
+        if (!_tickDelegateDic.ContainsKey(id)) _tickDelegateDic.TryAdd(id, new());
+        if (!_tickDelegateDic.TryGetValue(id, out var dic))
         {
-            return de;
+            dic = new();
+            _tickDelegateDic.TryAdd(id, dic);
         }
 
         var type = t.GetType();
-        _tickMethodDic.TryGetValue(type, out var temp);
-        var method = A.NotNull(temp, des: type.Name + ": can found tick method");
-        var del = (TickDelegate) method.CreateDelegate(typeof(TickDelegate), t);
-        var tickDelegate = A.NotNull(del, des: type.Name + ": can found tick method");
-        _tickDelegateDic.TryAdd(id, tickDelegate);
+        if (!dic.TryGetValue(type, out var tickDelegate))
+        {
+            _tickMethodDic.TryGetValue(type, out var temp);
+            var method = A.NotNull(temp, des: type.Name + ": can found tick method");
+            var del = (TickDelegate) method.CreateDelegate(typeof(TickDelegate), t);
+            tickDelegate = A.NotNull(del, des: type.Name + ": can create delegate");
+            dic.TryAdd(type, tickDelegate);
+        }
+
         return tickDelegate;
     }
 }

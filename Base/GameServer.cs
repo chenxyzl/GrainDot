@@ -152,7 +152,7 @@ public abstract class GameServer
         //全局触发Stop
         foreach (var component in _componentsList)
         {
-            await component.Load();
+            await component.Stop();
         }
 
         Logger.Info("Stop success!!!");

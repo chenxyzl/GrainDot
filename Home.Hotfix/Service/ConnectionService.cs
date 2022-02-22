@@ -8,31 +8,31 @@ using Home.Model.Component;
 
 namespace Home.Hotfix.Service;
 
-[Service(typeof(ConnectionCommponent))]
+[Service(typeof(ConnectionComponent))]
 public static class ConnectionDicService
 {
-    public static Task Load(this ConnectionCommponent self)
+    public static Task Load(this ConnectionComponent self)
     {
         return Task.CompletedTask;
     }
 
-    public static Task Start(this ConnectionCommponent self)
+    public static Task Start(this ConnectionComponent self)
     {
         return Task.CompletedTask;
     }
 
 
-    public static Task PreStop(this ConnectionCommponent self)
+    public static Task PreStop(this ConnectionComponent self)
     {
         return Task.CompletedTask;
     }
 
-    public static Task Stop(this ConnectionCommponent self)
+    public static Task Stop(this ConnectionComponent self)
     {
         return Task.CompletedTask;
     }
 
-    public static Task Tick(this ConnectionCommponent self, long now)
+    public static Task Tick(this ConnectionComponent self, long now)
     {
         //tick里检查所有的链接是否有超时未登陆的 如果有则关闭链接
         while (true)

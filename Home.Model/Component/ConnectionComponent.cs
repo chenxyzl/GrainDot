@@ -6,7 +6,7 @@ using Base.Network;
 
 namespace Home.Model.Component;
 
-public class ConnectionCommponent : IGlobalComponent
+public class ConnectionComponent : IGlobalComponent
 {
     public readonly SortedDictionary<ulong, string> WaitAuthed = new();
     private readonly Dictionary<string, ICustomChannel> _connects = new();

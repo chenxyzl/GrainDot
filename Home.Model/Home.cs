@@ -25,7 +25,7 @@ public class Home : GameServer
     {
         GameServer.Instance.AddComponent<TcpComponent>(IPAddress.Parse("127.0.0.1"), (ushort) 15000);
         GameServer.Instance.AddComponent<WsComponent>(IPAddress.Parse("127.0.0.1"), (ushort) 15001);
-        GameServer.Instance.AddComponent<ConnectionCommponent>();
+        GameServer.Instance.AddComponent<ConnectionComponent>();
         GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.254:27017");
         GameServer.Instance.AddComponent<ConsoleComponent>();
         GameServer.Instance.AddComponent<ReplComponent>();

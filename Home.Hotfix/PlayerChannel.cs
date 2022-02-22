@@ -21,7 +21,7 @@ public class PlayerChannel : ICustomChannel
 
     public override void OnConnected()
     {
-        GameServer.Instance.GetComponent<ConnectionCommponent>().AddConnection(this);
+        GameServer.Instance.GetComponent<ConnectionComponent>().AddConnection(this);
     }
 
     public override async void OnRecieve(byte[] bytes)
@@ -79,7 +79,7 @@ public class PlayerChannel : ICustomChannel
     public override void Close()
     {
         base.Close();
-        GameServer.Instance.GetComponent<ConnectionCommponent>()
+        GameServer.Instance.GetComponent<ConnectionComponent>()
             .RemoveConnection(_conn.ConnectionId);
         //todo 通知actor下线
     }
