@@ -122,7 +122,7 @@ public class client : MonoBehaviour
     {
         var data = Convert.ToBase64String(req.ToBinary());
         //UnityWebRequest 会对post的data进入url编码
-        UnityWebRequest uwr = UnityWebRequest.Put($"http://127.0.0.1:20001{url}", data);
+        UnityWebRequest uwr = UnityWebRequest.Put($"http://10.7.69.254:20001{url}", data);
         yield return uwr.SendWebRequest();
         if (uwr.result == UnityWebRequest.Result.ConnectionError)
         {

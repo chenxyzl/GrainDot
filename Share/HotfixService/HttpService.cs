@@ -54,6 +54,7 @@ public static class HttpService
             context.Response.ContentType = "text/html";
             context.Response.Headers.Add("Date", new DateTimeOffset().UtcDateTime.ToString("u"));
             await context.Response.WriteAsync(ret);
+            await context.Response.Body.FlushAsync();
             Console.WriteLine($"Path:1 {context.Request.Path} ret:{ret}");
         }
         catch (CodeException e)
@@ -71,6 +72,7 @@ public static class HttpService
         catch (Exception e)
         {
             await context.Response.WriteAsync($"server inner error,{e}");
+            await context.Response.Body.FlushAsync();
             GlobalLog.Debug($"Path:{context.Request.Path} unexpect exception");
         }
     }

@@ -9,7 +9,7 @@ public class NLogAdapter : ILog
 
     public NLogAdapter(string p)
     {
-        LogManager.Configuration = new XmlLoggingConfiguration("../Conf/Nlog.config");
+        LogManager.Configuration = new XmlLoggingConfiguration("../Conf/NLog.config");
         LogManager.Configuration.Variables["appIdFormat"] = $"{CommandHelper.Instance.NodeType}:{CommandHelper.Instance.NodeId}";
         logger = LogManager.GetLogger(p);
     }

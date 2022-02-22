@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Base;
 using Share.Model.Component;
@@ -10,49 +11,46 @@ public static class ConsoleService
 {
     public static async Task WaitingRead(this ConsoleComponent self)
     {
-        do
+        try
         {
-            try
+            var lineTemp = await Task.Factory.StartNew(() => Console.In.ReadLine(),
+                self.CancellationTokenSource.Token);
+
+            if (lineTemp == null)
             {
-                var line = await Task.Factory.StartNew(() => Console.In.ReadLine(),
-                    self.CancellationTokenSource.Token);
-
-                if (line == null) break;
-
-                line = line.Trim();
-
-                switch (self.Mode)
-                {
-                    case ConsoleMode.free:
-                        await DoFreeCommand(self, line);
-                        break;
-                    case ConsoleMode.repl:
-                        var isExited = true;
-                        try
-                        {
-                            var replComponent = GameServer.Instance.GetComponent<ReplComponent>();
-                            isExited = await replComponent.Run(line, self.CancellationTokenSource.Token);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e);
-                        }
-
-                        if (isExited) self.Mode = ConsoleMode.free;
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                return;
             }
-            catch (Exception e)
+
+            var line = lineTemp.Trim();
+
+            switch (self.Mode)
             {
-                Console.WriteLine(e);
-            }
-        } while (!self.stopWatch);
+                case ConsoleMode.free:
+                    await DoFreeCommand(self, line);
+                    break;
+                case ConsoleMode.repl:
+                    var isExited = true;
+                    try
+                    {
+                        var replComponent = GameServer.Instance.GetComponent<ReplComponent>();
+                        isExited = await replComponent.Run(line, self.CancellationTokenSource.Token);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
 
-        //读取下一条命令
-        await WaitingRead(self);
+                    if (isExited) self.Mode = ConsoleMode.free;
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     public static Task DoFreeCommand(this ConsoleComponent self, string line)
@@ -104,7 +102,14 @@ public static class ConsoleService
 
     public static Task Load(this ConsoleComponent self)
     {
-        _ = WaitingRead(self);
+        Task.Run(async () =>
+        {
+            while (!self.stopWatch)
+            {
+                Thread.Sleep(1);
+                await WaitingRead(self);
+            }
+        });
         return Task.CompletedTask;
     }
 

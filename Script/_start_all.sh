@@ -1,7 +1,8 @@
 #!/bin/sh
+cd ../Bin/
 launch()
 {
-	../Bin/Boot $1 -nodump true -console true > /dev/null 2>&1 &
+	./Boot $1 -nodump true -console true > /dev/null 2>&1 &
 }
 
 # launch "lobby -id 1"
