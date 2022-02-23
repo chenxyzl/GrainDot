@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using System.Threading.Tasks;
+using Akka.Actor;
 using Base;
 using Base.Serialize;
 using Message;
@@ -9,7 +10,7 @@ namespace Home.Hotfix.Handler;
 [InnerRpc]
 public partial class HomeInnerHandlerDispatcher : IInnerHandlerDispatcher
 {
-    public async void Dispatcher(BaseActor actor, IRequest request)
+    public async Task Dispatcher(BaseActor actor, IRequest request)
     {
         var message = A.NotNull(request as RequestPlayer);
         var sender = actor.GetSender();

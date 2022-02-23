@@ -35,7 +35,7 @@ public class ConnectionComponent : IGlobalComponent
             }
 
             _connects.TryAdd(connectId, connection);
-            WaitAuthed.TryAdd(IdGenerater.GenerateId(), connectId);
+            WaitAuthed.TryAdd(IdGenerater.NextId(), connectId);
         }
     }
 

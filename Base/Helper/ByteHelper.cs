@@ -2,6 +2,16 @@
 
 namespace Base.Helper;
 
+
+public static class ByteArrayExtensions
+{
+    public static byte[] SubArray(this byte[] array, int offset, int length)
+    {
+        return new ArraySegment<byte>(array, offset, length)
+            .ToArray();
+    }
+}
+
 public static class ByteHelper
 {
     public static string ToHex(this byte b)

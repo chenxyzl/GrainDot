@@ -7,6 +7,7 @@ using Base;
 using Base.Helper;
 using Base.Network;
 using Base.Serialize;
+using Common;
 using Home.Model.Component;
 using Message;
 using Share.Model.Component;
@@ -20,7 +21,7 @@ public class PlayerActor : BaseActor
     //链接id
     private string? _connectionId;
 
-    private ILog? _log;
+    private ActorLog? _log;
 
     //上次的登录key
     public string? LastLoginKey;
@@ -32,9 +33,10 @@ public class PlayerActor : BaseActor
     {
         uid = ulong.Parse(Self.Path.ToString().Split("/").Last());
         //有顺序
+        AddComponent<CallComponent>();
         AddComponent<PlayerComponent>();
         AddComponent<BagComponent>();
-        AddComponent<CallComponent>();
+        AddComponent<MailComponent>();
     }
 
     //获取channel
@@ -45,16 +47,8 @@ public class PlayerActor : BaseActor
 
     private uint _lastPushSn { get; set; }
     private uint _nextPushSn => ++_lastPushSn;
-
-    public override ILog Logger
-    {
-        get
-        {
-            if (_log == null) _log = new NLogAdapter($"player:{PlayerId}");
-            return _log;
-        }
-    }
-
+    
+    public override ActorLog Logger => _log ??= new ActorLog($"player:{PlayerId}");
 
     protected override void EnterUpState()
     {
@@ -86,16 +80,17 @@ public class PlayerActor : BaseActor
                 try
                 {
                     _lastRequestTime = TimeHelper.NowSeconds();
-                    RpcManager.Instance.OuterHandlerDispatcher?.Dispatcher(this, request);
+                    var disp = A.NotNull(RpcManager.Instance.OuterHandlerDispatcher, des: "outer dispatcher not found");
+                    await disp.Dispatcher(this, request);
                 }
                 catch (CodeException e)
                 {
                     //严重错误直接踢下线
-                    if (e.Serious)
-                    {
-                        Channel?.Close();
-                        _connectionId = null;
-                    }
+                    // if (e.Serious)
+                    // {
+                    //     Channel?.Close();
+                    //     _connectionId = null;
+                    // }
 
                     Logger.Warning(e.ToString());
                 }
@@ -139,7 +134,7 @@ public class PlayerActor : BaseActor
     private void CheckFree(long now)
     {
         if (!LoadComplete) return;
-        if (now - _lastRequestTime * 1000 <= 600_000) return;
+        if (now - _lastRequestTime * 1000 <= GlobalParam.PLAYER_IDLE_RELEASE_TIME) return;
         ElegantStop();
     }
 
@@ -159,27 +154,27 @@ public class PlayerActor : BaseActor
         await Send(null, opcode, sn, code);
     }
 
-    public async void Push(IMessage msg)
+    public async Task Push(IMessage msg)
     {
         var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
         await Send(msg, opcode, _nextPushSn);
     }
 
-    private void KickOut()
+    private async Task KickOut()
     {
         var oldConn = Channel;
         if (oldConn != null)
         {
-            Push(new SLoginElsewhere());
+            await Push(new SLoginElsewhere());
             oldConn.Close();
             _connectionId = null;
         }
     }
 
-    public void LoginPreDeal(C2SLogin request)
+    public async Task LoginPreDeal(C2SLogin request)
     {
         //清除老的链接
-        KickOut();
+        await KickOut();
         //检查新链接
         var connect = Home.Instance.GetComponent<ConnectionComponent>()
             .GetConnection(request.Unused);

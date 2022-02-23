@@ -11,6 +11,6 @@ public partial class RpcItemMessage
 		new RpcItem(200003, OpType.CS, typeof(Message.C2SLogin), typeof(Message.S2CLogin), "Login"),
 		new RpcItem(200004, OpType.S, null, typeof(Message.SLoginElsewhere), "LoginElsewhere"),
 		new RpcItem(200100, OpType.S, null, typeof(Message.SSyncReward), "SyncReward"),
-		new RpcItem(200101, OpType.CS, typeof(Message.C2SMails), typeof(Message.S2SMails), "GetMails"),
+		new RpcItem(200101, OpType.CS, typeof(Message.C2SMails), typeof(Message.S2CMails), "GetMails"),
 	};
 }

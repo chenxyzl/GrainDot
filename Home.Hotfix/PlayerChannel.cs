@@ -11,12 +11,12 @@ namespace Home.Model;
 
 public class PlayerChannel : ICustomChannel
 {
-    private readonly ILog _logger;
+    private readonly ActorLog _logger;
     private string? _playerKey;
 
     public PlayerChannel(IBaseSocketConnection conn) : base(conn)
     {
-        _logger = new NLogAdapter(conn.ConnectionId);
+        _logger = new ActorLog("Channel:" + conn.ConnectionId);
     }
 
     public override void OnConnected()

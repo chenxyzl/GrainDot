@@ -42,7 +42,7 @@ public static class WsService
         where T : WebSocketConnection
     {
         self._server = await SocketBuilderFactory.GetWebSocketServerBuilder<T>(ip, port)
-            .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务端异常:{ex.Message}"); })
+            // .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务端异常:{ex.Message}"); })
             // .OnNewConnection((server, connection) =>
             // {
             //     GameServer.Instance.GetComponent<ConnectionDicCommponent>().AddConnection(connection);

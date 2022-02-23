@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Base;
 using Base.Serialize;
 using Home.Model;
@@ -9,7 +10,7 @@ namespace Home.Hotfix.Handler;
 [GateRpc]
 public partial class GateHandlerDispatcher : IGateHandlerDispatcher
 {
-    public async void Dispatcher(BaseActor actor, Request message)
+    public async Task Dispatcher(BaseActor actor, Request message)
     {
         var sender = actor.GetSender();
         sender.Tell(message, actor.GetSelf());
@@ -24,7 +25,7 @@ public partial class GateHandlerDispatcher : IGateHandlerDispatcher
                 if (message.Opcode == 200003)
                 {
                     loginMsg = SerializeHelper.FromBinary<C2SLogin>(message.Content);
-                    player.LoginPreDeal(loginMsg);
+                    await player.LoginPreDeal(loginMsg);
                 }
 
                 //处理消息

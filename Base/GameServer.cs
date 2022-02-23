@@ -19,9 +19,6 @@ public abstract class GameServer
     //
     protected static GameServer? _ins;
 
-    //日志
-    public readonly ILog Logger;
-
     //玩家代理
     private IActorRef? _playerShardProxy;
 
@@ -41,7 +38,7 @@ public abstract class GameServer
     {
         Role = r;
         NodeId = nodeId;
-        Logger = new NLogAdapter(Role.ToString());
+        GlobalLog.Init(r, nodeId);
         //初始化id生成器
         IdGenerater.GlobalInit(nodeId);
     }
@@ -93,36 +90,36 @@ public abstract class GameServer
 
     protected virtual async Task BeforCreate()
     {
-        Logger.Info("Register begin!!!");
+        GlobalLog.Info("Register begin!!!");
         RegisterComponent();
-        Logger.Info("Register success!!!");
+        GlobalLog.Info("Register success!!!");
         //拦截退出
         WatchQuit();
         //加载配置
         LoadConfig();
         //注册mongo的State
         //全局触发load
-        Logger.Info("Load begin!!!");
+        GlobalLog.Info("Load begin!!!");
         foreach (var component in _componentsList)
         {
             await component.Load();
         }
 
-        Logger.Info("Load success!!!");
+        GlobalLog.Info("Load success!!!");
     }
 
     protected virtual async Task AfterCreate()
     {
         //触发挤时间
         Instance._lastTime = TimeHelper.Now();
-        Logger.Info("Start begin!!!");
+        GlobalLog.Info("Start begin!!!");
         //全局触发AfterLoad
         foreach (var component in _componentsList)
         {
             await component.Start();
         }
 
-        Logger.Info("Start success!!!");
+        GlobalLog.Info("Start success!!!");
     }
 
 
@@ -136,26 +133,26 @@ public abstract class GameServer
 
     protected virtual async Task PreStop()
     {
-        Logger.Info("preStoop begin!!!");
+        GlobalLog.Info("preStoop begin!!!");
         //全局触发PreStop
         foreach (var component in _componentsList)
         {
             await component.PreStop();
         }
 
-        Logger.Info("preStoop success!!!");
+        GlobalLog.Info("preStoop success!!!");
     }
 
     protected virtual async Task Stop()
     {
-        Logger.Info("Stop begin!!!");
+        GlobalLog.Info("Stop begin!!!");
         //全局触发Stop
         foreach (var component in _componentsList)
         {
             await component.Stop();
         }
 
-        Logger.Info("Stop success!!!");
+        GlobalLog.Info("Stop success!!!");
     }
 
     protected virtual async Task StartSystem(RoleType roleType, GameSharedType sharedType, Props p,

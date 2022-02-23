@@ -3,58 +3,31 @@ using System.Collections.Generic;
 
 namespace Base.Helper;
 
-public static class RandomEx
-{
-    public static ulong RandUInt64(this Random random)
-    {
-        var byte8 = new byte[8];
-        random.NextBytes(byte8);
-        return BitConverter.ToUInt64(byte8, 0);
-    }
-
-    public static int RandInt32(this Random random)
-    {
-        return random.Next();
-    }
-
-    public static uint RandUInt32(this Random random)
-    {
-        return (uint) random.Next();
-    }
-
-    public static long RandInt64(this Random random)
-    {
-        var byte8 = new byte[8];
-        random.NextBytes(byte8);
-        return BitConverter.ToInt64(byte8, 0);
-    }
-}
-
 public static class RandomHelper
 {
-    public static Random random = new(Guid.NewGuid().GetHashCode());
+    private static readonly Random _random = new(Guid.NewGuid().GetHashCode());
 
     public static ulong RandUInt64()
     {
         var byte8 = new byte[8];
-        random.NextBytes(byte8);
+        _random.NextBytes(byte8);
         return BitConverter.ToUInt64(byte8, 0);
     }
 
     public static int RandInt32()
     {
-        return random.Next();
+        return _random.Next();
     }
 
     public static uint RandUInt32()
     {
-        return (uint) random.Next();
+        return (uint) _random.Next();
     }
 
     public static long RandInt64()
     {
         var byte8 = new byte[8];
-        random.NextBytes(byte8);
+        _random.NextBytes(byte8);
         return BitConverter.ToInt64(byte8, 0);
     }
 
@@ -66,7 +39,7 @@ public static class RandomHelper
     /// <returns></returns>
     public static int RandomNumber(int lower, int upper)
     {
-        var value = random.Next(lower, upper);
+        var value = _random.Next(lower, upper);
         return value;
     }
 
@@ -75,12 +48,12 @@ public static class RandomHelper
         if (minValue > maxValue) throw new ArgumentException("minValue is great than maxValue", "minValue");
 
         var num = maxValue - minValue;
-        return minValue + (long) (random.NextDouble() * num);
+        return minValue + (long) (_random.NextDouble() * num);
     }
 
     public static bool RandomBool()
     {
-        return random.Next(2) == 0;
+        return _random.Next(2) == 0;
     }
 
     public static T RandomArray<T>(this T[] array)
@@ -103,16 +76,14 @@ public static class RandomHelper
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="arr">要打乱的数组</param>
-    public static void BreakRank<T>(this List<T> arr)
+    public static void BreakRank<T>(this List<T>? arr)
     {
         if (arr == null || arr.Count < 2) return;
 
         for (var i = 0; i < arr.Count; i++)
         {
-            var index = random.Next(0, arr.Count);
-            var temp = arr[index];
-            arr[index] = arr[i];
-            arr[i] = temp;
+            var index = _random.Next(0, arr.Count);
+            (arr[index], arr[i]) = (arr[i], arr[index]);
         }
     }
 
@@ -122,7 +93,7 @@ public static class RandomHelper
         var j = 0;
         //表示键和值对的集合。
         var hashtable = new Hashtable();
-        var rm = random;
+        var rm = _random;
         while (hashtable.Count < sum)
         {
             //返回一个min到max之间的随机数
@@ -148,7 +119,7 @@ public static class RandomHelper
     /// <param name="sourceList"></param>
     /// <param name="destList"></param>
     /// <param name="randCount"></param>
-    public static bool GetRandListByCount<T>(List<T> sourceList, List<T> destList, int randCount)
+    public static bool GetRandListByCount<T>(List<T>? sourceList, List<T>? destList, int randCount)
     {
         if (sourceList == null || destList == null || randCount < 0) return false;
 
@@ -163,7 +134,7 @@ public static class RandomHelper
 
         if (randCount == 0) return true;
 
-        var beginIndex = random.Next(0, sourceList.Count - 1);
+        var beginIndex = _random.Next(0, sourceList.Count - 1);
         for (var i = beginIndex; i < beginIndex + randCount; i++) destList.Add(sourceList[i % sourceList.Count]);
 
         return true;
@@ -178,7 +149,7 @@ public static class RandomHelper
     private static int Rand(int n)
     {
         // 注意，返回值是左闭右开，所以maxValue要加1
-        return random.Next(1, n + 1);
+        return _random.Next(1, n + 1);
     }
 
     /// <summary>
@@ -189,16 +160,17 @@ public static class RandomHelper
     public static int RandomByWeight(int[] weights)
     {
         var sum = 0;
-        for (var i = 0; i < weights.Length; i++) sum += weights[i];
+        foreach (var t in weights)
+            sum += t;
 
-        var number_rand = Rand(sum);
+        var numberRand = Rand(sum);
 
-        var sum_temp = 0;
+        var sumTemp = 0;
 
         for (var i = 0; i < weights.Length; i++)
         {
-            sum_temp += weights[i];
-            if (number_rand <= sum_temp) return i;
+            sumTemp += weights[i];
+            if (numberRand <= sumTemp) return i;
         }
 
         return -1;
@@ -255,16 +227,17 @@ public static class RandomHelper
         if (weights.Count == 1) return 0;
 
         long sum = 0;
-        for (var i = 0; i < weights.Count; i++) sum += weights[i];
+        foreach (var t in weights)
+            sum += t;
 
-        var number_rand = NextLong(1, sum + 1);
+        var numberRand = NextLong(1, sum + 1);
 
-        long sum_temp = 0;
+        long sumTemp = 0;
 
         for (var i = 0; i < weights.Count; i++)
         {
-            sum_temp += weights[i];
-            if (number_rand <= sum_temp) return i;
+            sumTemp += weights[i];
+            if (numberRand <= sumTemp) return i;
         }
 
         return -1;

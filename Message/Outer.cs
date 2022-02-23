@@ -156,7 +156,7 @@ public partial class C2SMails: IRequest
 }
 
 [ProtoContract]
-public partial class S2SMails: IResponse
+public partial class S2CMails: IResponse
 {
 		[ProtoMember(1)]
 		public List<Mail> Mails = new List<Mail>();

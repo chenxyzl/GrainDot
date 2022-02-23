@@ -17,7 +17,7 @@ public class PerformanceTest : HttpHandler<C2APerformanceTest, A2CPerformanceTes
         {
             Opcode = 10000,
             Sn = 0,
-            PlayerId = IdGenerater.GenerateId(),
+            PlayerId = IdGenerater.NextId(),
             Content = new AHPlayerLoginKeyAsk().ToBinary()
         };
         var ans = await GameServer.Instance.PlayerShardProxy.Ask<InnerResponse>(ask, TimeSpan.FromSeconds(3));

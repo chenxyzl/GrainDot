@@ -14,7 +14,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
     public bool LoadComplete { get; private set; }
 
-    public abstract ILog Logger { get; }
+    public abstract ActorLog Logger { get; }
     public ITimerScheduler? Timers { get; set; }
 
     public IActorRef GetSelf()
@@ -48,6 +48,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
     private async Task PreStop()
     {
+        
         var components = GetAllComponent();
         foreach (var component in components)
         {

@@ -13,20 +13,21 @@ namespace Home.Hotfix.Service;
 [Service(typeof(PlayerComponent))]
 public static class PlayerService
 {
-    public static async Task Load(this PlayerComponent self)
+    public static Task Load(this PlayerComponent self)
     {
-        self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<PlayerState>(self.Node.uid, self.Node);
-        if (self.State == null)
-        {
-            var state = new PlayerState
-            {
-                Id = self.Node.PlayerId,
-                Exp = 0,
-                Name = Base62Helper.EncodeUInt64(self.Node.PlayerId),
-                TId = ConfigManager.Instance.Get<HeroConfigCategory>().GetAll().First().Value.Id
-            };
-            await GameServer.Instance.GetComponent<DBComponent>().Save(state, self.Node);
-        }
+        return Task.CompletedTask;
+        // self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<PlayerState>(self.Node.uid, self.Node);
+        // if (self.State == null)
+        // {
+        //     var state = new PlayerState
+        //     {
+        //         Id = self.Node.PlayerId,
+        //         Exp = 0,
+        //         Name = Base62Helper.EncodeUInt64(self.Node.PlayerId),
+        //         TId = ConfigManager.Instance.Get<HeroConfigCategory>().GetAll().First().Value.Id
+        //     };
+        //     await GameServer.Instance.GetComponent<DBComponent>().Save(state, self.Node);
+        // }
     }
 
     public static Task Start(this PlayerComponent self)

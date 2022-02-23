@@ -28,4 +28,9 @@ public static class HomeLoginHandler
         //bind connectId
         return Task.FromResult(new S2CLogin());
     }
+
+    public static S2CMails GetMails(PlayerActor playerActor, C2SMails msg)
+    {
+        return playerActor.GetComponent<MailComponent>().GetMails();
+    }
 }

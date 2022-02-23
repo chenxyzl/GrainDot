@@ -23,8 +23,8 @@ public class Home : GameServer
 
     protected override void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<TcpComponent>(IPAddress.Parse("127.0.0.1"), (ushort) 15000);
-        GameServer.Instance.AddComponent<WsComponent>(IPAddress.Parse("127.0.0.1"), (ushort) 15001);
+        GameServer.Instance.AddComponent<TcpComponent>(IPAddress.Parse("0.0.0.0"), (ushort) 15000);
+        GameServer.Instance.AddComponent<WsComponent>(IPAddress.Parse("0.0.0.0"), (ushort) 15001);
         GameServer.Instance.AddComponent<ConnectionComponent>();
         GameServer.Instance.AddComponent<ConsoleComponent>();
         GameServer.Instance.AddComponent<ReplComponent>();

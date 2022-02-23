@@ -17,6 +17,8 @@ public partial class GateHandlerDispatcher
             {
                 return await HomeLoginHandler.Login(player, SerializeHelper.FromBinary<C2SLogin>(message.Content));
             }
+            case 200101:
+                return HomeLoginHandler.GetMails(player, SerializeHelper.FromBinary<C2SMails>(message.Content));
         }
 
         A.Abort(Code.Error, $"opcode:{message.Opcode} not found", true);

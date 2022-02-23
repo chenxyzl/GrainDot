@@ -44,7 +44,7 @@ public static class TcpService
         self._server = await SocketBuilderFactory.GetTcpSocketServerBuilder<T>(ip, port)
             .SetLengthFieldEncoder(2)
             .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
-            .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务端异常:{ex.Message}"); })
+            // .OnException(ex => { GlobalLog.Warning($"{self.GetType().Name} {ip}:{port} 服务端异常:{ex.Message}"); })
             // .OnNewConnection((server, connection) =>
             // {
             //     GameServer.Instance.GetComponent<ConnectionDicCommponent>().AddConnection(connection);

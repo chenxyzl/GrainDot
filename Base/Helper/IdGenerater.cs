@@ -53,7 +53,7 @@ public class IdGenerater
     }
 
 
-    public static ulong GenerateId()
+    public static ulong NextId()
     {
         _ins = A.NotNull(_ins, Code.Error, "_ins not init");
 

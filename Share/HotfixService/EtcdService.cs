@@ -94,7 +94,7 @@ public static class EtcdService
     }
 
     //只能在load函数中调用
-    public static async void Watch(this EtcdComponent self, string k, Action<WatchEvent> func)
+    public static async Task Watch(this EtcdComponent self, string k, Action<WatchEvent> func)
     {
         try
         {
@@ -167,7 +167,7 @@ public static class EtcdService
 
     public static async Task Test(this EtcdComponent self)
     {
-        self.Watch("/a/b", self.WatchTest);
+        await self.Watch("/a/b", self.WatchTest);
         await self.WatchPrefix("/a/", self.WatchTest);
         //Thread.Sleep(5000);
         await self.PutTemp("/a/b", "11");

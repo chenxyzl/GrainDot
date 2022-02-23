@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotNetty-kcp", "Third\DotNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boot", "Boot\Boot.csproj", "{66DDD05F-08CD-4615-A8E0-929CB5FCEC2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Robot", "Robot\Robot.csproj", "{A4DDF317-6697-4601-B235-F9265C7A513B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{66DDD05F-08CD-4615-A8E0-929CB5FCEC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66DDD05F-08CD-4615-A8E0-929CB5FCEC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66DDD05F-08CD-4615-A8E0-929CB5FCEC2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DDF317-6697-4601-B235-F9265C7A513B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DDF317-6697-4601-B235-F9265C7A513B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4DDF317-6697-4601-B235-F9265C7A513B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4DDF317-6697-4601-B235-F9265C7A513B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

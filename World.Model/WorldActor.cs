@@ -8,7 +8,7 @@ namespace World.Model;
 public class WorldActor : BaseActor
 {
     public static readonly Props P = Props.Create<WorldActor>();
-    private ILog? _log;
+    private ActorLog? _log;
 
 
     public WorldActor()
@@ -18,7 +18,7 @@ public class WorldActor : BaseActor
 
     public ulong WorldId { get; private set; }
 
-    public override ILog Logger => _log ??= new NLogAdapter($"world:{WorldId}");
+    public override ActorLog Logger => _log ??= new ActorLog($"world:{WorldId}");
 
 
     protected override void OnReceive(object message)

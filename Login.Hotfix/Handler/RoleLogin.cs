@@ -17,18 +17,18 @@ public class RoleLogin : HttpHandler<C2ARoleLogin, A2CRoleLogin>
     protected override async Task<A2CRoleLogin> Run(C2ARoleLogin data)
     {
         //查询全部，大概率会限制创建个数
-        var dbProxy = GameServer.Instance.GetComponent<DBComponent>();
-        var list = await dbProxy.Query<RoleSimpleState>(x => x.Account == data.Token, null);
+        // var dbProxy = GameServer.Instance.GetComponent<DBComponent>();
+        // var list = await dbProxy.Query<RoleSimpleState>(x => x.Account == data.Token, null);
         ulong playerId = data.Uid;
-        if (data.Uid > 0) //检查角色是否存在
-        {
-            A.NotNull(list.Find(x => x.Id == playerId), Code.PlayerNotFound, "player not found");
-        }
-        else //创建新账号
-        {
-            playerId = IdGenerater.GenerateId();
-            await dbProxy.Save(new RoleSimpleState {Id = playerId, Account = data.Token}, null);
-        }
+        // if (data.Uid > 0) //检查角色是否存在
+        // {
+        //     A.NotNull(list.Find(x => x.Id == playerId), Code.PlayerNotFound, "player not found");
+        // }
+        // else //创建新账号
+        // {
+        playerId = IdGenerater.NextId();
+        //     await dbProxy.Save(new RoleSimpleState {Id = playerId, Account = data.Token}, null);
+        // }
 
         var ask = new RequestPlayer
         {
