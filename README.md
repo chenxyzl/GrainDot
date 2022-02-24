@@ -20,7 +20,16 @@
 ## 启动流程
     1.配置mongo(目前在AddDbComponent时候设置)
     2.配置etcd(目前在AddEtcdompoent设置)
-    3.运行 home world login
+    3.生成Boot Login.Hotfix World.Hotfix Home.Hotfix
+        运行 ./Boot -t=Home -i=2
+        运行 ./Boot -t=World -i=1
+        运行 ./Boot -t=Login -i=0
+    4.unity运行Client
+        点击 获取所有角色列表
+        点击 创建选择角色
+        点击 链接tcp服务器
+        点击 登录到home
+        点击 获取邮件
 
 ## 简单使用教程
 ### 通信协议编辑和代码生成
