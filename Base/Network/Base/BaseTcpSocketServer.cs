@@ -12,7 +12,8 @@ internal abstract class BaseTcpSocketServer<TSocketServer, TConnection, TData> :
     where TConnection : class, IBaseSocketConnection
     where TSocketServer : class, IBaseTcpSocketServer<TConnection>
 {
-    public BaseTcpSocketServer(IPAddress ip, int port, TcpSocketServerEvent<TSocketServer, TConnection, TData> eventHandle)
+    public BaseTcpSocketServer(IPAddress ip, int port,
+        TcpSocketServerEvent<TSocketServer, TConnection, TData> eventHandle)
     {
         Ip = ip;
         Port = port;

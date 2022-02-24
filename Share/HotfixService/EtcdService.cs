@@ -185,7 +185,7 @@ public static class EtcdService
         var f = await self.Get("/a/c");
         Console.WriteLine($"final {a},{b},{c},{d}, {f}");
     }
-    
+
     public static Task Start(this EtcdComponent self)
     {
         return Task.CompletedTask;

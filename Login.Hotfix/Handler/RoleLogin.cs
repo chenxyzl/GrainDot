@@ -1,13 +1,11 @@
-﻿using System;
+﻿#define PERFORMANCE_TEST
+using System;
 using System.Threading.Tasks;
 using Akka.Actor;
 using Base;
 using Base.Helper;
 using Base.Serialize;
-using Login.Model.State;
 using Message;
-using Share.Hotfix.Service;
-using Share.Model.Component;
 
 namespace Login.Hotfix.Handler;
 
@@ -16,19 +14,24 @@ public class RoleLogin : HttpHandler<C2ARoleLogin, A2CRoleLogin>
 {
     protected override async Task<A2CRoleLogin> Run(C2ARoleLogin data)
     {
-        //查询全部，大概率会限制创建个数
-        // var dbProxy = GameServer.Instance.GetComponent<DBComponent>();
-        // var list = await dbProxy.Query<RoleSimpleState>(x => x.Account == data.Token, null);
-        ulong playerId = data.Uid;
-        // if (data.Uid > 0) //检查角色是否存在
-        // {
-        //     A.NotNull(list.Find(x => x.Id == playerId), Code.PlayerNotFound, "player not found");
-        // }
-        // else //创建新账号
-        // {
+#if PERFORMANCE_TEST
+        var playerId = data.Uid;
         playerId = IdGenerater.NextId();
-        //     await dbProxy.Save(new RoleSimpleState {Id = playerId, Account = data.Token}, null);
-        // }
+#else
+        //查询全部，大概率会限制创建个数
+        var dbProxy = GameServer.Instance.GetComponent<DBComponent>();
+        var list = await dbProxy.Query<RoleSimpleState>(x => x.Account == data.Token, null);
+        ulong playerId = data.Uid;
+        if (data.Uid > 0) //检查角色是否存在
+        {
+            A.NotNull(list.Find(x => x.Id == playerId), Code.PlayerNotFound, "player not found");
+        }
+        else //创建新账号
+        {
+            playerId = IdGenerater.NextId();
+            await dbProxy.Save(new RoleSimpleState {Id = playerId, Account = data.Token}, null);
+        }
+#endif
 
         var ask = new RequestPlayer
         {

@@ -11,11 +11,6 @@ public class WorldActor : BaseActor
     private ActorLog? _log;
 
 
-    public WorldActor()
-    {
-        //todo 这里添加component
-    }
-
     public ulong WorldId { get; private set; }
 
     public override ActorLog Logger => _log ??= new ActorLog($"world:{WorldId}");

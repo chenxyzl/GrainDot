@@ -23,7 +23,8 @@ public class SocketBuilderFactory
     /// </summary>
     /// <param name="port">监听端口</param>
     /// <returns></returns>
-    public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(IPAddress ip,  int port) where T : TcpSocketConnection
+    public static ITcpSocketServerBuilder GetTcpSocketServerBuilder<T>(IPAddress ip, int port)
+        where T : TcpSocketConnection
     {
         return new TcpSocketServerBuilder<T>(ip, port);
     }
@@ -34,7 +35,7 @@ public class SocketBuilderFactory
     /// <param name="port">监听端口</param>
     /// <param name="path">路径,默认为"/"</param>
     /// <returns></returns>
-    public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(IPAddress ip,int port, string path = "/")
+    public static IWebSocketServerBuilder GetWebSocketServerBuilder<T>(IPAddress ip, int port, string path = "/")
         where T : WebSocketConnection
     {
         return new WebSocketServerBuilder<T>(ip, port, path);

@@ -1,6 +1,5 @@
 ﻿using Base;
 using Home.Model.State;
-using Share.Model.Component;
 
 namespace Home.Model.Component;
 

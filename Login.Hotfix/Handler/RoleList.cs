@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Base;
 using Login.Model.State;
@@ -19,9 +17,8 @@ public class RoleList : HttpHandler<C2AGetRoleList, A2CGetRoleList>
             .Query<RoleSimpleState>(x => x.Account == data.Token, null);
 
         //转换
-        var o = new A2CGetRoleList {Rols = new()};
+        var o = new A2CGetRoleList {Rols = new List<SimpleRole>()};
         foreach (var roleSumpState in list)
-        {
             o.Rols.Add(new SimpleRole
             {
                 Uid = roleSumpState.Id,
@@ -31,7 +28,6 @@ public class RoleList : HttpHandler<C2AGetRoleList, A2CGetRoleList>
                 LastOfflineTime = roleSumpState.LastOfflineTime,
                 Exp = roleSumpState.Exp
             });
-        }
 
         return o;
     }

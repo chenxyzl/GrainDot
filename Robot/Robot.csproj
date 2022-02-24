@@ -14,8 +14,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Base\Base.csproj" />
-      <ProjectReference Include="..\Message\Message.csproj" />
+        <ProjectReference Include="..\Base\Base.csproj"/>
+        <ProjectReference Include="..\Message\Message.csproj"/>
     </ItemGroup>
 
 </Project>

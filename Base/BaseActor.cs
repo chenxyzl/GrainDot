@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Dispatch;
-using Base.Helper;
 using Message;
 
 namespace Base;
@@ -31,47 +30,31 @@ public abstract class BaseActor : UntypedActor, IWithTimers
     private async Task Load()
     {
         var components = GetAllComponent();
-        foreach (var component in components)
-        {
-            await component.Load();
-        }
+        foreach (var component in components) await component.Load();
     }
 
     private async Task Start()
     {
         var components = GetAllComponent();
-        foreach (var component in components)
-        {
-            await component.Start();
-        }
+        foreach (var component in components) await component.Start();
     }
 
     private async Task PreStop()
     {
-        
         var components = GetAllComponent();
-        foreach (var component in components)
-        {
-            await component.PreStop();
-        }
+        foreach (var component in components) await component.PreStop();
     }
 
     private async Task Stop()
     {
         var components = GetAllComponent();
-        foreach (var component in components)
-        {
-            await component.Stop();
-        }
+        foreach (var component in components) await component.Stop();
     }
 
     protected async Task Tick(long now)
     {
         var components = GetAllComponent();
-        foreach (var component in components)
-        {
-            await component.Tick(now);
-        }
+        foreach (var component in components) await component.Tick(now);
     }
 
     protected override void PreStart()
@@ -153,7 +136,7 @@ public abstract class BaseActor : UntypedActor, IWithTimers
 
         var allArgs = new List<object> {this};
         foreach (var a in args) allArgs.Add(a);
-        C obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as C);
+        var obj = A.NotNull(Activator.CreateInstance(t, allArgs.ToArray()) as C);
         _components.Add(t, obj);
         _componentsList.Add(obj);
     }

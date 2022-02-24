@@ -1,36 +1,35 @@
-using System.Collections.Generic;
 using ProtoBuf;
+
 namespace Message;
+
 [ProtoContract]
 public enum Code
 {
-	Ok = 0,
+    Ok = 0,
 
-	Error = 1,
+    Error = 1,
 
-	GateSignFailed = 2,
+    GateSignFailed = 2,
 
-	AccountIllegal = 3,
+    AccountIllegal = 3,
 
-	PlayerNotFound = 4,
+    PlayerNotFound = 4,
 
-	LoginElsewhere = 5,
+    LoginElsewhere = 5,
 
-	NotLogin = 6,
+    NotLogin = 6,
 
-	ItemNodEnough = 10000,
+    ItemNodEnough = 10000,
 
-	ItemIdNotExist = 10001,
+    ItemIdNotExist = 10001,
 
-	ItemTypeNotDeal = 10002,
+    ItemTypeNotDeal = 10002,
 
-	AddCountMustBiggerThan0 = 10003,
+    AddCountMustBiggerThan0 = 10003,
 
-	ConfigNotFound = 10004,
+    ConfigNotFound = 10004,
 
-	ItemNotCurrency = 10005,
+    ItemNotCurrency = 10005,
 
-	PlayerNotOnline = 10006,
-
+    PlayerNotOnline = 10006
 }
-

@@ -4,7 +4,6 @@ using Base;
 using Base.Helper;
 using Base.Serialize;
 using Message;
-using Newtonsoft.Json;
 
 namespace Robot;
 
@@ -65,7 +64,7 @@ public class Client
         _netClient.Send(new C2SMails());
     }
 
-    void OnRecMsg(byte[] msg)
+    private void OnRecMsg(byte[] msg)
     {
         //第1层反序列化
         var rsp = SerializeHelper.FromBinary<Response>(msg);

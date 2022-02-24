@@ -1,57 +1,47 @@
-using System.Collections.Generic;
 using ProtoBuf;
+
 namespace Message;
+
 // api服务器获取玩家的登录的key
 [ProtoContract]
-public partial class AHPlayerLoginKeyAsk: IRequest
+public class AHPlayerLoginKeyAsk : IRequest
 {
 }
 
 [ProtoContract]
-public partial class HAPlayerLoginKeyAns: IResponse
+public class HAPlayerLoginKeyAns : IResponse
 {
-	[ProtoMember(1)]
-	public string PlayerKey { get; set; }
+    [ProtoMember(1)] public string PlayerKey { get; set; }
 
-	[ProtoMember(2)]
-	public string Addr { get; set; }
-
+    [ProtoMember(2)] public string Addr { get; set; }
 }
 
 // 玩家上线
 [ProtoContract]
-public partial class HWPlayerOnlineAsk: IRequest
+public class HWPlayerOnlineAsk : IRequest
 {
-	[ProtoMember(1)]
-	public ulong WorldId { get; set; }
+    [ProtoMember(1)] public ulong WorldId { get; set; }
 
-	[ProtoMember(2)]
-	public ulong Uid { get; set; }
+    [ProtoMember(2)] public ulong Uid { get; set; }
 
-	[ProtoMember(3)]
-	public long LoginTime { get; set; }
-
+    [ProtoMember(3)] public long LoginTime { get; set; }
 }
 
 [ProtoContract]
-public partial class WHPlayerOnlineAns: IResponse
+public class WHPlayerOnlineAns : IResponse
 {
 }
 
 // 玩家下线
 [ProtoContract]
-public partial class HWPlayerOfflineAsk: IRequest
+public class HWPlayerOfflineAsk : IRequest
 {
-	[ProtoMember(1)]
-	public ulong Uid { get; set; }
+    [ProtoMember(1)] public ulong Uid { get; set; }
 
-	[ProtoMember(2)]
-	public long OfflineTime { get; set; }
-
+    [ProtoMember(2)] public long OfflineTime { get; set; }
 }
 
 [ProtoContract]
-public partial class WHPlayerOfflineAns: IResponse
+public class WHPlayerOfflineAns : IResponse
 {
 }
-

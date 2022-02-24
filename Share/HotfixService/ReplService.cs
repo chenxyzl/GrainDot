@@ -67,7 +67,7 @@ public static class ReplService
         self.ScriptState = null;
         return Task.CompletedTask;
     }
-    
+
 
     public static Task Start(this ReplComponent self)
     {

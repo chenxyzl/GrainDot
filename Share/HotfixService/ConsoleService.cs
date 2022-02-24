@@ -16,13 +16,8 @@ public static class ConsoleService
             var lineTemp = await Task.Factory.StartNew(() => Console.In.ReadLine(),
                 self.CancellationTokenSource.Token);
 
-            if (lineTemp == null)
-            {
-                return;
-            }
-
+            if (lineTemp == null) return;
             var line = lineTemp.Trim();
-
             switch (self.Mode)
             {
                 case ConsoleMode.free:

@@ -4,20 +4,22 @@ using System.Net.Sockets;
 using Base;
 using Base.Helper;
 using Base.Serialize;
-using Google.Protobuf;
 using Message;
-using IMessage = Message.IMessage;
 
 namespace Robot;
 
 /// <summary>
-/// 封装Socket
+///     封装Socket
 /// </summary>
 public class NetClient
 {
+    public delegate void OnRevMsg(byte[] msg);
+
     private TcpClient? client;
     private bool isHead;
     private int len;
+
+    public OnRevMsg? onRecMsg;
     private uint sn;
 
     public NetClient(string ip, int port)
@@ -28,17 +30,14 @@ public class NetClient
     }
 
     /// <summary>
-    /// 发送消息
+    ///     发送消息
     /// </summary>
     private void send(byte[] msg)
     {
-        if (client == null || !client.Connected)
-        {
-            return;
-        }
+        if (client == null || !client.Connected) return;
 
         //消息体结构：消息体长度+消息体
-        byte[] data = new byte[2 + msg.Length];
+        var data = new byte[2 + msg.Length];
         IntToBytes((ushort) msg.Length).CopyTo(data, 0);
         msg.CopyTo(data, 2);
         try
@@ -56,7 +55,7 @@ public class NetClient
         //第一层序列化
         var opcode = RpcManager.Instance.GetRequestOpcode(msg.GetType());
         //第二层序列化
-        Request req = new Request
+        var req = new Request
         {
             Opcode = opcode,
             Content = msg.ToBinary(),
@@ -68,30 +67,21 @@ public class NetClient
     }
 
     /// <summary>
-    /// 接收消息
+    ///     接收消息
     /// </summary>
     public void ReceiveMsg()
     {
-        if (client == null || !client.Connected)
-        {
-            return;
-        }
+        if (client == null || !client.Connected) return;
 
-        NetworkStream stream = client.GetStream();
-        if (!stream.CanRead)
-        {
-            return;
-        }
+        var stream = client.GetStream();
+        if (!stream.CanRead) return;
 
         //读取消息体的长度
         if (isHead)
         {
-            if (client.Available < 2)
-            {
-                return;
-            }
+            if (client.Available < 2) return;
 
-            byte[] lenByte = new byte[2];
+            var lenByte = new byte[2];
             stream.Read(lenByte, 0, 2);
             len = BytesToInt(lenByte, 0);
             isHead = false;
@@ -100,25 +90,20 @@ public class NetClient
         //读取消息体内容
         if (!isHead)
         {
-            if (client.Available < len)
-            {
-                return;
-            }
+            if (client.Available < len) return;
 
-            byte[] msgByte = new byte[len];
+            var msgByte = new byte[len];
             stream.Read(msgByte, 0, len);
             isHead = true;
             len = 0;
             if (onRecMsg != null)
-            {
                 //处理消息
                 onRecMsg(msgByte);
-            }
         }
     }
 
     /// <summary>
-    /// bytes转int
+    ///     bytes转int
     /// </summary>
     /// <param name="data"></param>
     /// <param name="offset"></param>
@@ -132,7 +117,7 @@ public class NetClient
 
 
     /// <summary>
-    /// int 转 bytes
+    ///     int 转 bytes
     /// </summary>
     /// <param name="num"></param>
     /// <returns></returns>
@@ -152,8 +137,4 @@ public class NetClient
 
         client = null;
     }
-
-    public delegate void OnRevMsg(byte[] msg);
-
-    public OnRevMsg? onRecMsg;
 }

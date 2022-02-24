@@ -10,9 +10,9 @@ namespace Robot;
 
 public static class ClientManager
 {
-    private static ConcurrentDictionary<ulong, Client> clients = new();
+    private static readonly ConcurrentDictionary<ulong, Client> clients = new();
 
-    static async Task Main()
+    private static async Task Main()
     {
         GlobalLog.Init(RoleType.NULL, CommandHelper.Instance.NodeId);
         IdGenerater.GlobalInit(CommandHelper.Instance.NodeId);
@@ -31,13 +31,10 @@ public static class ClientManager
         {
             var client = new Client();
             var id = await client.Login();
-            if (id == 0)
-            {
-                continue;
-            }
+            if (id == 0) continue;
 
             clients.TryAdd(id, client);
-            Thread.Sleep(10);
+            Thread.Sleep(20);
         }
 
 

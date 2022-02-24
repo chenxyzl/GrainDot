@@ -9,11 +9,11 @@ namespace Home.Model;
 
 public class Home : GameServer
 {
-    public new static Home Instance => A.NotNull(_ins as Home);
-
     public Home(ushort nodeId) : base(RoleType.Home, nodeId)
     {
     }
+
+    public new static Home Instance => A.NotNull(_ins as Home);
 
     protected override async Task AfterCreate()
     {
@@ -30,6 +30,7 @@ public class Home : GameServer
         GameServer.Instance.AddComponent<ReplComponent>();
         GameServer.Instance.AddComponent<LoginKeyComponent>();
         GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.254:27017");
-        GameServer.Instance.AddComponent<EtcdComponent>("http://10.7.69.254:12379,http://10.7.69.254:22379,http://10.7.69.254:32379");
+        GameServer.Instance.AddComponent<EtcdComponent>(
+            "http://10.7.69.254:12379,http://10.7.69.254:22379,http://10.7.69.254:32379");
     }
 }

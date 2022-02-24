@@ -2,7 +2,6 @@
 
 namespace Base.Helper;
 
-
 public static class ByteArrayExtensions
 {
     public static byte[] SubArray(this byte[] array, int offset, int length)

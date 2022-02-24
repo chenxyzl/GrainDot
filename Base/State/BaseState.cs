@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Common;
 using MongoDB.Bson.Serialization.Attributes;
@@ -49,6 +48,6 @@ public class StateIndexAttribute : Attribute
 
     public StateIndexAttribute(string field)
     {
-        this.Field = field;
+        Field = field;
     }
 }

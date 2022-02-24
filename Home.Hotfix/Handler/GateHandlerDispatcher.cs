@@ -33,10 +33,7 @@ public partial class GateHandlerDispatcher : IGateHandlerDispatcher
                 await player.Send(ret, message.Opcode, message.Sn);
 
                 //登录消息特殊处理
-                if (loginMsg != null)
-                {
-                    player.LoginAfterDeal(loginMsg);
-                }
+                if (loginMsg != null) player.LoginAfterDeal(loginMsg);
             }
             catch (CodeException e)
             {

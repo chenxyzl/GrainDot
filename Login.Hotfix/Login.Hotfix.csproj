@@ -3,8 +3,8 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <ApplicationIcon />
-        <StartupObject />
+        <ApplicationIcon/>
+        <StartupObject/>
         <BaseOutputPath>../Bin</BaseOutputPath>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -16,7 +16,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Login.Model\Login.Model.csproj" />
+        <ProjectReference Include="..\Login.Model\Login.Model.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

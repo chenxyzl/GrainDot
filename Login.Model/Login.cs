@@ -20,7 +20,7 @@ public class Login : GameServer
 
     protected override void RegisterComponent()
     {
-        GameServer.Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.254:27017");
-        GameServer.Instance.AddComponent<HttpComponent>(":20001");
+        Instance.AddComponent<DBComponent>("mongodb://root:Qwert123!@10.7.69.254:27017");
+        Instance.AddComponent<HttpComponent>(":20001");
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Base;
 using Base.Helper;
 using Base.Network;
@@ -8,9 +7,9 @@ namespace Home.Model.Component;
 
 public class ConnectionComponent : IGlobalComponent
 {
-    public readonly SortedDictionary<ulong, string> WaitAuthed = new();
     private readonly Dictionary<string, ICustomChannel> _connects = new();
     public readonly object LockObj = new();
+    public readonly SortedDictionary<ulong, string> WaitAuthed = new();
 
     public ICustomChannel? GetConnection(string? connectId)
     {

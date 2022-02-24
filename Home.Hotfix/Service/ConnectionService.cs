@@ -2,8 +2,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Base;
 using Base.Helper;
-using Base.Network;
-using Home.Model;
 using Home.Model.Component;
 
 namespace Home.Hotfix.Service;
@@ -52,6 +50,7 @@ public static class ConnectionDicService
                     connection.Close();
             }
         }
+
         return Task.CompletedTask;
     }
 }

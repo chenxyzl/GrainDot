@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Message;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Bson;
 using Share.Model.Component;
 
 namespace Share.Hotfix.Service;
@@ -74,7 +72,7 @@ public static class HttpService
             GlobalLog.Debug($"Path:{context.Request.Path} unexpect exception");
         }
     }
-    
+
     public static Task Load(this HttpComponent self)
     {
         return Task.CompletedTask;

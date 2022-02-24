@@ -6,8 +6,8 @@ namespace Base;
 public static class GlobalLog
 {
     private static Logger? _globalLog;
-    private static Logger globalLog => A.NotNull(_globalLog, des: "global log must init before use");
     private static readonly object _lockObj = new();
+    private static Logger globalLog => A.NotNull(_globalLog, des: "global log must init before use");
 
 
     public static void Init(RoleType r, ushort nodeId)
@@ -15,10 +15,7 @@ public static class GlobalLog
         lock (_lockObj)
         {
             var tag = $"{r}:{nodeId}";
-            if (_globalLog != null)
-            {
-                A.Abort(des: "logger init repeated");
-            }
+            if (_globalLog != null) A.Abort(des: "logger init repeated");
 
             LogManager.Configuration = new XmlLoggingConfiguration("../Conf/NLog.config");
             LogManager.Configuration.Variables["appIdFormat"] = tag;

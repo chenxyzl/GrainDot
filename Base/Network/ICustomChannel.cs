@@ -29,6 +29,7 @@ public abstract class ICustomChannel
             GlobalLog.Error($"channel:{ConnectionId} bytes too long,size:{bytes.Length} opcode:{opcode}");
             return Task.CompletedTask;
         }
+
         //这里没有必要等，要等的话还要切换线程恢复线程
         _ = _conn.Send(bytes);
         return Task.CompletedTask;

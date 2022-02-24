@@ -19,6 +19,8 @@ public abstract class GameServer
     //
     protected static GameServer? _ins;
 
+    private long _lastTime;
+
     //玩家代理
     private IActorRef? _playerShardProxy;
 
@@ -26,12 +28,9 @@ public abstract class GameServer
     private bool _quitFlag;
 
     //配置
-    private Akka.Configuration.Config _systemConfig = null!;
 
     //世界代理
     private IActorRef? _worldShardProxy;
-
-    private long _lastTime;
 
     //
     public GameServer(RoleType r, ushort nodeId)
@@ -56,7 +55,7 @@ public abstract class GameServer
 
     public IActorRef WorldShardProxy => A.NotNull(_worldShardProxy, Code.Error, "need StartWorldProxy");
 
-    public Akka.Configuration.Config SystemConfig => _systemConfig;
+    public Akka.Configuration.Config SystemConfig { get; private set; } = null!;
 
     public static GameServer Instance1<T>() where T : GameServer
     {
@@ -82,7 +81,7 @@ public abstract class GameServer
         // var o = ConfigurationFactory.Default();
         var a = ConfigurationFactory.ParseString(baseConfig);
         var b = ConfigurationFactory.ParseString(config);
-        _systemConfig = b.WithFallback(a);
+        SystemConfig = b.WithFallback(a);
         //_systemConfig  = File.ReadAllText($"../Conf/{role}.conf");
     }
 
@@ -100,10 +99,7 @@ public abstract class GameServer
         //注册mongo的State
         //全局触发load
         GlobalLog.Info("Load begin!!!");
-        foreach (var component in _componentsList)
-        {
-            await component.Load();
-        }
+        foreach (var component in _componentsList) await component.Load();
 
         GlobalLog.Info("Load success!!!");
     }
@@ -114,10 +110,7 @@ public abstract class GameServer
         Instance._lastTime = TimeHelper.Now();
         GlobalLog.Info("Start begin!!!");
         //全局触发AfterLoad
-        foreach (var component in _componentsList)
-        {
-            await component.Start();
-        }
+        foreach (var component in _componentsList) await component.Start();
 
         GlobalLog.Info("Start success!!!");
     }
@@ -125,20 +118,14 @@ public abstract class GameServer
 
     protected virtual async Task Tick(long now)
     {
-        foreach (var component in _componentsList)
-        {
-            await component.Tick(now);
-        }
+        foreach (var component in _componentsList) await component.Tick(now);
     }
 
     protected virtual async Task PreStop()
     {
         GlobalLog.Info("preStoop begin!!!");
         //全局触发PreStop
-        foreach (var component in _componentsList)
-        {
-            await component.PreStop();
-        }
+        foreach (var component in _componentsList) await component.PreStop();
 
         GlobalLog.Info("preStoop success!!!");
     }
@@ -147,10 +134,7 @@ public abstract class GameServer
     {
         GlobalLog.Info("Stop begin!!!");
         //全局触发Stop
-        foreach (var component in _componentsList)
-        {
-            await component.Stop();
-        }
+        foreach (var component in _componentsList) await component.Stop();
 
         GlobalLog.Info("Stop success!!!");
     }
@@ -159,7 +143,7 @@ public abstract class GameServer
         HashCodeMessageExtractor extractor)
     {
         await BeforCreate();
-        System = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+        System = ActorSystem.Create(GlobalParam.SystemName, SystemConfig);
         var sharding = ClusterSharding.Get(System);
         var shardRegion = await sharding.StartAsync(
             sharedType.ToString(),
@@ -174,7 +158,7 @@ public abstract class GameServer
     protected virtual async Task StartSystem()
     {
         await BeforCreate();
-        System = ActorSystem.Create(GlobalParam.SystemName, _systemConfig);
+        System = ActorSystem.Create(GlobalParam.SystemName, SystemConfig);
         await AfterCreate();
     }
 

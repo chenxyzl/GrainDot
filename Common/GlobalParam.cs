@@ -32,7 +32,7 @@ public static class GlobalParam
     public static int RPC_TIMEOUT_TIME = 15_000;
 
     /// <summary>
-    /// 登录和actor空闲下线时间
+    ///     登录和actor空闲下线时间
     /// </summary>
     public static int PLAYER_IDLE_RELEASE_TIME = 600_000_000;
 

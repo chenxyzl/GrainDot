@@ -1,6 +1,4 @@
-﻿using Common;
-
-namespace Base;
+﻿namespace Base;
 
 public class ActorLog
 {
@@ -33,7 +31,7 @@ public class ActorLog
 
     public void Error(Exception e)
     {
-        GlobalLog.Error(_tag + e.ToString());
+        GlobalLog.Error(_tag + e);
     }
 
     public void Error(string message)
@@ -43,7 +41,7 @@ public class ActorLog
 
     public void Fatal(Exception e)
     {
-        GlobalLog.Fatal(_tag + e.ToString());
+        GlobalLog.Fatal(_tag + e);
     }
 
     public void Fatal(string message)

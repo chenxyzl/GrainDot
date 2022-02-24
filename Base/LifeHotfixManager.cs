@@ -1,33 +1,28 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Base.Helper;
-using Base.Player;
-using Message;
 
 namespace Base;
 
 public class LifeHotfixManager : Single<LifeHotfixManager>
 {
+    private static readonly ReaderWriterLockSlim _loadWriteLock = new();
+    private static readonly ReaderWriterLockSlim _startWriteLock = new();
+    private static readonly ReaderWriterLockSlim _preStopWriteLock = new();
+    private static readonly ReaderWriterLockSlim _stopWriteLock = new();
+    private static readonly ReaderWriterLockSlim _tickWriteLock = new();
     private Dictionary<ulong, Dictionary<Type, LoadDelegate>> _loadDelegateDic = new();
-    private Dictionary<ulong, Dictionary<Type, StartDelegate>> _startDelegateDic = new();
-    private Dictionary<ulong, Dictionary<Type, PreStopDelegate>> _preStopDelegateDic = new();
-    private Dictionary<ulong, Dictionary<Type, StopDelegate>> _stopDelegateDic = new();
-    private Dictionary<ulong, Dictionary<Type, TickDelegate>> _tickDelegateDic = new();
 
     private Dictionary<Type, MethodInfo> _loadMethodDic = new();
-    private Dictionary<Type, MethodInfo> _startMethodDic = new();
+    private Dictionary<ulong, Dictionary<Type, PreStopDelegate>> _preStopDelegateDic = new();
     private Dictionary<Type, MethodInfo> _preStopMethodDic = new();
+    private Dictionary<ulong, Dictionary<Type, StartDelegate>> _startDelegateDic = new();
+    private Dictionary<Type, MethodInfo> _startMethodDic = new();
+    private Dictionary<ulong, Dictionary<Type, StopDelegate>> _stopDelegateDic = new();
     private Dictionary<Type, MethodInfo> _stopMethodDic = new();
+    private Dictionary<ulong, Dictionary<Type, TickDelegate>> _tickDelegateDic = new();
     private Dictionary<Type, MethodInfo> _tickMethodDic = new();
-
-    static ReaderWriterLockSlim _loadWriteLock = new ReaderWriterLockSlim();
-    static ReaderWriterLockSlim _startWriteLock = new ReaderWriterLockSlim();
-    static ReaderWriterLockSlim _preStopWriteLock = new ReaderWriterLockSlim();
-    static ReaderWriterLockSlim _stopWriteLock = new ReaderWriterLockSlim();
-    static ReaderWriterLockSlim _tickWriteLock = new ReaderWriterLockSlim();
 
     public void ReloadHandler()
     {
@@ -108,11 +103,11 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
         _preStopMethodDic = preStopMethodTempDic;
         _stopMethodDic = stopMethodTempDic;
         _tickMethodDic = tickMethodTempDic;
-        _loadDelegateDic = new();
-        _startDelegateDic = new();
-        _preStopDelegateDic = new();
-        _stopDelegateDic = new();
-        _tickDelegateDic = new();
+        _loadDelegateDic = new Dictionary<ulong, Dictionary<Type, LoadDelegate>>();
+        _startDelegateDic = new Dictionary<ulong, Dictionary<Type, StartDelegate>>();
+        _preStopDelegateDic = new Dictionary<ulong, Dictionary<Type, PreStopDelegate>>();
+        _stopDelegateDic = new Dictionary<ulong, Dictionary<Type, StopDelegate>>();
+        _tickDelegateDic = new Dictionary<ulong, Dictionary<Type, TickDelegate>>();
         GlobalLog.Warning("life delegate reload success");
     }
 
@@ -125,7 +120,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             {
                 _loadWriteLock.ExitReadLock();
                 _loadWriteLock.EnterWriteLock();
-                dic = new();
+                dic = new Dictionary<Type, LoadDelegate>();
                 _loadDelegateDic.TryAdd(id, dic);
                 _loadWriteLock.ExitWriteLock();
             }
@@ -157,7 +152,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             {
                 _startWriteLock.ExitReadLock();
                 _startWriteLock.EnterWriteLock();
-                dic = new();
+                dic = new Dictionary<Type, StartDelegate>();
                 _startDelegateDic.TryAdd(id, dic);
                 _startWriteLock.ExitWriteLock();
             }
@@ -189,7 +184,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             {
                 _preStopWriteLock.ExitReadLock();
                 _preStopWriteLock.EnterWriteLock();
-                dic = new();
+                dic = new Dictionary<Type, PreStopDelegate>();
                 _preStopDelegateDic.TryAdd(id, dic);
                 _preStopWriteLock.ExitWriteLock();
             }
@@ -221,7 +216,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             {
                 _stopWriteLock.ExitReadLock();
                 _stopWriteLock.EnterWriteLock();
-                dic = new();
+                dic = new Dictionary<Type, StopDelegate>();
                 _stopDelegateDic.TryAdd(id, dic);
                 _stopWriteLock.ExitWriteLock();
             }
@@ -253,7 +248,7 @@ public class LifeHotfixManager : Single<LifeHotfixManager>
             {
                 _tickWriteLock.ExitReadLock();
                 _tickWriteLock.EnterWriteLock();
-                dic = new();
+                dic = new Dictionary<Type, TickDelegate>();
                 _tickDelegateDic.TryAdd(id, dic);
                 _tickWriteLock.ExitWriteLock();
             }

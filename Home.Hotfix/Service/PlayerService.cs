@@ -1,12 +1,7 @@
-﻿using System.Linq;
+﻿#define PERFORMANCE_TEST
 using System.Threading.Tasks;
 using Base;
-using Base.Config;
-using Base.Helper;
 using Home.Model.Component;
-using Home.Model.State;
-using Share.Hotfix.Service;
-using Share.Model.Component;
 
 namespace Home.Hotfix.Service;
 
@@ -15,7 +10,9 @@ public static class PlayerService
 {
     public static Task Load(this PlayerComponent self)
     {
+#if PERFORMANCE_TEST
         return Task.CompletedTask;
+#else
         // self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<PlayerState>(self.Node.uid, self.Node);
         // if (self.State == null)
         // {
@@ -28,6 +25,7 @@ public static class PlayerService
         //     };
         //     await GameServer.Instance.GetComponent<DBComponent>().Save(state, self.Node);
         // }
+#endif
     }
 
     public static Task Start(this PlayerComponent self)

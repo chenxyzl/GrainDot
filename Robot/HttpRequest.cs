@@ -1,11 +1,8 @@
 using System;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Base;
 using Base.Serialize;
-using Common;
 using Message;
 
 namespace Robot;
@@ -25,10 +22,7 @@ public static class Http
 
         var res = Convert.FromBase64String(resBase64String);
         var msg = SerializeHelper.FromBinary<ApiResult>(res);
-        if (msg.Code != Code.Ok)
-        {
-            throw new CodeException(msg.Code, $"get code {msg.Code}");
-        }
+        if (msg.Code != Code.Ok) throw new CodeException(msg.Code, $"get code {msg.Code}");
 
         return msg.Content;
     }

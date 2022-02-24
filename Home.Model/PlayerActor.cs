@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
-using Akka.Dispatch;
 using Base;
 using Base.Helper;
 using Base.Network;
@@ -21,12 +20,12 @@ public class PlayerActor : BaseActor
     //链接id
     private string? _connectionId;
 
+    public long _lastRequestTime = TimeHelper.NowSeconds();
+
     private ActorLog? _log;
 
     //上次的登录key
     public string? LastLoginKey;
-
-    public long _lastRequestTime = TimeHelper.NowSeconds();
 
     // path = akka://Z/system/sharding/Player/8714/4505283499219672065
     public PlayerActor()
@@ -47,7 +46,7 @@ public class PlayerActor : BaseActor
 
     private uint _lastPushSn { get; set; }
     private uint _nextPushSn => ++_lastPushSn;
-    
+
     public override ActorLog Logger => _log ??= new ActorLog($"player:{PlayerId}");
 
     protected override void EnterUpState()

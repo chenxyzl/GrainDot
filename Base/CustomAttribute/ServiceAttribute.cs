@@ -8,5 +8,5 @@ public class ServiceAttribute : BaseAttribute
         HostType = type;
     }
 
-    public Type HostType { get; private set; }
+    public Type HostType { get; }
 }

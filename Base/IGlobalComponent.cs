@@ -1,6 +1,4 @@
-﻿using Base.Helper;
-
-namespace Base;
+﻿namespace Base;
 
 public abstract class IGlobalComponent : IComponent
 {

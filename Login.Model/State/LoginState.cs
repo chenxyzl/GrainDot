@@ -1,16 +1,16 @@
 using Base.State;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace Login.Model.State;
 
 [StateIndex("Account")]
 public class RoleSimpleState : BaseState
 {
-    public override bool NeedSave { get; protected set; } = true;
     /// <summary>
-    /// 索引
+    ///     索引
     /// </summary>
     public string Account = "";
+
+    public override bool NeedSave { get; protected set; } = true;
     public uint Tid { get; set; }
     public string Name { get; set; } = "";
     public long LastLoginTime { get; set; }

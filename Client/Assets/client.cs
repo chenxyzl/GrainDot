@@ -16,7 +16,7 @@ using UnityEngine.UI;
 public class client : MonoBehaviour
 {
     private string staInfo = "NULL"; //状态信息
-    private string inputIp = "127.0.0.1:15000"; //输入ip地址
+    private string inputIp = "10.7.69.254:15000"; //输入ip地址
     private string recMes = "NULL"; //接收到的消息
     private uint sn = 0;
     private List<ulong> roleList = new List<ulong>();

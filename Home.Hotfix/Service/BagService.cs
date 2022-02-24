@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#define PERFORMANCE_TEST
 using System.Threading.Tasks;
 using Base;
-using Base.Helper;
 using Home.Model.Component;
-using Home.Model.State;
-using Message;
 using Share.Hotfix.Service;
 using Share.Model.Component;
 
@@ -15,19 +12,22 @@ public static class BagService
 {
     public static Task Load(this BagComponent self)
     {
+#if PERFORMANCE_TEST
         return Task.CompletedTask;
-        // self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<BagState>(self.Node.uid, self.Node);
-        // //todo 初始化代码
-        // if (self.State == null)
-        // {
-        //     var uid = IdGenerater.GenerateId();
-        //     await GameServer.Instance.GetComponent<DBComponent>().Save(new BagState
-        //     {
-        //         Id = self.Node.PlayerId,
-        //         Bag = new Dictionary<ulong, Item>
-        //             {{1, new Item {Uid = uid, Tid = (uint) uid, Count = 999999999, GetTime = TimeHelper.Now()}}}
-        //     }, self.Node);
-        // }
+#else
+        self.State = await GameServer.Instance.GetComponent<DBComponent>().Query<BagState>(self.Node.uid, self.Node);
+        //todo 初始化代码
+        if (self.State == null)
+        {
+            var uid = IdGenerater.GenerateId();
+            await GameServer.Instance.GetComponent<DBComponent>().Save(new BagState
+            {
+                Id = self.Node.PlayerId,
+                Bag = new Dictionary<ulong, Item>
+                    {{1, new Item {Uid = uid, Tid = (uint) uid, Count = 999999999, GetTime = TimeHelper.Now()}}}
+            }, self.Node);
+        }
+#endif
     }
 
     public static Task Start(this BagComponent self)
