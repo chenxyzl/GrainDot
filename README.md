@@ -50,7 +50,6 @@
     2.控制台输入table即可更新表格
 ### todo
     1.目前已有EtcdComponent,未来的表格,hotfix.dll会保存在etcd上,自动热更新
-    2.目前无tcp客户单。暂时通过login服务器做转发命令 比如(curl -L http://127.0.0.1:20001/api/login)
 
 
 ## 登录流程介绍
